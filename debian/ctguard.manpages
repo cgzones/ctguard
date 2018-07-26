@@ -1,0 +1,9 @@
+docs/ctguard-research.8
+docs/ctguard-logscan.8
+docs/ctguard-diskscan.8
+docs/ctguard-intervention.8
+docs/research.conf.5
+docs/intervention.conf.5
+docs/logscan.conf.5
+docs/diskscan.conf.5
+docs/rules.xml.5

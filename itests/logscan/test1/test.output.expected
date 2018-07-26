@@ -1,0 +1,15 @@
+ [daemon] : ctguard-logscan started
+ [test.log] : test
+ [test.log] : test2
+ [test_timeout.log] : test
+ [test.log] : !File truncated
+ [test.log] : test3
+ [test_timeout.log] : !Timeout alert
+ [test.log] : !File truncated
+ [test.log] : test4
+ [test.log] : !File went down
+ [test.log] : !File coming alive
+ [test.log] : !File got replaced
+ [test.log] : !File truncated
+ [test.log] : test5
+ [daemon] : ctguard-logscan shutting down...

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -eu
+
+if [ "$1" = "configure" ]; then
+  adduser --system --group --quiet --gecos "ctguard daemon" --no-create-home --home /var/lib/ctguard ctguard
+  
+  chown :ctguard /etc/ctguard/research.conf /etc/ctguard/rules/ /etc/ctguard/rules/*.xml
+  chown ctguard:ctguard /var/lib/ctguard /var/log/ctguard
+
+  chmod o-rwx /etc/ctguard/research.conf /etc/ctguard/rules/ /etc/ctguard/rules/*.xml /etc/ctguard/logscan.conf /etc/ctguard/diskscan.conf /etc/ctguard/intervention.conf
+fi
+
+#DEBHELPER#

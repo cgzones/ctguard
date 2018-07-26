@@ -1,0 +1,6 @@
+ [daemon] : ctguard-logscan started
+ [test.log] : !File coming alive
+ [test.log] : !File got replaced
+ [test.log] : test
+ [test.log] : test2
+ [daemon] : ctguard-logscan shutting down...

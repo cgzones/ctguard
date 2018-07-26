@@ -1,0 +1,14 @@
+[Unit]
+Description=ctguard research
+Wants=ctguard-intervention.service
+After=ctguard-intervention.service
+
+[Service]
+ExecStart=/usr/sbin/ctguard-research -f
+Restart=on-failure
+User=ctguard
+RuntimeDirectory=ctguard
+RuntimeDirectoryMode=0750
+
+[Install]
+WantedBy=multi-user.target

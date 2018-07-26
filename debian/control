@@ -1,0 +1,18 @@
+Source: ctguard
+Section: admin
+Priority: optional
+Maintainer: Christian Göttsche <cgzones@googlemail.com>
+Build-Depends: debhelper (>= 11), help2man, libsqlite3-dev
+Standards-Version: 4.1.4
+Homepage: https://github.com/cgzones/ctguard
+Vcs-Git: https://github.com/cgzones/ctguard
+Vcs-Browser: https://github.com/cgzones/ctguard
+
+Package: ctguard
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, lsb-base
+Description: minimal hids
+ ctguard is a minimal Host based Intrusion Detection System.
+ It is inspired by ossec.
+ .
+ ctguard is still in development.

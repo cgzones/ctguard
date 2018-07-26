@@ -1,0 +1,114 @@
+<rule_group>
+
+	<group>test</group>
+	<group>system</group>
+	<group>authentication_failure</group>
+
+	<!-- Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian) -->
+	<format name="syslog">
+		<regex>([\w]{3}\s+\d+\s+\d+:\d+:\d+)\s+(\S+)\s+(\S+)\[\d+\]: (.*)</regex>
+		<fields>timestamp,hostname,domain,log</fields>
+	</format>
+
+	<rule id="1" priority="4">
+		<regex>^test$</regex>
+		<group>test</group>
+		<description>test rule</description>
+	</rule>
+
+	<rule id="2" priority="4">
+		<if_trait name="format">syslog</if_trait>
+		<if_field name="domain">unix_chkpwd</if_field>
+		<description>Grouping of unix_chkpwd logs.</description>
+		<group>system</group>
+	</rule>
+
+
+	<rule id="3" priority="5">
+		<if_trait name="format">syslog</if_trait>
+		<if_field name="domain">unix_chkpwd</if_field>
+		<description>Grouping of unix_chkpwd logs.</description>
+		<group>system</group>
+	</rule>
+
+
+	<!-- Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian) -->
+	<rule id="4" priority="4">
+		<if_rule>3</if_rule>
+		<regex>^password check failed for user \((\S+)\)$</regex>
+		<fields>username</fields>
+		<description>sshd: failed user login</description>
+		<group>authentication_failure</group>
+	</rule>
+
+
+	<rule id="5" priority="7">
+		<if_group>authentication_failure</if_group>
+		<if_field name="username">root</if_field>
+		<description>Failed login into root</description>
+	</rule>
+
+
+	<rule id="6" priority="7">
+		<activation_group time="10" rate="5" reset="true">authentication_failure</activation_group>
+		<description>Multiple failed authentications.</description>
+	</rule>
+
+	<rule id="60" priority="8">
+		<activation_group time="10" rate="5">authentication_failure</activation_group>
+		<same_field>username</same_field>
+		<description>Multiple authentication failures for the same user.</description>
+	</rule>
+
+	<rule id="7" priority="10">
+		<if_group>test</if_group>
+		<activation_group time="10" rate="6">authentication_failure</activation_group>
+		<description>Multiple authentication failures followed up by test</description>
+	</rule>
+
+	<rule id="8" priority="6">
+		<regex>abc|</regex>
+		<regex>def</regex>
+		<description>test multiline regex</description>
+	</rule>
+
+	<rule id="9" priority="6">
+		<regex>xtest1</regex>
+		<description>multi if_rule parent 1</description>
+	</rule>
+
+	<rule id="10" priority="6">
+		<regex>xtest2</regex>
+		<description>multi if_rule parent 2</description>
+	</rule>
+
+	<rule id="11" priority="7">
+		<if_rule>9, 10</if_rule>
+		<description>multi if_rule</description>
+	</rule>
+
+	<rule id="12" priority="5">
+		<regex>^ytest(\S+)y$</regex>
+		<fields>testy</fields>
+		<description>base rule for empty field test</description>
+	</rule>
+
+	<rule id="13" priority="5">
+		<regex>^ytesty$</regex>
+		<description>base rule for empty field test</description>
+	</rule>
+
+	<rule id="14" priority="8">
+		<if_rule>12,13</if_rule>
+		<if_field name="testy" match="empty"/>
+		<description>rule for empty field test</description>
+	</rule>
+
+	<rule id="15" priority="5">
+		<regex>testyy (\S+)|</regex>
+		<regex>testxx (\S+)</regex>
+		<fields>test,test</fields>
+		<description>test multiline and multifield regex</description>#
+	</rule>
+
+</rule_group>

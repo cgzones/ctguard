@@ -1,0 +1,24 @@
+<rule_group>
+
+	<group>test</group>
+
+	<rule id="1" priority="4">
+		<regex>test</regex>
+		<group>test</group>
+		<description>test rule</description>
+	</rule>
+
+	<rule id="2" priority="4">
+		<regex>test2</regex>
+		<group>test</group>
+		<description>test2 rule</description>
+	</rule>
+
+	<rule id="3" priority="8">
+		<if_rule>1</if_rule>
+		<unless_rule timeout="2">2</unless_rule>
+		<group>test</group>
+		<description>No test2 after test</description>
+	</rule>
+
+</rule_group>

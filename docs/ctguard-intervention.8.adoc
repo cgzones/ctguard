@@ -1,0 +1,52 @@
+ctguard-intervention(8)
+=======================
+:doctype: manpage
+
+
+== NAME
+ctguard-intervention - daemon for executing action
+
+
+[[synopsis]]
+== SYNOPSIS
+*ctguard-intervention* ['OPTIONS']
+
+
+[[description]]
+== DESCRIPTION
+The *ctguard-intervention* daemon is the action manager for ctguard.
+It fires configured actions on specific events configured in *ctguard-research*(8). +
+The configuration is either taken by default from the configuration file *intervention.conf*(5) or from the configuration supplied as argument.
+
+
+[[options]]
+== OPTIONS
+*-c*, *--cfg-file* 'path'::
+    Load configuration from a file at 'path' (default: '/etc/ctguard/intervention.conf').
+
+*-C*, *--dump-config*::
+    Dump the current configuration and exit.
+
+*-f*, *--foreground*::
+    Run the daemon in foreground (useful for systemd).
+
+*-h*, *--help*::
+    Print help for the usage of ctguard-intervention.
+
+*-v*, *--verbose*::
+    Increase the verbosity. Can be specified multiples times.
+
+*-V*, *--version*::
+    Print version information and exit.
+
+*-x*, *--unittest*::
+    Enable precautions for unit teesting (e.g. no timestamps).
+
+
+[[see-also]]
+== SEE ALSO
+*intervention.conf*(5),
+*ctguard-research*(8)
+
+
+include::footer.adoc.template[]

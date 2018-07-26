@@ -1,0 +1,63 @@
+intervention.conf(5)
+====================
+:doctype: manpage
+
+
+== NAME
+intervention.conf - ctguard-intervention configuration file.
+
+
+[[description]]
+== DESCRIPTION
+The '/etc/ctguard/intervention.conf' file is the default source for configurations.
+It is by default loaded by *ctguard-intervention*(8).
+
+
+[[syntax]]
+== SYNTAX
+Lines with a leading `#` are ignored as comment. +
+Options are set via key-value pairs: `key = value`. +
+Groups are set via a group keyword, a group name and an optional group block enclosed in curly brackets.
+
+
+[[main_options]]
+== MAIN OPTIONS
+*input_path*::
+    Path for the input socket. Defaults to _/run/ctguard_intervention.sock_.
+
+*log_path*::
+    Path for internal logging. Defaults to _/var/log/ctguard/intervention.log_.
+
+
+[[groups]]
+== GROUPS
+*action*::
+    Group for adding an action. Takes a string as name.
+
+
+[[action_options]]
+== ACTION OPTIONS
+*command*::
+    Path to the command. Must be set.
+
+*group*::
+    Name of the group, under which the command should be executed. Defaults to _Empty_, meaning do not change group (root).
+
+*regex*::
+    Regex for the argument of the command to match. Helps avoiding injections. Must be set.
+
+*timeout*::
+    Time after which the command gets killed. Defaults to _30s_.
+
+*user*::
+    Name of the user, under which the command should be executed. Defaults to _Empty_, meaning do not change user (root).
+
+*whitelist*::
+    List of arguments, for which the command should not run. Defaults to _Empyt_.
+
+
+[[see-also]]
+== SEE ALSO
+*ctguard-intervention*(8)
+
+include::footer.adoc.template[]

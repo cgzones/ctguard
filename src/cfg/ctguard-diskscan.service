@@ -1,0 +1,11 @@
+[Unit]
+Description=ctguard diskscan
+Wants=ctguard-research.service
+After=ctguard-research.service
+
+[Service]
+ExecStart=/usr/sbin/ctguard-diskscan -f
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

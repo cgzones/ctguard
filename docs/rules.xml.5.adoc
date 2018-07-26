@@ -1,0 +1,194 @@
+rules.xml(5)
+============
+:doctype: manpage
+
+
+== NAME
+rules.xml - ctguard-research rule configuration file.
+
+
+[[description]]
+== DESCRIPTION
+The rules file is the source for *ctguard-research*(8) categorization configuration. +
+By default rule files are placed into _/etc/ctguard/rules/_. +
+The path can be configured in *research.conf*(5).
+
+
+[[syntax]]
+== SYNTAX
+Rule files are written in XML. Comments start with `<!--' and end with `-\->'.
+
+
+[[root_node]]
+== ROOT NODE
+Each rule file must have at most one root node, named *rule_group*. +
+There are four kinds of second level nodes: format, group, intervention and rule.
+
+Example:
+[source,xml]
+<rule_group>...</rule_group>
+
+
+[[format_node]]
+=== FORMAT NODE
+Format nodes are for precategorizing events, e.g. extrating the timestamp, marking the actual message... . +
+
+
+[[format_childnodes]]
+==== FORMAT CHILD NODES
+*regex*::
+    [mandatory] Expects a regex. This regex is applied to the whole event and can extract fields.
+
+*fields*::
+    [mandatory] Expects a comma-separated list. For every regex group in the regex child, there must be a list item with a name.
+
+
+[[format_example]]
+==== FORMAT EXAMPLE
+[source,xml]
+<!-- Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian) -->
+<format name="syslog1">
+	<regex>([\w]{3}\s+\d+\s+\d+:\d+:\d+)\s+(\w+)\s+(\S+)\[\d+\]: (.*)</regex>
+	<fields>timestamp, hostname, domain, log</fields>
+</format>
+
+
+[[group_node]]
+=== GROUP NODE
+Group nodes are for registering group names. The registration needs to be done to prevent misspellings.
+
+Group nodes must have no attributes and a nonempty name as value.
+
+Example:
+[source,xml]
+<group>mygroup</group>
+
+
+[[intervention_node]]
+=== INTERVENTION NODE
+Intervention nodes are for registering intervention names. The registration needs to be done to prevent misspellings.
+
+Intervention nodes must have no attributes and a nonempty name as value.
+
+Example:
+[source,xml]
+<intervention>myintervention</intervention>
+
+
+[[rule_node]]
+=== RULE NODE
+Rule nodes are the heart of ctguard. They specify how to parse events and how to react/notify on them. +
+
+
+[[rule_attributes]]
+==== RULE ATTRIBUTES
+
+*id*::
+    [mandatory] The id identifies a rule.
+
+*priority*::
+    [mandatory] The priority controls whether a rule generates an alert or not.
+
+*always_alert*::
+    This flag enables the generation of an alert, regardless of the global minimum priority level. Defaults to _false_.
+
+
+[[rule_child_nodes]]
+==== RULE CHILD NODES
+*description*::
+    Expects a string. Describes the rule and will also be displayed in alerts.
+
+*regex*::
+    Expects a regex. It is applied to the log part of the event if available, else the whole event. It can be used to extract fields.
+
+*fields*::
+    Expects a comma-separated list. For every regex group in the regex child, there must be a list item as the name.
+
+*if_rule*::
+    Expects a rule id. The rule will only will be evaluated if the parent rule matches.
+
+*unless_rule*::
+    Expects a rule id. Triggers an alert if the specified rule will not be triggered within a timeout. +
+    Attributes:
+    * *timeout*
+
+*group*::
+    Expects a group name. Associates the group to the current event.
+
+*if_group*::
+    Expects a group name. The rule will only be evaluated if the group is associated to the current event.
+
+*if_field*::
+    Expects a field entry. The rule matches only if the field with the name has the specific entry. A match can either be `extact', `regex' or `empty', defaults to `exact'. +
+    Attributes:
+    * [mandatory] *name*
+    * *match*
+
+*if_trait*::
+    Expects a trait entry. The rule matches only if the trait with the name has the specific entry. A match can either be `extact', `regex' or `empty', defaults to `exact'. +
+    Attributes:
+    * [mandatory] *name*
+    * *match*
+
+*activation_group*::
+    Expects a group name. Triggers if within a time a rate of events with the associated group appears. If reset is set to `true' events will be discarded in a trigger case. +
+    Attributes:
+    * [mandatory] *time*
+    * [mandatory] *rate*
+    * *reset*
+
+*same_field*::
+    Expects a field name. In combination with activation_group the rule only trigger if all events have the same field entry.
+
+*intervention*::
+    Does not take any value. If the rule matches, triggers the intervention name with the argument field. If ignore_tmpty_field is set to `true', do not warn about a possible empty field. +
+    Attributes:
+    * [mandatory] *name*
+    * [mandatory] *field*
+    * ignore_empty_field
+
+
+[[rule_example]]
+==== RULE EXAMPLE
+[source,xml]
+----
+<rule_group>
+
+<group>test</group>
+<intervention>stopp_tests</intervention>
+
+<rule id="1" priority="3" always_alert="true">
+	<regex>test #(\d+)</regex>
+	<fields>testnr</fields>
+	<group>test</group>
+	<description>Simple rule extratcing the test number.</description>
+</rule>
+
+<rule id="2" priority="4">
+	<if_rule>1</if_rule>
+</rule>
+
+<rule id="3" priority="3">
+	<if_group>test</group>
+</rule>
+
+<rule id="4" priority="2">
+	<if_rule>1</if_rule>
+	<if_field name="testnr">1</if_field>
+</rule>
+
+<rule id="5" priority="6">
+	<activation_group time="30" rate="30" reset="true">test</activation_group>
+	<intervention name="stop_tests" field="testnr" />
+</rule>
+
+</rule_group>
+----
+
+
+[[see-also]]
+== SEE ALSO
+*ctguard-research*(8),
+*research.conf*(5)
+
+include::footer.adoc.template[]

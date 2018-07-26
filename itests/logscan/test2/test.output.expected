@@ -1,0 +1,8 @@
+ [daemon] : ctguard-logscan started
+ [test.log] : test
+ [test.log] : test2
+ [daemon] : ctguard-logscan shutting down...
+ [daemon] : ctguard-logscan started
+ [test.log] : test3
+ [test.log] : test4
+ [daemon] : ctguard-logscan shutting down...

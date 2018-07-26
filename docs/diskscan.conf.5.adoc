@@ -1,0 +1,76 @@
+diskscan.conf(5)
+================
+:doctype: manpage
+
+
+== NAME
+diskscan.conf - ctguard-diskscan configuration file.
+
+
+[[description]]
+== DESCRIPTION
+The '/etc/ctguard/diskscan.conf' file is the default source for configurations.
+It is by default loaded by *ctguard-diskscan*(8).
+
+
+[[syntax]]
+== SYNTAX
+Lines with a leading `#` are ignored as comment. +
+Options are set via key-value pairs: `key = value`. +
+Groups are set via a group keyword, a group name and an optional group block enclosed in curly brackets.
+
+
+[[main_options]]
+== MAIN OPTIONS
+*block_size*::
+    Number of entries to combine for database updates. Defaults to _1000_.
+
+*db_path*::
+    Path for the internal database. Defaults to _/var/lib/ctguard/diskscan.db_.
+
+*log_path*::
+    Path for internal logging. Defaults to _/var/log/ctguard/diskscan.log_.
+
+*max_diff_size*::
+    Maximum size in bytes for files checked for difference. Defaults to _1048576_ (1MB).
+*output_kind*::
+    Kind of the output file: `socket` for unix socket, `file` for simple file. Defaults to _socket_.
+
+*output_path*::
+    Path where the events are saved to. Defaults to _/run/ctguard/research.sock_.
+
+*realtime_ignore*::
+    Regex for files, which should not be checked in realtime mode. Defaults to _Empty_, meaning matching everything.
+
+*scaninterval*::
+    Interval for the filesystem scan. Defaults to _6h_.
+
+*settle_time*::
+    Time in milliseconds for files to settle in realtime mode. Defaults to _100_.
+
+[[groups]]
+== GROUPS
+*directory*::
+    Group for adding a directory to scan. Takes the path of the directory as name.
+
+
+[[directory_options]]
+== DIRECTORY OPTIONS
+*checkdiff*::
+    Flag whether to add the diff of a change to the report. Might leak sensitive informations in alerts! Defaults to _false_.
+
+*checks*::
+    Option for directory checking; currently on full supported. Defaults to _full_.
+
+*realtime*::
+    Flag whether to check the directory in realtime. Defaults to _false_.
+
+*recursive*::
+    Flag whether to check the directory recursivly. Defaults to _true_.
+
+
+[[see-also]]
+== SEE ALSO
+*ctguard-diskscan*(8)
+
+include::footer.adoc.template[]

@@ -1,0 +1,35 @@
+<rule_group>
+	<group>system</group>
+	<group>authentication_failure</group>
+
+	<!-- Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian) -->
+	<format name="syslog">
+		<regex>([\w]{3}\s+\d+\s+\d+:\d+:\d+)\s+(\S+)\s+(\S+)\[\d+\]: (.*)</regex>
+		<fields>timestamp,hostname,domain,log</fields>
+	</format>
+
+	<rule id="1" priority="5">
+		<if_trait name="format">syslog</if_trait>
+		<if_field name="domain">unix_chkpwd</if_field>
+		<description>Grouping of unix_chkpwd logs.</description>
+		<group>system</group>
+	</rule>
+
+
+	<!-- Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian) -->
+	<rule id="2" priority="4">
+		<if_rule>1</if_rule>
+		<regex>^password check failed for user \((\S+)\)$</regex>
+		<fields>username</fields>
+		<description>sshd: failed user login</description>
+		<group>authentication_failure</group>
+	</rule>
+
+
+	<rule id="3" priority="8">
+		<activation_group time="10" rate="2">authentication_failure</activation_group>
+		<same_field>username</same_field>
+		<description>Multiple failed authentications for same user.</description>
+	</rule>
+
+</rule_group>

@@ -1,0 +1,53 @@
+ctguard-logscan(8)
+==================
+:doctype: manpage
+
+
+== NAME
+ctguard-logscan - daemon for scanning logfiles
+
+
+[[synopsis]]
+== SYNOPSIS
+*ctguard-logscan* ['OPTIONS']
+
+
+[[description]]
+== DESCRIPTION
+The *ctguard-logscan* daemon is the logscanner for ctguard.
+It continuously checks in a configureable interval if any configured logfile has a new entry.
+The scanned logentries are then forwarded by default to *ctguard-research*(8). +
+The configuration is either taken by default from the configuration file *logscan.conf*(5) or from the configuration supplied as argument.
+
+
+[[options]]
+== OPTIONS
+*-c*, *--cfg-file* 'path'::
+    Load configuration from a file at 'path' (default: '/etc/ctguard/logscan.conf').
+
+*-C*, *--dump-config*::
+    Dump the current configuration and exit.
+
+*-f*, *--foreground*::
+    Run the daemon in foreground (useful for systemd).
+
+*-h*, *--help*::
+    Print help for the usage of ctguard-logscan.
+
+*-v*, *--verbose*::
+    Increase the verbosity. Can be specified multiples times.
+
+*-V*, *--version*::
+    Print version information and exit.
+
+*-x*, *--unittest*::
+    Enable precautions for unit teesting (e.g. no timestamps).
+
+
+[[see-also]]
+== SEE ALSO
+*logscan.conf*(5),
+*ctguard-research*(8)
+
+
+include::footer.adoc.template[]

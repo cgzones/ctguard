@@ -1,0 +1,66 @@
+logscan.conf(5)
+===============
+:doctype: manpage
+
+
+== NAME
+logscan.conf - ctguard-logscan configuration file.
+
+
+[[description]]
+== DESCRIPTION
+The '/etc/ctguard/logscan.conf' file is the default source for configurations.
+It is by default loaded by *ctguard-logscan*(8).
+
+
+[[syntax]]
+== SYNTAX
+Lines with a leading `#` are ignored as comment. +
+Options are set via key-value pairs: `key = value`. +
+Groups are set via a group keyword, a group name and an optional group block enclosed in curly brackets.
+
+
+[[main_options]]
+== MAIN OPTIONS
+*check_interval*::
+    Timeout between update checks (in seconds with no time specifier). Defaults to _1s_.
+
+*log_path*::
+    Path for internal logging. Defaults to _/var/log/ctguard/logscan.log_.
+
+*output_kind*::
+    Kind of the output file: `socket` for unix socket, `file` for simple file. Defaults to _socket_.
+
+*output_path*::
+    Path where the events are saved to. Defaults to _/run/ctguard/research.sock_.
+
+*state_file*::
+    Path where the internal state of the logfiles is saved. Defaults to _/var/lib/ctguard/logscan.state_.
+
+*state_file_interval*::
+    Interval relative to `check_interval` for ssyncing the state to disk. Defaults to _30_.
+
+*systemd_input*::
+    Flag whether ctguard-logscan should listen for systemd forwarded input. Might conflict with syslog daemons, like `rsyslog`. Defaults to _true_.
+
+*systemd_socket*::
+    Path where to listen for systemd input. Defaults to _/run/systemd/journal/syslog_.
+
+
+[[groups]]
+== GROUPS
+*logfile*::
+    Group for adding a logfile to scan. Takes the path of the logfile as name.
+
+
+[[logfile_options]]
+== LOGFILE OPTIONS
+*timeout_warning*::
+    Timeout when to alert if no new log entry appeared. Defaults to _0_, meaning disabled.
+
+
+[[see-also]]
+== SEE ALSO
+*ctguard-logscan*(8)
+
+include::footer.adoc.template[]

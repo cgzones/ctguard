@@ -1,0 +1,1980 @@
+ctguard-research
+
+  Enter loginput to see its handling.
+   - use 'quit' to exit
+
+> 
+  Processing 'test' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...regex match|full match: true(true && true)
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 1
+    Level 1 rule fit: 1
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: test 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...init rstate|full match: false(false && false)
+    Checking level 1 rule 60 ...init rstate|full match: false(false && false)
+    Checking level 1 rule 7 ...init rstate|group match|full match: false(true && false)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: test 
+      Priority: 4
+  End extracting.
+
+Rule matched:
+	rule id  : 1
+	priority : 4
+	message  : test rule
+Would create alert with priority 4
+
+> 
+  Processing 'test4' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...init rstate|full match: false(false && false)
+    Checking level 1 rule 60 ...init rstate|full match: false(false && false)
+    Checking level 1 rule 7 ...init rstate|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 0
+  End extracting.
+
+Rule matched:
+	rule id  : 0
+	priority : 0
+	message  : 
+Would not create any alert.
+
+> 
+  Processing '4test' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...init rstate|full match: false(false && false)
+    Checking level 1 rule 60 ...init rstate|full match: false(false && false)
+    Checking level 1 rule 7 ...init rstate|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 0
+  End extracting.
+
+Rule matched:
+	rule id  : 0
+	priority : 0
+	message  : 
+Would not create any alert.
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[001]: password check failed for user (christian)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##christian##
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...init rstate|full match: false(true && false)
+    Checking level 1 rule 60 ...init rstate|full match: false(true && false)
+    Checking level 1 rule 7 ...init rstate|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##christian##
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+  End extracting.
+
+Rule matched:
+	rule id  : 4
+	priority : 4
+	message  : sshd: failed user login
+Would create alert with priority 4
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[002]: password check failed for user (root)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (root)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##root##
+        log -> ##password check failed for user (root)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|full match: true(true && true)
+    Checking level 1 rule 6 ...inactive(2/5)|full match: false(true && false)
+    Checking level 1 rule 60 ...inactive(2/5)|full match: false(true && false)
+    Checking level 1 rule 7 ...inactive(2/6)|not matching (group)
+    Matching level 1 rule: 1
+    Level 1 rule fit: 5
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##root##
+        log -> ##password check failed for user (root)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 7
+  End extracting.
+
+Rule matched:
+	rule id  : 5
+	priority : 7
+	message  : Failed login into root
+Would create alert with priority 7
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[003]: password check failed for user (chris)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##chris##
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(true && false)
+    Checking level 1 rule 60 ...inactive(3/5)|full match: false(true && false)
+    Checking level 1 rule 7 ...inactive(3/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##chris##
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+  End extracting.
+
+Rule matched:
+	rule id  : 4
+	priority : 4
+	message  : sshd: failed user login
+Would create alert with priority 4
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[004]: password check failed for user (chris)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##chris##
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...inactive(4/5)|full match: false(true && false)
+    Checking level 1 rule 60 ...inactive(4/5)|full match: false(true && false)
+    Checking level 1 rule 7 ...inactive(4/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##chris##
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+  End extracting.
+
+Rule matched:
+	rule id  : 4
+	priority : 4
+	message  : sshd: failed user login
+Would create alert with priority 4
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[005]: password check failed for user (chris)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##chris##
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...active(5/5)|full match: true(true && true)
+    Checking level 1 rule 60 ...inactive_s(3/5)|full match: false(true && false)
+    Checking level 1 rule 7 ...inactive(5/6)|not matching (group)
+    Matching level 1 rule: 1
+    Level 1 rule fit: 6
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        trigger_logs -> ##Sep 24 12:10:03 desktopdebian unix_chkpwd[001]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[002]: password check failed for user (root)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[003]: password check failed for user (chris)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[004]: password check failed for user (chris)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[005]: password check failed for user (chris)
+##
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##chris##
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 7
+  End extracting.
+
+Rule matched:
+	rule id  : 6
+	priority : 7
+	message  : Multiple failed authentications.
+Would create alert with priority 7
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[006]: password check failed for user (thomas)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (thomas)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##thomas##
+        log -> ##password check failed for user (thomas)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...inactive(1/5)|full match: false(true && false)
+    Checking level 1 rule 60 ...inactive_s(1/5)|full match: false(true && false)
+    Checking level 1 rule 7 ...active(6/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##thomas##
+        log -> ##password check failed for user (thomas)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+  End extracting.
+
+Rule matched:
+	rule id  : 4
+	priority : 4
+	message  : sshd: failed user login
+Would create alert with priority 4
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[007]: password check failed for user (thomas)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (thomas)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##thomas##
+        log -> ##password check failed for user (thomas)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...inactive(2/5)|full match: false(true && false)
+    Checking level 1 rule 60 ...inactive_s(2/5)|full match: false(true && false)
+    Checking level 1 rule 7 ...active(7/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##thomas##
+        log -> ##password check failed for user (thomas)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+  End extracting.
+
+Rule matched:
+	rule id  : 4
+	priority : 4
+	message  : sshd: failed user login
+Would create alert with priority 4
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[008]: password check failed for user (christian)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##christian##
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(true && false)
+    Checking level 1 rule 60 ...inactive_s(2/5)|full match: false(true && false)
+    Checking level 1 rule 7 ...active(8/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##christian##
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+  End extracting.
+
+Rule matched:
+	rule id  : 4
+	priority : 4
+	message  : sshd: failed user login
+Would create alert with priority 4
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[009]: password check failed for user (christian)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##christian##
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...inactive(4/5)|full match: false(true && false)
+    Checking level 1 rule 60 ...inactive_s(3/5)|full match: false(true && false)
+    Checking level 1 rule 7 ...active(9/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##christian##
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+  End extracting.
+
+Rule matched:
+	rule id  : 4
+	priority : 4
+	message  : sshd: failed user login
+Would create alert with priority 4
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[010]: password check failed for user (christian)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##christian##
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...active(5/5)|full match: true(true && true)
+    Checking level 1 rule 60 ...inactive_s(4/5)|full match: false(true && false)
+    Checking level 1 rule 7 ...active(10/6)|not matching (group)
+    Matching level 1 rule: 1
+    Level 1 rule fit: 6
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        trigger_logs -> ##Sep 24 12:10:03 desktopdebian unix_chkpwd[006]: password check failed for user (thomas)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[007]: password check failed for user (thomas)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[008]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[009]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[010]: password check failed for user (christian)
+##
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##christian##
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 7
+  End extracting.
+
+Rule matched:
+	rule id  : 6
+	priority : 7
+	message  : Multiple failed authentications.
+Would create alert with priority 7
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[011]: password check failed for user (christian)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##christian##
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...inactive(1/5)|full match: false(true && false)
+    Checking level 1 rule 60 ...active_s(5/5)|full match: true(true && true)
+    Checking level 1 rule 7 ...active(11/6)|not matching (group)
+    Matching level 1 rule: 1
+    Level 1 rule fit: 60
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        trigger_same_logs -> ##Sep 24 12:10:03 desktopdebian unix_chkpwd[001]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[008]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[009]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[010]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[011]: password check failed for user (christian)
+##
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##christian##
+        log -> ##password check failed for user (christian)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 8
+  End extracting.
+
+Rule matched:
+	rule id  : 60
+	priority : 8
+	message  : Multiple authentication failures for the same user.
+Would create alert with priority 8
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[012]: password check failed for user (chris)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##chris##
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...inactive(2/5)|full match: false(true && false)
+    Checking level 1 rule 60 ...inactive_s(4/5)|full match: false(true && false)
+    Checking level 1 rule 7 ...active(12/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##chris##
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+  End extracting.
+
+Rule matched:
+	rule id  : 4
+	priority : 4
+	message  : sshd: failed user login
+Would create alert with priority 4
+
+> 
+  Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[013]: password check failed for user (chris)' ...
+    Format (#1) ...  syslog matching
+      Traits:
+        format -> syslog
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 3 ...field 'domain' matching...|trait 'format' matching...|full match: true(true && true)
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 2
+    Level 1 rule fit: 3
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 4 ...regex match|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 4
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##chris##
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...group match|field 'username' matching...|field 'username' exact mismatch
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(true && false)
+    Checking level 1 rule 60 ...active_s(5/5)|full match: true(true && true)
+    Checking level 1 rule 7 ...active(13/6)|not matching (group)
+    Matching level 1 rule: 1
+    Level 1 rule fit: 60
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##syslog##
+        source_program -> ####
+        hostname -> ####
+        trigger_same_logs -> ##Sep 24 12:10:03 desktopdebian unix_chkpwd[003]: password check failed for user (chris)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[004]: password check failed for user (chris)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[005]: password check failed for user (chris)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[012]: password check failed for user (chris)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[013]: password check failed for user (chris)
+##
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        username -> ##chris##
+        log -> ##password check failed for user (chris)##
+        domain -> ##unix_chkpwd##
+        timestamp -> ##Sep 24 12:10:03##
+        hostname -> ##desktopdebian##
+      Groups: authentication_failure system 
+      Priority: 8
+  End extracting.
+
+Rule matched:
+	rule id  : 60
+	priority : 8
+	message  : Multiple authentication failures for the same user.
+Would create alert with priority 8
+
+> 
+  Processing 'test' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...regex match|full match: true(true && true)
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 1
+    Level 1 rule fit: 1
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: test 
+      Priority: 4
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(false && false)
+    Checking level 1 rule 60 ...inactive_s(no field)|full match: false(false && false)
+    Checking level 1 rule 7 ...active(13/6)|group match|full match: true(true && true)
+    Matching level 1 rule: 1
+    Level 1 rule fit: 7
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        trigger_logs -> ##Sep 24 12:10:03 desktopdebian unix_chkpwd[001]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[002]: password check failed for user (root)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[003]: password check failed for user (chris)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[004]: password check failed for user (chris)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[005]: password check failed for user (chris)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[006]: password check failed for user (thomas)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[007]: password check failed for user (thomas)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[008]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[009]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[010]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[011]: password check failed for user (christian)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[012]: password check failed for user (chris)
+Sep 24 12:10:03 desktopdebian unix_chkpwd[013]: password check failed for user (chris)
+##
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: test 
+      Priority: 10
+  End extracting.
+
+Rule matched:
+	rule id  : 7
+	priority : 10
+	message  : Multiple authentication failures followed up by test
+Would create alert with priority 10
+
+> 
+  Processing 'abc' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...regex match|full match: true(true && true)
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 1
+    Level 1 rule fit: 8
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 6
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(false && false)
+    Checking level 1 rule 60 ...inactive_s(no field)|full match: false(false && false)
+    Checking level 1 rule 7 ...active(13/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 6
+  End extracting.
+
+Rule matched:
+	rule id  : 8
+	priority : 6
+	message  : test multiline regex
+Would create alert with priority 6
+
+> 
+  Processing 'def' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...regex match|full match: true(true && true)
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 1
+    Level 1 rule fit: 8
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 6
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(false && false)
+    Checking level 1 rule 60 ...inactive_s(no field)|full match: false(false && false)
+    Checking level 1 rule 7 ...active(13/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 6
+  End extracting.
+
+Rule matched:
+	rule id  : 8
+	priority : 6
+	message  : test multiline regex
+Would create alert with priority 6
+
+> 
+  Processing 'xtest1' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...regex match|full match: true(true && true)
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 1
+    Level 1 rule fit: 9
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 11 ...full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 11
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 7
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(false && false)
+    Checking level 1 rule 60 ...inactive_s(no field)|full match: false(false && false)
+    Checking level 1 rule 7 ...active(13/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 7
+  End extracting.
+
+Rule matched:
+	rule id  : 11
+	priority : 7
+	message  : multi if_rule
+Would create alert with priority 7
+
+> 
+  Processing 'xtest2' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...regex match|full match: true(true && true)
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 1
+    Level 1 rule fit: 10
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 11 ...full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 11
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 7
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(false && false)
+    Checking level 1 rule 60 ...inactive_s(no field)|full match: false(false && false)
+    Checking level 1 rule 7 ...active(13/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 7
+  End extracting.
+
+Rule matched:
+	rule id  : 11
+	priority : 7
+	message  : multi if_rule
+Would create alert with priority 7
+
+> 
+  Processing 'ytestABCy' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...regex match|full match: true(true && true)
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 1
+    Level 1 rule fit: 12
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 14 ...field 'testy' matching...|field 'testy' not empty
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        testy -> ##ABC##
+      Groups: 
+      Priority: 5
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(false && false)
+    Checking level 1 rule 60 ...inactive_s(no field)|full match: false(false && false)
+    Checking level 1 rule 7 ...active(13/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        testy -> ##ABC##
+      Groups: 
+      Priority: 5
+  End extracting.
+
+Rule matched:
+	rule id  : 12
+	priority : 5
+	message  : base rule for empty field test
+Would create alert with priority 5
+
+> 
+  Processing 'ytesty' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...regex match|full match: true(true && true)
+    Checking level 1 rule 15 ...no regex match
+    Matching level 1 rule: 1
+    Level 1 rule fit: 13
+    Checking child rules (#1) ...
+    Processing rules (#1) level 2
+    Checking level 2 rule 14 ...field 'testy' matching...|full match: true(true && true)
+    Matching level 2 rule: 1
+    Level 2 rule fit: 14
+    Checking child rules (#0) ...
+    Processing rules (#0) level 3
+    Matching level 3 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 8
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(false && false)
+    Checking level 1 rule 60 ...inactive_s(no field)|full match: false(false && false)
+    Checking level 1 rule 7 ...active(13/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+      Groups: 
+      Priority: 8
+  End extracting.
+
+Rule matched:
+	rule id  : 14
+	priority : 8
+	message  : rule for empty field test
+Would create alert with priority 8
+
+> 
+  Processing 'testyy teststring1' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...regex match|full match: true(true && true)
+    Matching level 1 rule: 1
+    Level 1 rule fit: 15
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        test -> ##teststring1##
+      Groups: 
+      Priority: 5
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(false && false)
+    Checking level 1 rule 60 ...inactive_s(no field)|full match: false(false && false)
+    Checking level 1 rule 7 ...active(13/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        test -> ##teststring1##
+      Groups: 
+      Priority: 5
+  End extracting.
+
+Rule matched:
+	rule id  : 15
+	priority : 5
+	message  : test multiline and multifield regex
+Would create alert with priority 5
+
+> 
+  Processing 'testxx teststring2' ...
+    Format (#1) ...  syslog not matching|no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#9) level 1
+    Checking level 1 rule 1 ...no regex match
+    Checking level 1 rule 2 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 3 ...field 'domain' matching...|field 'domain' not found
+    Checking level 1 rule 8 ...no regex match
+    Checking level 1 rule 9 ...no regex match
+    Checking level 1 rule 10 ...no regex match
+    Checking level 1 rule 12 ...no regex match
+    Checking level 1 rule 13 ...no regex match
+    Checking level 1 rule 15 ...regex match|full match: true(true && true)
+    Matching level 1 rule: 1
+    Level 1 rule fit: 15
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        test -> ##teststring2##
+      Groups: 
+      Priority: 5
+    Checking group rules...
+    Processing rules (#4) level 1
+    Checking level 1 rule 5 ...not matching (group)
+    Checking level 1 rule 6 ...inactive(3/5)|full match: false(false && false)
+    Checking level 1 rule 60 ...inactive_s(no field)|full match: false(false && false)
+    Checking level 1 rule 7 ...active(13/6)|not matching (group)
+    Matching level 1 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        test -> ##teststring2##
+      Groups: 
+      Priority: 5
+  End extracting.
+
+Rule matched:
+	rule id  : 15
+	priority : 5
+	message  : test multiline and multifield regex
+Would create alert with priority 5
+
+> 
+Ending

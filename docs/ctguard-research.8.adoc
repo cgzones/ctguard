@@ -1,0 +1,55 @@
+ctguard-research(8)
+===================
+:doctype: manpage
+
+
+== NAME
+ctguard-research - daemon for analysing events
+
+
+[[synopsis]]
+== SYNOPSIS
+*ctguard-research* ['OPTIONS']
+
+
+[[description]]
+== DESCRIPTION
+The *ctguard-research* daemon is the main event analyzer for ctguard.
+It processes events from several sources, like *ctguard-logscan*(8) or *ctguard-diskscan*(8), and categorizes them by user defined rules. These can be set in the *rules.xml*(5). It is also able to trigger actions by *ctguard-intervention*(8) on specific events. +
+The configuration is either taken by default from the configuration file *research.conf*(5) or from the configuration supplied as argument.
+
+
+[[options]]
+== OPTIONS
+*-c*, *--cfg-file* 'path'::
+    Load configuration from a file at 'path' (default: '/etc/ctguard/research.conf').
+
+*-C*, *--dump-config*::
+    Dump the current configuration and exit.
+
+*-f*, *--foreground*::
+    Run the daemon in foreground (useful for systemd).
+
+*-h*, *--help*::
+    Print help for the usage of ctguard-research.
+
+*-I*, *--input*::
+    Runs the program in interactive mode with events taken from the command line. Useful for rule testing. Does not launch the daemon.
+
+*-v*, *--verbose*::
+    Increase the verbosity. Can be specified multiples times.
+
+*-V*, *--version*::
+    Print version information and exit.
+
+*-x*, *--unittest*::
+    Enable precautions for unit teesting (e.g. no timestamps).
+
+
+[[see-also]]
+== SEE ALSO
+*research.conf*(5),
+*rules.xml*(5)
+
+
+include::footer.adoc.template[]

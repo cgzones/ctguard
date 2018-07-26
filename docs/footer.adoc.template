@@ -1,0 +1,16 @@
+[[bugs]]
+== BUGS
+If you find a bug in this software or have a feature request, please file an issue at <https://github.com/cgzones/ctguard/issues/new>.
+
+[[author]]
+== AUTHOR
+ctguard is written by Christian Göttsche.
+
+[[resources]]
+== RESOURCES
+Main web site: <https://github.com/cgzones/ctguard>
+
+[[copying]]
+== COPYING
+Copyright 2018-{docyear} Christian Göttsche +
+License: MIT License <http://opensource.org/licenses/MIT>

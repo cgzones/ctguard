@@ -1,0 +1,57 @@
+ctguard-diskscan(8)
+===================
+:doctype: manpage
+
+
+== NAME
+ctguard-diskscan - daemon for scanning the filesystem
+
+
+[[synopsis]]
+== SYNOPSIS
+*ctguard-diskscan* ['OPTIONS']
+
+
+[[description]]
+== DESCRIPTION
+The *ctguard-diskscan* daemon is the filescanner for ctguard.
+It scan in regular intervals if any content of the filesystem ahs changed and report such changges. +
+Is also has the ability to monitor directories in realtime for changes. +
+The changed entires are then forwarded by default to *ctguard-research*(8). +
+The configuration is either taken by default from the configuration file *diskscan.conf*(5) or from the configuration supplied as argument.
+
+
+[[options]]
+== OPTIONS
+*-c*, *--cfg-file* 'path'::
+    Load configuration from a file at 'path' (default: '/etc/ctguard/diskscan.conf').
+
+*-C*, *--dump-config*::
+    Dump the current configuration and exit.
+
+*-f*, *--foreground*::
+    Run the daemon in foreground (useful for systemd).
+
+*-h*, *--help*::
+    Print help for the usage of ctguard-diskscan.
+
+*-S*, *--singelscan*::
+    Run a single scan and then exit.
+
+*-v*, *--verbose*::
+    Increase the verbosity. Can be specified multiples times.
+
+*-V*, *--version*::
+    Print version information and exit.
+
+*-x*, *--unittest*::
+    Enable precautions for unit teesting (e.g. no timestamps).
+
+
+[[see-also]]
+== SEE ALSO
+*diskscan.conf*(5),
+*ctguard-research*(8)
+
+
+include::footer.adoc.template[]

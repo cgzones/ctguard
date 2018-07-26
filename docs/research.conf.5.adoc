@@ -1,0 +1,86 @@
+research.conf(5)
+================
+:doctype: manpage
+
+
+== NAME
+research.conf - ctguard-research configuration file.
+
+
+[[description]]
+== DESCRIPTION
+The '/etc/ctguard/research.conf' file is the default source for configurations.
+It is by default loaded by *ctguard-research*(8).
+
+
+[[syntax]]
+== SYNTAX
+Lines with a leading `#` are ignored as comment. +
+Options are set via key-value pairs: `key = value`. +
+Groups are set via a group keyword, a group name and an optional group block enclosed in curly brackets.
+
+
+[[main_options]]
+== MAIN OPTIONS
+*input_path*::
+    Path of the input event socket. Defaults to _/run/ctguard/research.sock_.
+
+*intervention_kind*::
+    Kind of the intervention file: `socket` for unix socket, `file` for simple file. Defaults to _socket_.
+
+*intervention_path*::
+    Path where the intervention events are saved to. Defaults to _/run/ctguard_intervention.sock_.
+
+*log_path*::
+    Path for internal logging. Defaults to _/var/log/ctguard/research.log_.
+
+*log_priority*::
+    Priority from which notifications are logged to disk. Defaults to _1_.
+
+*mail_from_addr*::
+    Mail address which should be set as the source of notification mails. Defaults to _ctguard@localhost_.
+
+*mail_host*::
+    Address of the host, where to reach the mailserver for notifications. Defaults to _localhost_.
+
+*mail_instant*::
+    Priority from which notification are send immediately. Defaults to _7_.
+
+*mail_interval*::
+    Time for collecting notifications in one mail. Defaults to _30s_.
+
+*mail_max_sample_count*::
+    Count of notifications, after which a mail is send immediately. Defaults to _1000_.
+
+*mail_port*::
+    Portnumber where to reach the mailserver for notifications. Defaults to _25_.
+
+*mail_priority*::
+    Priority from which notifications are send by mail. Defaults to _4_.
+
+*mail_replyaddr*::
+    Mail address where replies to notifications should go to. Defaults to _root@localhost_.
+
+*mail_sample_time*::
+    Time which should be waiting before sending a new mail. Defaults to _1s_.
+
+*mail_toaddr*::
+    Mail address where notifications should go to. Defaults to _root@localhost_.
+
+*output_path*::
+    Path where the alerts are saved to disk. Defaults to _/var/log/ctguard/alerts.log_.
+
+*rules_directory*::
+    Directory path where to read the rules from. All files in this directory (non recursiv) are parsed for rules. Defaults to _/etc/ctguard/rules/_.
+
+*rules_file*::
+    Path where to read the rules from. If Empty read from `rules_directory`. Defaults to _Empty_.
+
+
+
+[[see-also]]
+== SEE ALSO
+*ctguard-research*(8),
+*rules.xml*(5)
+
+include::footer.adoc.template[]

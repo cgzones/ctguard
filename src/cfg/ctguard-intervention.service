@@ -1,0 +1,10 @@
+[Unit]
+Description=ctguard intervention
+
+[Service]
+ExecStart=/usr/sbin/ctguard-intervention -f
+Restart=on-failure
+Group=ctguard
+
+[Install]
+WantedBy=multi-user.target
