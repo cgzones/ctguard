@@ -2,7 +2,7 @@ Source: ctguard
 Section: admin
 Priority: optional
 Maintainer: Christian Göttsche <cgzones@googlemail.com>
-Build-Depends: debhelper (>= 11), help2man, libsqlite3-dev
+Build-Depends: debhelper (>= 11), asciidoctor, libsqlite3-dev
 Standards-Version: 4.1.4
 Homepage: https://github.com/cgzones/ctguard
 Vcs-Git: https://github.com/cgzones/ctguard
