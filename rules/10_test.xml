@@ -1,0 +1,15 @@
+<rule_group>
+
+	<rule id="10001" priority="4">
+		<regex>test</regex>
+		<description>simple test rule.</description>
+	</rule>
+
+	<rule id="10002" priority="7">
+		<if_group>authentication_failure</if_group>
+		<if_field name="username">test1234</if_field>
+		<intervention name="block_ip" field="srcip" />
+		<description>test rule for intervention testing.</description>
+	</rule>
+
+</rule_group>

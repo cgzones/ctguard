@@ -1,0 +1,56 @@
+<rule_group>
+
+	<rule id="500200" priority="5">
+		<if_trait name="source_domain">/var/log/dpkg.log</if_trait>
+		<description>Grouping of dpkg logs.</description>
+	</rule>
+
+	<rule id="500220" priority="0">
+		<if_rule>500200</if_rule>
+		<regex>^startup archives unpack$|</regex>
+		<regex>^status triggers-pending \S+ \S+$|</regex>
+		<regex>^status half-configured \S+ \S+$|</regex>
+		<regex>^status unpacked \S+ \S+$|</regex>
+		<regex>^status half-installed \S+ \S+$|</regex>
+		<regex>^startup packages configure$|</regex>
+		<regex>^configure \S+ \S+ \S+$|</regex>
+		<regex>^status installed \S+ \S+$|</regex>
+		<regex>^status not-installed \S+ \S+$|</regex>
+		<regex>^status config-files \S+ \S+$|</regex>
+		<regex>^trigproc \S+ \S+ \S+$|</regex>
+		<regex>^startup archives install$|</regex>
+		<regex>^startup packages remove$|</regex>
+		<regex>^startup packages purge$|</regex>
+		<regex>^conffile \S+ keep$</regex>
+		<description>dpkg: ignorable messages.</description>
+	</rule>
+
+	<rule id="500221" priority="6">
+		<if_rule>500200</if_rule>
+		<regex>^upgrade \S+ \S* \S+$</regex>
+		<group>state_change</group>
+		<description>dpkg: package upgrade.</description>
+	</rule>
+
+	<rule id="500222" priority="6">
+		<if_rule>500200</if_rule>
+		<regex>^install \S+ \S+ \S+$</regex>
+		<group>state_change</group>
+		<description>dpkg: new package installation.</description>
+	</rule>
+
+	<rule id="500223" priority="6">
+		<if_rule>500200</if_rule>
+		<regex>^purge \S+ \S+ \S+$</regex>
+		<group>state_change</group>
+		<description>dpkg: package purged.</description>
+	</rule>
+
+	<rule id="500224" priority="6">
+		<if_rule>500200</if_rule>
+		<regex>^remove \S+ \S+ \S+$</regex>
+		<group>state_change</group>
+		<description>dpkg: package removed.</description>
+	</rule>
+
+</rule_group>

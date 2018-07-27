@@ -1,0 +1,16 @@
+<rule_group>
+
+	<rule id="502000" priority="5">
+		<if_field name="domain">unix_chkpwd</if_field>
+		<description>Grouping of chkpwd logs.</description>
+	</rule>
+
+	<rule id="502020" priority="6">
+		<if_rule>502000</if_rule>
+		<regex>^password check failed for user \((\S+)\)$</regex>
+		<fields>username</fields>
+		<group>authentication_failure</group>
+		<description>chkpwd: failed authentication.</description>
+	</rule>
+
+</rule_group>

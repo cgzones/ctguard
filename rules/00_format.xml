@@ -1,0 +1,40 @@
+<rule_group>
+
+	<!-- Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian) -->
+	<format name="syslog1">
+		<regex>([\w]{3}\s+\d+\s+\d+:\d+:\d+)\s+(\w+)\s+(\S+)\[\d+\]: (.*)</regex>
+		<fields>timestamp, hostname, domain, log</fields>
+	</format>
+
+	<!-- Apr 13 22:23:30 server02 dovecot: lmtp(16966): Connect from local -->
+	<format name="syslog2">
+		<regex>([\w]{3}\s+\d+\s+\d+:\d+:\d+)\s+(\w+)\s+(\S+): (.*)</regex>
+		<fields>timestamp, hostname, domain, log</fields>
+	</format>
+
+	<!-- Jul 18 14:29:17 postfix/postscreen[27832]: CONNECT from [127.0.0.1]:44872 to [127.0.0.1]:25 -->
+	<format name="syslog3">
+		<regex>([\w]{3}\s+\d+\s+\d+:\d+:\d+) (\S+)\[\d+\]: (.*)</regex>
+		<fields>timestamp, domain, log</fields>
+	</format>
+
+	<!-- Jul 18 14:40:04 dovecot: lmtp(5590): Connect from local -->
+	<format name="syslog4">
+		<regex>([\w]{3}\s+\d+\s+\d+:\d+:\d+)\s+(\S+): (.*)</regex>
+		<fields>timestamp, domain, log</fields>
+	</format>
+
+	<!-- 2018-01-01 12:01:58 status half-installed libc-bin:amd64 2.25-5 -->
+	<format name="dpkg">
+		<regex>(\d+-\d+-\d+ \d+:\d+:\d+) (.*)</regex>
+		<fields>timestamp, log</fields>
+	</format>
+
+	<!-- [Sat Apr 14 11:01:21.645030 2018] [evasive20:error] [pid 31439] [client 78.54.25.90:55726] client denied by server configuration: /var/www/sites/roundcubemail/public_html/, referer: https://roundcubemail.seltendoof.de/?_task=mail&_mbox=INBOX -->
+	<!-- [Tue Apr 17 09:25:37.916994 2018] [:error] [pid 29908] [client 61.139.77.172:55986] script '/var/www/sites/default/cools.php' not found or unable to stat -->
+	<format name="apache">
+		<regex>\[(\w+ \w+ \d+ \d+:\d+:\d+\.\d+ \d+)\] \[(\S+)?:(\S+)\] \[pid \d+\] \[client (\S+):\d+\] (.*)</regex>
+		<fields>timestamp, domain, severity, srcip, log</fields>
+	</format>
+
+</rule_group>

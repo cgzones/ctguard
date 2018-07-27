@@ -1,0 +1,23 @@
+<rule_group>
+
+	<rule id="102" priority="2" always_alert="true">
+		<if_trait name="format">unknown</if_trait>
+		<description>Catchall rule for unknown types.</description>
+	</rule>
+
+	<rule id="101" priority="2" always_alert="true">
+		<if_trait name="control">true</if_trait>
+		<description>Catchall rule for control messages.</description>
+	</rule>
+
+	<rule id="100" priority="2" always_alert="true">
+		<if_trait name="control">false</if_trait>
+		<description>Catchall rule for non control messages.</description>
+	</rule>
+
+	<rule id="99" priority="4" always_alert="true">
+		<regex>core_dumped|failure|error|attack| bad |illegal |denied|refused|unauthorized|fatal|failed|Segmentation Fault|Corrupted</regex>
+		<description>Catchall rule for possible erroneous logs.</description>
+	</rule>
+
+</rule_group>

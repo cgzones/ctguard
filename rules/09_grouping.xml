@@ -1,0 +1,94 @@
+<rule_group>
+      
+	<rule id="9001" priority="10">
+		<if_group>authentication_success</if_group>
+		<if_field name="username" match="regex">^apache$|^mysql$|^www$|^nobody$|^nogroup$|^portmap$|^named$|^rpc$|^mail$|^ftp$|^shutdown$|^halt$|^daemon$|^bin$|^postfix$|^shell$|^info$|^guest$|^psql$|^user$|^users$|^console$|^uucp$|^lp$|^sync$|^sshd$|^cdrom$|^ctguard$</if_field>
+		<description>System user successfully logged to the system.</description>
+  	</rule>
+
+  	<rule id="9002" priority="10">
+		<regex>\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?</regex>
+		<intervention name="block_ip" field="srcip" ignore_empty_field="true" />
+		<description>Possible buffer overflow attempt.</description>
+	</rule>
+
+	<rule id="9003" priority="10">
+		<regex>@@@@@@@@@@@@@@@@@@@@@@@@@</regex>
+		<intervention name="block_ip" field="srcip" ignore_empty_field="true" />
+		<description>Buffer overflow attempt (probably on yppasswd).</description>
+	</rule>
+
+	<rule id="9004" priority="6">
+		<regex>\\\w+\\\w+\\\w+</regex>
+		<intervention name="block_ip" field="srcip" ignore_empty_field="true" />
+		<description>Possible exploit attempt.</description>
+	</rule>
+
+	<rule id="9050" priority="10">
+		<activation_group time="360" rate="5">authentication_failure</activation_group>
+		<description>Multiple authentication failures.</description>
+	</rule>
+
+	<rule id="9051" priority="10">
+		<if_group>authentication_success</if_group>
+		<activation_group time="360" rate="10">authentication_failure</activation_group>
+    		<description>Multiple authentication failures followed by a success.</description>
+	</rule>
+
+	<rule id="9052" priority="6">
+		<activation_group time="360" rate="10" reset="true">connection_attempt</activation_group>
+		<same_field>srcip</same_field>
+		<description>Multiple connection attempts from same source.</description>
+	</rule>
+
+	<rule id="9053" priority="0">
+		<if_rule>9052</if_rule>
+		<if_field name="srcip">127.0.0.1</if_field>
+		<description>Ignore connection attempts from localhost.</description>
+	</rule>
+
+	<rule id="9054" priority="6">
+		<activation_group time="360" rate="7">spam</activation_group>
+		<same_field>srcip</same_field>
+		<intervention name="block_ip" field="srcip" />
+		<description>Multiple spam from same source.</description>
+	</rule>
+
+	<rule id="9055" priority="10">
+                <activation_group time="360" rate="7">authentication_failure</activation_group>
+		<same_field>srcip</same_field>
+		<intervention name="block_ip" field="srcip" />
+                <description>Multiple authentication failures from same source.</description>
+	</rule>
+
+	<rule id="9056" priority="7">
+		<activation_group time="180" rate="20" reset="true">spam</activation_group>
+		<description>Multiple spam.</description>
+	</rule>
+
+	<rule id="9090" priority="4">
+		<if_group>authentication_success</if_group>
+		<if_field name="username">root</if_field>
+		<description>Root login detected.</description>
+	</rule>
+
+	<rule id="9091" priority="5">
+	     	<if_group>authentication_success</if_group>
+		<if_field name="username" match="empty" />
+		<description>Login without username extracted.</description>
+	</rule>
+
+	<rule id="9092" priority="5">
+                <if_group>connection_attempt</if_group>
+                <if_field name="srcip" match="empty" />
+                <description>Connection attempt without srcip extracted.</description>
+	</rule>
+
+	<rule id="9093" priority="5">
+		<if_group>spam</if_group>
+		<if_field name="srcip" match="empty" />
+		<description>Spam without srcip extracted.</description>
+	</rule>
+
+
+</rule_group>

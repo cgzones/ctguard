@@ -1,0 +1,9 @@
+<rule_group>
+
+	<group>authentication_failure</group>
+	<group>authentication_success</group>
+	<group>state_change</group>
+	<group>connection_attempt</group>
+	<group>spam</group>
+
+</rule_group>
