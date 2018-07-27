@@ -3,7 +3,7 @@
 DESTDIR = 
 
 CTGUARD_FLAGS = ${FLAGS}
-CTGUARD_FLAGS += -DFORTIFY_SOURCE=2 -fstack-protector-strong -Wall -Wextra -Werror=all -Werror=extra -O2
+CTGUARD_FLAGS += -DFORTIFY_SOURCE=2 -fstack-protector-strong -Wall -Wextra -Werror=all -Werror=extra
 CTGUARD_FLAGS += -isystem src/external/cereal-1.2.2/include/
 CTGUARD_FLAGS += -isystem src/external/dtl-master/
 
@@ -14,18 +14,25 @@ CTGUARD_CXXFLAGS = ${CTGUARD_FLAGS} ${CXXFLAGS} -std=c++17
 CTGUARD_LDFLAGS = ${LDFLAGS} -lsqlite3 -pthread
 
 ifndef USERMODE
+ifdef COVERAGE
+	V=1
+else
 	CC = clang
 	CXX = clang++
 	
 	CTGUARD_FLAGS += 
-	CTGUARD_CFLAGS += -g -Weverything
+	CTGUARD_CFLAGS += -g -Weverything -O2
 	CTGUARD_CFLAGS += -fsanitize=address -fsanitize=undefined -fsanitize=integer -fsanitize=nullability
-	CTGUARD_CXXFLAGS += -g -Weverything -Wno-padded -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-disabled-macro-expansion
+	CTGUARD_CXXFLAGS += -g -Weverything -O2 -Wno-padded -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-disabled-macro-expansion
 	CTGUARD_CXXFLAGS += -Wno-reserved-id-macro -Wno-documentation-unknown-command -Wno-documentation -Wno-return-std-move-in-c++11
 	CTGUARD_CXXFLAGS += -fsanitize=address -fsanitize=undefined -fsanitize=integer -fsanitize=nullability
 
 	V=1
-endif
+endif #COVERAGE
+else
+	CTGUARD_CFLAGS += -O2
+	CTGUARD_CXXFLAGS += -O2
+endif #USERMODE
 
 
 CCCOLOR="\033[34m"
@@ -128,6 +135,25 @@ deps       += $(logscan_c:.cpp=.d)
 
 ctguard-logscan: ${logscan_o} ${libs_o}
 	${CTGUARD_CXXBIN} ${CTGUARD_CXXFLAGS} $^ ${CTGUARD_LDFLAGS} -o $@
+
+
+####################
+## itests coverage #
+####################
+itest-coverage:
+	${MAKE} clean
+	${MAKE} CC=gcc CXX=g++ CFLAGS="-g -O0 --coverage" CXXFLAGS="-g -O0 --coverage" COVERAGE=1 binaries -j
+
+	lcov --base-directory . --directory . --zerocounters --rc lcov_branch_coverage=1 --quiet
+
+	./itests/all.sh
+
+	lcov --base-directory . --directory . --capture --no-external --quiet --rc lcov_branch_coverage=1 --output-file ctguard.test
+
+	rm -rf coverage-report/
+	genhtml --branch-coverage --output-directory coverage-report/ --title "ctguard itest coverage" --show-details --legend --num-spaces 4 --quiet ctguard.test
+
+	${MAKE} clean
 
 
 ####################

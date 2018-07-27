@@ -67,7 +67,7 @@ Rule matched:
 	rule id  : 1
 	priority : 4
 	message  : test rule
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'test4' ...
@@ -276,7 +276,7 @@ Rule matched:
 	rule id  : 4
 	priority : 4
 	message  : sshd: failed user login
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[002]: password check failed for user (root)' ...
@@ -365,7 +365,7 @@ Rule matched:
 	rule id  : 5
 	priority : 7
 	message  : Failed login into root
-Would create alert with priority 7
+Would create alert with priority 7.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[003]: password check failed for user (chris)' ...
@@ -450,7 +450,7 @@ Rule matched:
 	rule id  : 4
 	priority : 4
 	message  : sshd: failed user login
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[004]: password check failed for user (chris)' ...
@@ -535,7 +535,7 @@ Rule matched:
 	rule id  : 4
 	priority : 4
 	message  : sshd: failed user login
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[005]: password check failed for user (chris)' ...
@@ -630,7 +630,7 @@ Rule matched:
 	rule id  : 6
 	priority : 7
 	message  : Multiple failed authentications.
-Would create alert with priority 7
+Would create alert with priority 7.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[006]: password check failed for user (thomas)' ...
@@ -715,7 +715,7 @@ Rule matched:
 	rule id  : 4
 	priority : 4
 	message  : sshd: failed user login
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[007]: password check failed for user (thomas)' ...
@@ -800,7 +800,7 @@ Rule matched:
 	rule id  : 4
 	priority : 4
 	message  : sshd: failed user login
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[008]: password check failed for user (christian)' ...
@@ -885,7 +885,7 @@ Rule matched:
 	rule id  : 4
 	priority : 4
 	message  : sshd: failed user login
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[009]: password check failed for user (christian)' ...
@@ -970,7 +970,7 @@ Rule matched:
 	rule id  : 4
 	priority : 4
 	message  : sshd: failed user login
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[010]: password check failed for user (christian)' ...
@@ -1065,7 +1065,7 @@ Rule matched:
 	rule id  : 6
 	priority : 7
 	message  : Multiple failed authentications.
-Would create alert with priority 7
+Would create alert with priority 7.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[011]: password check failed for user (christian)' ...
@@ -1160,7 +1160,7 @@ Rule matched:
 	rule id  : 60
 	priority : 8
 	message  : Multiple authentication failures for the same user.
-Would create alert with priority 8
+Would create alert with priority 8.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[012]: password check failed for user (chris)' ...
@@ -1245,7 +1245,7 @@ Rule matched:
 	rule id  : 4
 	priority : 4
 	message  : sshd: failed user login
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[013]: password check failed for user (chris)' ...
@@ -1340,7 +1340,7 @@ Rule matched:
 	rule id  : 60
 	priority : 8
 	message  : Multiple authentication failures for the same user.
-Would create alert with priority 8
+Would create alert with priority 8.
 
 > 
   Processing 'test' ...
@@ -1424,7 +1424,7 @@ Rule matched:
 	rule id  : 7
 	priority : 10
 	message  : Multiple authentication failures followed up by test
-Would create alert with priority 10
+Would create alert with priority 10.
 
 > 
   Processing 'abc' ...
@@ -1490,7 +1490,7 @@ Rule matched:
 	rule id  : 8
 	priority : 6
 	message  : test multiline regex
-Would create alert with priority 6
+Would create alert with priority 6.
 
 > 
   Processing 'def' ...
@@ -1556,7 +1556,7 @@ Rule matched:
 	rule id  : 8
 	priority : 6
 	message  : test multiline regex
-Would create alert with priority 6
+Would create alert with priority 6.
 
 > 
   Processing 'xtest1' ...
@@ -1627,7 +1627,7 @@ Rule matched:
 	rule id  : 11
 	priority : 7
 	message  : multi if_rule
-Would create alert with priority 7
+Would create alert with priority 7.
 
 > 
   Processing 'xtest2' ...
@@ -1698,7 +1698,7 @@ Rule matched:
 	rule id  : 11
 	priority : 7
 	message  : multi if_rule
-Would create alert with priority 7
+Would create alert with priority 7.
 
 > 
   Processing 'ytestABCy' ...
@@ -1767,7 +1767,7 @@ Rule matched:
 	rule id  : 12
 	priority : 5
 	message  : base rule for empty field test
-Would create alert with priority 5
+Would create alert with priority 5.
 
 > 
   Processing 'ytesty' ...
@@ -1838,7 +1838,7 @@ Rule matched:
 	rule id  : 14
 	priority : 8
 	message  : rule for empty field test
-Would create alert with priority 8
+Would create alert with priority 8.
 
 > 
   Processing 'testyy teststring1' ...
@@ -1906,7 +1906,7 @@ Rule matched:
 	rule id  : 15
 	priority : 5
 	message  : test multiline and multifield regex
-Would create alert with priority 5
+Would create alert with priority 5.
 
 > 
   Processing 'testxx teststring2' ...
@@ -1974,7 +1974,7 @@ Rule matched:
 	rule id  : 15
 	priority : 5
 	message  : test multiline and multifield regex
-Would create alert with priority 5
+Would create alert with priority 5.
 
 > 
 Ending

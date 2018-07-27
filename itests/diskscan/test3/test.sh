@@ -4,6 +4,12 @@ set -eu
 
 umask 0022
 
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+cd "$SCRIPTPATH"
+
+echo "TEST #3 START"
+
 cleanup () {
   rm -Rf test_dir/
   rm -f test.db test.output test5.txt test_diff.db
@@ -71,6 +77,10 @@ ln -s dead test_dir/lnk2
 rm test_dir/dead
 touch test_dir/test_rm
 
+if [ ! -x ../../../ctguard-diskscan ]; then
+	echo "TEST #3 Can not find executable!"
+	exit 1
+fi
 ../../../ctguard-diskscan -c test.conf -x -f -S
 
 cat > test_dir/txt1.txt <<EOF
@@ -159,9 +169,9 @@ rm test_dir/test_rm
 
 ../../../ctguard-diskscan -c test.conf -x -f -S
 
-echo "Comapring expected vs actual output:"
+echo "TEST #3 Comapring expected vs actual output"
 diff -u test.result test.output
 
 cleanup
 
-echo "\n\n\nsuccess!!!\n\n"
+echo "TEST #3 success"

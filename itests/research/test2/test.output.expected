@@ -75,7 +75,7 @@ Rule matched:
 	rule id  : 2
 	priority : 4
 	message  : sshd: failed user login
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (root)' ...
@@ -149,7 +149,7 @@ Rule matched:
 	rule id  : 2
 	priority : 4
 	message  : sshd: failed user login
-Would create alert with priority 4
+Would create alert with priority 4.
 
 > 
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian)' ...
@@ -230,7 +230,7 @@ Rule matched:
 	rule id  : 3
 	priority : 8
 	message  : Multiple failed authentications for same user.
-Would create alert with priority 8
+Would create alert with priority 8.
 
 > 
 Ending

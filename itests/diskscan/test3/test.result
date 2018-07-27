@@ -1,14 +1,3 @@
- [test_dir/txt1.txt] : ALERT: New object
-Path:            test_dir/txt1.txt
-User:            christian
-Group:           christian
-Size (in bytes): 648
-Mode:            -rw-r--r--
-SHA256 checksum: 0af41a6baa655d68135cb7d36051f2916d9cc34d17a16cbe49aa53d9af468d09
-Type:            regular file
-ALERT END
-
-
  [test_dir/lnk1] : ALERT: New object
 Path:            test_dir/lnk1
 User:            christian
@@ -44,13 +33,13 @@ Type:            regular file
 ALERT END
 
 
- [test_dir/txt3.txt] : ALERT: New object
-Path:            test_dir/txt3.txt
+ [test_dir/txt1.txt] : ALERT: New object
+Path:            test_dir/txt1.txt
 User:            christian
 Group:           christian
-Size (in bytes): 5
+Size (in bytes): 648
 Mode:            -rw-r--r--
-SHA256 checksum: f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2
+SHA256 checksum: 0af41a6baa655d68135cb7d36051f2916d9cc34d17a16cbe49aa53d9af468d09
 Type:            regular file
 ALERT END
 
@@ -63,6 +52,75 @@ Size (in bytes): 647
 Mode:            -rw-r--r--
 SHA256 checksum: 4b71e66a5f2139cf3fc09721c363b3e9ea81719cbf47aca0feab9dcf9e88817c
 Type:            regular file
+ALERT END
+
+
+ [test_dir/txt3.txt] : ALERT: New object
+Path:            test_dir/txt3.txt
+User:            christian
+Group:           christian
+Size (in bytes): 5
+Mode:            -rw-r--r--
+SHA256 checksum: f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2
+Type:            regular file
+ALERT END
+
+
+ [test_dir/txt12.txt] : ALERT: object changed
+Path:            test_dir/txt12.txt
+Type:            regular file
+Size changed from '647' to '676' bytes
+SHA256 checksum changed from '4b71e66a5f2139cf3fc09721c363b3e9ea81719cbf47aca0feab9dcf9e88817c' to '749c0a1e0d8a0cd155fff83a27897fc26912fadf094544997ca1eb5695665e3e'
+Start Diff
+@@ -1,4 +1,4 @@
+-est file
++test file
+ this test file has many lines
+ 1
+ 2
+@@ -5,21 +5,29 @@
+ 3
+ 4
+ 5
++6
++7
++8
++9
+ and it contains many entries
++9
++8
++7
++6
++5
++4
++3
++2
+ 1
+-2
+-3
+-4
+-5
+-6
++text1texttexttexttexttexttexttexttexttexttexttexttexttexttext
++texttext1texttexttexttexttexttexttexttexttexttexttexttexttext
++texttexttext1texttexttexttexttexttexttexttexttexttexttexttext
++texttexttexttext1texttexttexttexttexttexttexttexttexttexttext
++texttexttexttexttext1texttexttexttexttexttexttexttexttexttext
+ texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
++texttexttexttexttexttext1texttexttexttexttexttexttexttexttext
++texttexttexttexttexttexttext1texttexttexttexttexttexttexttext
+ texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+-texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+-texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+-texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+-texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+-texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+-texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+-texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+ the end
++really
+ 
+End Diff
 ALERT END
 
 
@@ -121,62 +179,15 @@ End Diff
 ALERT END
 
 
- [test_dir/txt12.txt] : ALERT: object changed
-Path:            test_dir/txt12.txt
-Type:            regular file
-Size changed from '647' to '676' bytes
-SHA256 checksum changed from '4b71e66a5f2139cf3fc09721c363b3e9ea81719cbf47aca0feab9dcf9e88817c' to '749c0a1e0d8a0cd155fff83a27897fc26912fadf094544997ca1eb5695665e3e'
-Start Diff
-@@ -1,4 +1,4 @@
--est file
-+test file
- this test file has many lines
- 1
- 2
-@@ -5,22 +5,29 @@
- 3
- 4
- 5
-+6
-+7
-+8
-+9
- and it contains many entries
-+9
-+8
-+7
-+6
-+5
-+4
-+3
-+2
- 1
--2
--3
--4
--5
--6
-+text1texttexttexttexttexttexttexttexttexttexttexttexttexttext
-+texttext1texttexttexttexttexttexttexttexttexttexttexttexttext
-+texttexttext1texttexttexttexttexttexttexttexttexttexttexttext
-+texttexttexttext1texttexttexttexttexttexttexttexttexttexttext
-+texttexttexttexttext1texttexttexttexttexttexttexttexttexttext
- texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
-+texttexttexttexttexttext1texttexttexttexttexttexttexttexttext
-+texttexttexttexttexttexttext1texttexttexttexttexttexttexttext
- texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
--texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
--texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
--texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
--texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
--texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
--texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
--texttexttexttexttexttexttexttexttexttexttexttexttexttexttext
- the end
-+really
- 
--
-End Diff
+ [test_dir/lnk3] : ALERT: New object
+Path:            test_dir/lnk3
+User:            christian
+Group:           christian
+Size (in bytes): 9
+Mode:            lrwxrwxrwx
+Target:          test5.txt
+Valid:           true
+Type:            symbolic link
 ALERT END
 
 
@@ -230,18 +241,6 @@ Size (in bytes): 676
 Mode:            -rw-r--r--
 SHA256 checksum: c19f94967b87bf330cc058a16a6eb18ce0bc761c5e2611bf213fc04db79a9f23
 Type:            regular file
-ALERT END
-
-
- [test_dir/lnk3] : ALERT: New object
-Path:            test_dir/lnk3
-User:            christian
-Group:           christian
-Size (in bytes): 9
-Mode:            lrwxrwxrwx
-Target:          test5.txt
-Valid:           true
-Type:            symbolic link
 ALERT END
 
 
