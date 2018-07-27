@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/685785c9c6ff46acaa0750cdc466565b)](https://app.codacy.com/app/cgzones/ctguard?utm_source=github.com&utm_medium=referral&utm_content=cgzones/ctguard&utm_campaign=badger)
 [![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cgzones/ctguard/master/LICENSE)
 
 # ctguard
