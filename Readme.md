@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/685785c9c6ff46acaa0750cdc466565b)](https://app.codacy.com/app/cgzones/ctguard?utm_source=github.com&utm_medium=referral&utm_content=cgzones/ctguard&utm_campaign=badger)
 [![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cgzones/ctguard/master/LICENSE)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5141c7ed9f7249db8d5d4f217ed2b788)](https://www.codacy.com/app/cgzones/ctguard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cgzones/ctguard&amp;utm_campaign=Badge_Grade)
 
