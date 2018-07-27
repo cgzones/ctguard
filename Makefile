@@ -54,8 +54,9 @@ CTGUARD_CXXBIN =${QUIET_CXXBIN}${CXX}
 CTGUARD_LINK   =${QUIET_LINK}ar -rc
 CTGUARD_RANLIB =${QUIET_RANLIB}ranlib
 
-.PHONY: all install docs
-all: ctguard-diskscan ctguard-logscan ctguard-research ctguard-intervention docs
+.PHONY: all binaries full-install install docs
+all: binaries docs
+binaries: ctguard-diskscan ctguard-logscan ctguard-research ctguard-intervention
 
 .cpp.o:
 	${CTGUARD_CXX} -MMD ${CTGUARD_CXXFLAGS} -c $< -o $@
@@ -198,7 +199,7 @@ docs: ${docs_man}
 #### install #######
 ####################
 
-install: all
+install: binaries
 	install -d ${DESTDIR}/usr/sbin ${DESTDIR}/lib/systemd/system
 	install -d -m 750 ${DESTDIR}/etc/ctguard/interventions ${DESTDIR}/etc/ctguard/rules ${DESTDIR}/var/lib/ctguard ${DESTDIR}/var/log/ctguard
 	install ctguard-logscan ctguard-research ctguard-diskscan ctguard-intervention ${DESTDIR}/usr/sbin
@@ -207,10 +208,10 @@ install: all
 	install -m 700 src/cfg/block_ip.sh ${DESTDIR}/etc/ctguard/interventions
 	install -m 644 src/cfg/ctguard-research.service src/cfg/ctguard-logscan.service src/cfg/ctguard-diskscan.service src/cfg/ctguard-intervention.service ${DESTDIR}/lib/systemd/system
 	
-total-install: install
+full-install: install
 	adduser --system --group --quiet --gecos "ctguard daemon" --no-create-home --home ${DESTDIR}/var/lib/ctguard ctguard
 
-	chown root:ctguard ${DESTDIR}/etc/ctguard/research.conf ${DESTDIR}/etc/ctguard/rules.xml
+	chown root:ctguard ${DESTDIR}/etc/ctguard/research.conf ${DESTDIR}/etc/ctguard/rules ${DESTDIR}/etc/ctguard/rules/rules.xml
 	chown ctguard:ctguard ${DESTDIR}/var/lib/ctguard ${DESTDIR}/var/log/ctguard
 
 	chmod o-rwx ${DESTDIR}/etc/ctguard/research.conf ${DESTDIR}/etc/ctguard/rules/rules.xml ${DESTDIR}/etc/ctguard/logscan.conf ${DESTDIR}/etc/ctguard/diskscan.conf ${DESTDIR}/etc/ctguard/intervention.conf
