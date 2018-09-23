@@ -1,5 +1,7 @@
 [Unit]
 Description=ctguard research
+Documentation=man:ctguard-research(8) man:research.conf(5) man:rules.xml(5)
+
 Wants=ctguard-intervention.service
 After=ctguard-intervention.service
 

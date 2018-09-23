@@ -1,5 +1,7 @@
 [Unit]
 Description=ctguard logscan
+Documentation=man:ctguard-logscan(8) man:logscan.conf(5)
+
 Wants=ctguard-research.service
 After=ctguard-research.service
 

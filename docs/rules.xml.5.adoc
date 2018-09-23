@@ -57,7 +57,7 @@ Format nodes are for precategorizing events, e.g. extrating the timestamp, marki
 === GROUP NODE
 Group nodes are for registering group names. The registration needs to be done to prevent misspellings.
 
-Group nodes must have no attributes and a nonempty name as value. Values staring with '!' are reserved for specail usage.
+Group nodes must have no attributes and a nonempty name as value. Values staring with '!' are reserved for special usage.
 
 Example:
 [source,xml]

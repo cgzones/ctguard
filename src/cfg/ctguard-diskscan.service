@@ -1,5 +1,7 @@
 [Unit]
 Description=ctguard diskscan
+Documentation=man:ctguard-diskscan(8) man:diskscan.conf(5)
+
 Wants=ctguard-research.service
 After=ctguard-research.service
 

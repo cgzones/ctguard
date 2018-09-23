@@ -7,11 +7,11 @@ Files: *
 Copyright: Copyright (c) 2018 Christian Göttsche <cgzones@googlemail.com>
 License: MIT
 
-Files: src/external/cereal*/
+Files: src/external/cereal*/*
 Copyright: Copyright (c) 2014, Randolph Voorhies, Shane Grant
 License: BSD-3-clause
 
-Files: src/external/dtl*/
+Files: src/external/dtl*/*
 Copyright: Copyright (c) 2015 Tatsuhiko Kubo <cubicdaiya@gmail.com>
 License: BSD-3-clause
 

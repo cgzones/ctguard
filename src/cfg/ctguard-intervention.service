@@ -1,5 +1,6 @@
 [Unit]
 Description=ctguard intervention
+Documentation=man:ctguard-intervention(8) man:intervention.conf(5)
 
 [Service]
 ExecStart=/usr/sbin/ctguard-intervention -f
