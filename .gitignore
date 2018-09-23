@@ -33,4 +33,3 @@ docs/rules.xml.5
 output.xml
 runner
 src/test/*.cc
-test_dir/
