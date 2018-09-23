@@ -512,7 +512,7 @@ static void do_update_queue(std::queue<file_data> & update_queue, database & db)
 
     libs::sqlite::sqlite_statement update{ "UPDATE `diskscan-data` SET"
                                            " `updated` = CURRENT_TIMESTAMP,"
-                                           " `scanned` = TRUE"
+                                           " `scanned` = 1"
                                            " WHERE `name` = $001;",
                                            db };
 
@@ -570,7 +570,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
             }
 
             if (fd_flags & flags::STARTSCAN) {
-                libs::sqlite::sqlite_statement set_scanned_false{ "UPDATE `diskscan-data` SET `scanned` = FALSE", db };
+                libs::sqlite::sqlite_statement set_scanned_false{ "UPDATE `diskscan-data` SET `scanned` = 0", db };
                 set_scanned_false.run();
                 in_scan = true;
 
@@ -582,7 +582,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
             if (fd_flags & flags::MIDSCAN) {
                 FILE_LOG(libs::log_level::DEBUG) << "Scan reached phase 2...";
 
-                libs::sqlite::sqlite_statement select_non_scanned{ "SELECT `name` FROM `diskscan-data` WHERE `scanned` = FALSE", db };
+                libs::sqlite::sqlite_statement select_non_scanned{ "SELECT `name` FROM `diskscan-data` WHERE `scanned` = 0", db };
                 const auto & ret = select_non_scanned.run(true);
 
                 FILE_LOG(libs::log_level::INFO) << "Running phase 2 for " << ret.data_count() << " entries...";
@@ -605,7 +605,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
             }
 
             if (fd_flags & flags::ENDSCAN) {
-                libs::sqlite::sqlite_statement select_non_scanned{ "SELECT `name` FROM `diskscan-data` WHERE `scanned` = FALSE", db };
+                libs::sqlite::sqlite_statement select_non_scanned{ "SELECT `name` FROM `diskscan-data` WHERE `scanned` = 0", db };
                 const auto & ret = select_non_scanned.run(true);
                 if (ret.data_count() != 0) {
                     FILE_LOG(libs::log_level::WARNING) << "The following database entries could not be scanned:";
@@ -732,7 +732,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
                                                                " `type` = $009,"
                                                                " `target` = $010,"
                                                                " `updated` = CURRENT_TIMESTAMP,"
-                                                               " `scanned` = TRUE"
+                                                               " `scanned` = 1"
                                                                " WHERE `name` = $011;",
                                                                db };
 
@@ -758,7 +758,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
                             const auto update_small_start = std::chrono::high_resolution_clock::now();
                             libs::sqlite::sqlite_statement update{ "UPDATE `diskscan-data` SET"
                                                                    " `updated` = CURRENT_TIMESTAMP,"
-                                                                   " `scanned` = TRUE"
+                                                                   " `scanned` = 1"
                                                                    " WHERE `name` = $001;",
                                                                    db };
                             update.bind(1, fd.path());
