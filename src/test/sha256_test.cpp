@@ -21,7 +21,7 @@ int main(int argc, const char ** argv)
         return EXIT_FAILURE;
     }
 
-    auto sg = ctguard::libs::make_scope_guard([fd]() { ::close(fd); });
+    ctguard::libs::scope_guard sg{ [fd]() { ::close(fd); } };
 
     ssize_t ret;
     SHA256_CTX ctx;
