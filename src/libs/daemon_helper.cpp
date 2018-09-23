@@ -73,7 +73,7 @@ void daemonize(const std::string & pidfile, const std::string & user, const std:
     {
         const int pid_fd = open(pidfile.c_str(), O_WRONLY | O_CREAT, 0640);
         if (pid_fd < 0) {
-            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not open " << pidfile << ": " << ::strerror(errno);
+            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not open '" << pidfile << "': " << ::strerror(errno);
             exit(1);
         }
 
@@ -84,7 +84,7 @@ void daemonize(const std::string & pidfile, const std::string & user, const std:
         fl.l_len = 0;
         fl.l_pid = getpid();
         if (::fcntl(pid_fd, F_SETLK, &fl) < 0) {
-            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not lock " << pidfile << ": " << ::strerror(errno);
+            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not lock '" << pidfile << "': " << ::strerror(errno);
             FILE_LOG(ctguard::libs::log_level::ERROR) << "Is another instance already running?";
             exit(1);
         }
@@ -92,7 +92,10 @@ void daemonize(const std::string & pidfile, const std::string & user, const std:
         constexpr size_t pid_size = 8;
         char pid[pid_size];
         ::snprintf(pid, pid_size, "%u\n", getpid());
-        ::write(pid_fd, pid, ::strlen(pid));
+        if (::write(pid_fd, pid, ::strlen(pid)) == -1) {
+            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not write pid to '" << pidfile << "': " << ::strerror(errno);
+            exit(1);
+        }
 
         //::close(pid_fd); do not close to hold lock
     }
@@ -100,12 +103,12 @@ void daemonize(const std::string & pidfile, const std::string & user, const std:
     if (!group.empty()) {
         const struct group * grp = ::getgrnam(group.c_str());
         if (!grp) {
-            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not find group " << group << ": " << ::strerror(errno);
+            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not find group '" << group << "': " << ::strerror(errno);
             exit(1);
         }
 
         if (::setgid(grp->gr_gid) < 0) {
-            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not change to group " << group << ": " << ::strerror(errno);
+            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not change to group '" << group << "': " << ::strerror(errno);
             exit(1);
         }
     }
@@ -113,12 +116,12 @@ void daemonize(const std::string & pidfile, const std::string & user, const std:
     if (!user.empty()) {
         const struct passwd * pw = ::getpwnam(user.c_str());
         if (!pw) {
-            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not find user " << user << ": " << ::strerror(errno);
+            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not find user '" << user << "': " << ::strerror(errno);
             exit(1);
         }
 
         if (::setuid(pw->pw_uid) < 0) {
-            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not change to user " << user << ": " << ::strerror(errno);
+            FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not change to user '" << user << "': " << ::strerror(errno);
             exit(1);
         }
     }
