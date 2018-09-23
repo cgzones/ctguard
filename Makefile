@@ -254,16 +254,21 @@ format:
 #### analysis ######
 ####################
 
-.PHONY: analysis analysis-cppcheck analysis-clang
-analysis: analysis-cppcheck analysis-clang
+.PHONY: analysis_cppcheck analysis_clang
 
-analysis-cppcheck:
+analysis_cppcheck:
 	cppcheck --enable=all --error-exitcode=2 --force --inconclusive -j 4 --library=std.cfg --library=posix.cfg --std=c++14 --std=posix src/ --quiet
 
-analysis-clang:
+analysis_clang:
 	${MAKE} clean
 	${MAKE} external
 	scan-build -analyze-headers --status-bugs --use-cc=clang --use-c++=clang++ ${MAKE}
+
+analysis_clang-check:
+	find src/ -path src/external -prune -iname *.h -o -iname *.hpp -o -iname *.cpp -exec clang-check {} -- -std=c++17 -I./src/external/cereal-1.2.2/include/ -I./src/external/dtl-master/ \;
+
+analysis_clang-tidy:
+	find src/ -path src/external -prune -iname *.h -o -iname *.hpp -o -iname *.cpp -exec clang-tidy {} -- -std=c++17 -I./src/external/cereal-1.2.2/include/ -I./src/external/dtl-master/ \;
 
 
 ####################
