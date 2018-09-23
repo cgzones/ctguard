@@ -241,6 +241,7 @@ static void logfile_task(const logscan_config & cfg, libs::blocked_queue<libs::s
                     queue.emplace(log_2_se(ls.path(), true, "!File got replaced"));
 
                     ls.set_inode(tmp_stat.st_ino);
+                    ls.set_position(0);
                     FILE_LOG(libs::log_level::DEBUG) << "Try to reset stream";
                     ::close(ls.fd());
                     ls.fd() = ::open(ls.path().c_str(), O_RDONLY);
