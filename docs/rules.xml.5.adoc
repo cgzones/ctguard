@@ -57,7 +57,7 @@ Format nodes are for precategorizing events, e.g. extrating the timestamp, marki
 === GROUP NODE
 Group nodes are for registering group names. The registration needs to be done to prevent misspellings.
 
-Group nodes must have no attributes and a nonempty name as value.
+Group nodes must have no attributes and a nonempty name as value. Values staring with '!' are reserved for specail usage.
 
 Example:
 [source,xml]
@@ -116,7 +116,9 @@ Rule nodes are the heart of ctguard. They specify how to parse events and how to
     Expects a group name. Associates the group to the current event.
 
 *if_group*::
-    Expects a group name. The rule will only be evaluated if the group is associated to the current event.
+    Expects a group name. The rule will only be evaluated if the group is associated to the current event. +
+    Special value:
+    * *!ALWAYS* The rule is always checked at group rule evaluation time.
 
 *if_field*::
     Expects a field entry. The rule matches only if the field with the name has the specific entry. A match can either be `extact', `regex' or `empty', defaults to `exact'. +

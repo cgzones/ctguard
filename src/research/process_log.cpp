@@ -125,20 +125,26 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
 
     if (!rl.trigger_group().empty()) {
         match_something = true;
-        bool found_group = false;
-        for (const auto & iter : ev.groups()) {
-            if (iter == rl.trigger_group()) {
-                found_group = true;
-                break;
-            }
-        }
-        if (!found_group) {
+
+        if (rl.trigger_group() == "!ALWAYS") {
             if (verbose)
-                std::cout << "not matching (group)\n";
-            return { false, modified_fields, modified_traits };
+                std::cout << "group always match|";
+        } else {
+            bool found_group = false;
+            for (const auto & iter : ev.groups()) {
+                if (iter == rl.trigger_group()) {
+                    found_group = true;
+                    break;
+                }
+            }
+            if (!found_group) {
+                if (verbose)
+                    std::cout << "not matching (group)\n";
+                return { false, modified_fields, modified_traits };
+            }
+            if (verbose)
+                std::cout << "group match|";
         }
-        if (verbose)
-            std::cout << "group match|";
     }
 
     if (!rl.trigger_fields().empty()) {

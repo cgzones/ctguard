@@ -1,0 +1,15 @@
+<rule_group>
+
+	<rule id="1" priority="7">
+		<if_group>!ALWAYS</if_group>
+		<regex>\\\w+\\\w+\\\w+</regex>
+		<description>Possible exploit attempt.</description>
+	</rule>
+
+	<rule id="2" priority="5">
+		<regex>from (\S+) port \d+</regex>
+		<fields>srcip</fields>
+		<description>sshd catch all</description>
+	</rule>
+
+</rule_group>

@@ -1,0 +1,68 @@
+ctguard-research
+
+  Enter loginput to see its handling.
+   - use 'quit' to exit
+
+> 
+  Processing 'Aug 23 04:59:58 server02 sshd[8268]: Bad protocol version identification '8' from 118.193.31.181 port 41185' ...
+    Format (#0) ...  no format match
+      Traits:
+        format -> unknown
+        source_program -> 
+        hostname -> 
+        source_domain -> 
+        control -> false
+        time_scanned -> Thu Jan  1 01:00:00 1970 CET
+        time_send -> Thu Jan  1 01:00:00 1970 CET
+      Extracted fields:
+      Groups: 
+      Priority: 0
+    Processing rules (#1) level 1
+    Checking level 1 rule 2 ...regex match|full match: true(true && true)
+    Matching level 1 rule: 1
+    Level 1 rule fit: 2
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        srcip -> ##118.193.31.181##
+      Groups: 
+      Priority: 5
+    Checking group rules...
+    Processing rules (#1) level 1
+    Checking level 1 rule 1 ...group always match|regex match|full match: true(true && true)
+    Matching level 1 rule: 1
+    Level 1 rule fit: 1
+    Checking child rules (#0) ...
+    Processing rules (#0) level 2
+    Matching level 2 rule: 0
+      Traits:
+        format -> ##unknown##
+        source_program -> ####
+        hostname -> ####
+        source_domain -> ####
+        control -> ##false##
+        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
+        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+      Extracted fields:
+        srcip -> ##118.193.31.181##
+      Groups: 
+      Priority: 7
+  End extracting.
+
+Rule matched:
+	rule id  : 1
+	priority : 7
+	message  : Possible exploit attempt.
+Would create alert with priority 7.
+
+> 
+Ending

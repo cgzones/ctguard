@@ -119,6 +119,9 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
             if (v.empty()) {
                 throw libs::lib_exception{ "Invalid empty group node" };
             }
+            if (v[0] == '!') {
+                throw libs::lib_exception{ "Invalid reserved group node '" + v + "'" };
+            }
             rules.groups.insert(std::move(v));
 
         } else if (node.name() == "intervention") {
@@ -458,7 +461,9 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
                 }
             }
             if (!ex.m_trigger_group.empty() && rules.groups.find(ex.m_trigger_group) == rules.groups.end()) {
-                throw libs::lib_exception{ "Invalid trigger group '" + ex.m_trigger_group + "' for rule " + std::to_string(ex.m_id) };
+                if (ex.m_trigger_group != "!ALWAYS") {
+                    throw libs::lib_exception{ "Invalid trigger group '" + ex.m_trigger_group + "' for rule " + std::to_string(ex.m_id) };
+                }
             }
             if (!ex.m_activation_group.group_name.empty() && rules.groups.find(ex.m_activation_group.group_name) == rules.groups.end()) {
                 throw libs::lib_exception{ "Invalid activation group '" + ex.m_activation_group.group_name + "' for rule " + std::to_string(ex.m_id) };
