@@ -62,7 +62,7 @@ kill -2 ${pid}
 sleep 2
 
 echo "TEST #2 Comapring expected vs actual output"
-diff -u test.result test.output
+diff -u test.expected test.output
 
 cleanup
 

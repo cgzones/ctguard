@@ -1,7 +1,7 @@
  [test_dir/lnk1] : ALERT: New object
 Path:            test_dir/lnk1
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 8
 Mode:            lrwxrwxrwx
 Target:          txt1.txt
@@ -12,8 +12,8 @@ ALERT END
 
  [test_dir/lnk2] : ALERT: New object
 Path:            test_dir/lnk2
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 4
 Mode:            lrwxrwxrwx
 Target:          dead
@@ -24,8 +24,8 @@ ALERT END
 
  [test_dir/txt1.txt] : ALERT: New object
 Path:            test_dir/txt1.txt
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 5
 Mode:            -rw-r--r--
 SHA256 checksum: f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2
@@ -35,8 +35,8 @@ ALERT END
 
  [test_dir/txt3.txt] : ALERT: New object
 Path:            test_dir/txt3.txt
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 5
 Mode:            -rw-r--r--
 SHA256 checksum: f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2
@@ -60,8 +60,8 @@ ALERT END
 
  [test_dir/txt2.txt] : ALERT: New object
 Path:            test_dir/txt2.txt
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 5
 Mode:            -rw-r--r--
 SHA256 checksum: f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2
@@ -71,8 +71,8 @@ ALERT END
 
  [test_dir/testsub] : ALERT: New object
 Path:            test_dir/testsub
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 4096
 Mode:            drwxr-xr-x
 Type:            directory
@@ -81,8 +81,8 @@ ALERT END
 
  [test_dir/testsub/txt.txt] : ALERT: New object
 Path:            test_dir/testsub/txt.txt
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 5
 Mode:            -rw-r--r--
 SHA256 checksum: f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2
@@ -98,8 +98,8 @@ ALERT END
 
  [test_dir/testsub/testsubsub/sub] : ALERT: New object
 Path:            test_dir/testsub/testsubsub/sub
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 4096
 Mode:            drwxr-xr-x
 Type:            directory
@@ -108,8 +108,8 @@ ALERT END
 
  [test_dir/testsub/txt3.txt] : ALERT: New object
 Path:            test_dir/testsub/txt3.txt
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 7
 Mode:            -rw-r--r--
 SHA256 checksum: 35753101e0e751ccbfe282be32b32967279a0f324baf0349e10f75404151ed67
@@ -119,23 +119,11 @@ ALERT END
 
  [test_dir/testsub/testsubsub] : ALERT: New object
 Path:            test_dir/testsub/testsubsub
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 4096
 Mode:            drwxr-xr-x
 Type:            directory
-ALERT END
-
-
- [test_dir/testsub/txt3.txt] : ALERT: object deleted
-Path:            test_dir/testsub/txt3.txt
-Type:            regular file
-ALERT END
-
-
- [test_dir/testsub/txt.txt] : ALERT: object deleted
-Path:            test_dir/testsub/txt.txt
-Type:            regular file
 ALERT END
 
 
@@ -151,6 +139,18 @@ Type:            directory
 ALERT END
 
 
+ [test_dir/testsub/txt.txt] : ALERT: object deleted
+Path:            test_dir/testsub/txt.txt
+Type:            regular file
+ALERT END
+
+
+ [test_dir/testsub/txt3.txt] : ALERT: object deleted
+Path:            test_dir/testsub/txt3.txt
+Type:            regular file
+ALERT END
+
+
  [test_dir/testsub] : ALERT: object deleted
 Path:            test_dir/testsub
 Type:            directory
@@ -159,8 +159,8 @@ ALERT END
 
  [test_dir/test5.txt] : ALERT: New object
 Path:            test_dir/test5.txt
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 6
 Mode:            -rw-r--r--
 SHA256 checksum: 87790b12003ec58e0a786fc4aaeeb11c6d3bbbfa19f0d05fa2368771a7b83ffb
@@ -170,8 +170,8 @@ ALERT END
 
  [test_dir/lnk3] : ALERT: New object
 Path:            test_dir/lnk3
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 9
 Mode:            lrwxrwxrwx
 Target:          test5.txt

@@ -170,7 +170,7 @@ rm test_dir/test_rm
 ../../../ctguard-diskscan -c test.conf -x -f -S
 
 echo "TEST #3 Comapring expected vs actual output"
-diff -u test.result test.output
+diff -u test.expected test.output
 
 cleanup
 

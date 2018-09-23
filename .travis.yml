@@ -1,0 +1,37 @@
+language: cpp
+
+dist: xenial
+#sudo: required
+
+
+compiler:
+  - gcc
+  #- clang
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:ubuntu-toolchain-r/test'
+      #- sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main'
+    packages:
+      - g++-7
+      #- clang-6.0
+      #- asciidoctor
+
+before_install:
+  #- sudo gem install asciidoctor
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-7" CC="gcc-7"; fi
+  #- if [ "$CXX" = "clang++" ]; then export CXX="clang++-5.0" CC="clang-5.0"; fi
+
+script:
+  - echo "$CC"
+  - $CC --version
+  - echo "$CXX"
+  - $CXX --version
+
+  - make USERMODE=1 binaries
+
+after_success:
+  - ./ctguard-research --version
+
+  - ./itests/run_all.sh

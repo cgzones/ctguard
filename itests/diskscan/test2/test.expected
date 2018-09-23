@@ -1,7 +1,7 @@
  [test_dir/txt1.txt] : ALERT: New object
 Path:            test_dir/txt1.txt
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 5
 Mode:            -rw-r--r--
 SHA256 checksum: f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2
@@ -11,8 +11,8 @@ ALERT END
 
  [test_dir/txt3.txt] : ALERT: New object
 Path:            test_dir/txt3.txt
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 5
 Mode:            -rw-r--r--
 SHA256 checksum: f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2
@@ -36,8 +36,8 @@ ALERT END
 
  [test_dir/dest] : ALERT: New object
 Path:            test_dir/dest
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 0
 Mode:            -rw-r--r--
 SHA256 checksum: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
@@ -47,8 +47,8 @@ ALERT END
 
  [test_dir/lnk] : ALERT: New object
 Path:            test_dir/lnk
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 4
 Mode:            lrwxrwxrwx
 Target:          dest
@@ -59,8 +59,8 @@ ALERT END
 
  [test_dir/testdir] : ALERT: New object
 Path:            test_dir/testdir
-User:            christian
-Group:           christian
+User:            ITEST_USER_REPLACEME
+Group:           ITEST_USER_REPLACEME
 Size (in bytes): 4096
 Mode:            drwxr-xr-x
 Type:            directory
