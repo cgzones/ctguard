@@ -46,7 +46,7 @@ Groups are set via a group keyword, a group name and an optional group block enc
 *regex*::
     Regex for the argument of the command to match. Helps avoiding injections. Must be set.
 
-*timeout*::
+*command_timeout*::
     Time after which the command gets killed. Defaults to _30s_.
 
 *user*::

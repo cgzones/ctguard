@@ -84,9 +84,9 @@ intervention_config parse_config(const std::string & cfg_path)
                         }
                         action.group = c.second.options[0];
 
-                    } else if (c.first == "timeout") {
+                    } else if (c.first == "command_timeout") {
                         try {
-                            action.timeout = libs::parse_second_duration(c.second.options);
+                            action.command_timeout = libs::parse_second_duration(c.second.options);
                         } catch (const std::exception & e) {
                             throw std::out_of_range{ "Invalid argument '" + c.second.options[0] + "' for configuration " + c.first + " given: " + e.what() };
                         }
@@ -145,8 +145,8 @@ std::ostream & operator<<(std::ostream & out, const intervention_config & cfg)
     out << "    input_path:           " << cfg.input_path << "\n";
     out << "    log_path:             " << cfg.log_path << "\n";
     for (const auto & a : cfg.actions) {
-        out << "    action:   name: " << a.name << "; cmd: " << a.command << "; user: " << a.user << "; group: " << a.group << "; timeout: " << a.timeout
-            << "; regex: " << a.regex << "; whitelist: " << dump_whitelist(a.whitelist) << ";\n";
+        out << "    action:   name: " << a.name << "; cmd: " << a.command << "; user: " << a.user << "; group: " << a.group
+            << "; command_timeout: " << a.command_timeout << "; regex: " << a.regex << "; whitelist: " << dump_whitelist(a.whitelist) << ";\n";
     }
     out << "END config dump\n";
 

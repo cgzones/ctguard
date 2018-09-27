@@ -169,7 +169,7 @@ static void processing_task(libs::blocked_queue<std::pair<libs::intervention_cmd
                         }
                         break;
                     } else if (waitret == 0) {
-                        if (timeout >= matching_action->timeout) {
+                        if (timeout >= matching_action->command_timeout) {
                             FILE_LOG(libs::log_level::ERROR)
                               << "Action '" << icmd.name << "' with argument '" << icmd.argument << "' did not exit within timeout";
                             if (::kill(pid, SIGKILL) == -1) {

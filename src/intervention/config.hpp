@@ -5,7 +5,6 @@
 
 namespace ctguard::intervention {
 
-using priority_t = unsigned short;
 using timeout_t = unsigned int;
 
 struct intervention_action
@@ -18,7 +17,7 @@ struct intervention_action
     std::string regex;
     std::vector<std::string> whitelist;
 
-    timeout_t timeout{ 30 };  // 30 seconds
+    timeout_t command_timeout{ 30 };  // 30 seconds
 };
 
 struct intervention_config
