@@ -33,7 +33,7 @@ using errorstack_t = std::pair<std::mutex, std::stack<std::exception_ptr>>;
 static std::atomic<bool> RUNNING{ true };
 static bool UNIT_TEST{ false };
 
-static void run_cmd(const intervention_action & action, const std::string & argument)
+static void run_cmd(const int stdout_filedes[2], const int stderr_filedes[2], const intervention_action & action, const std::string & argument)
 {
     if (!UNIT_TEST) {
         if (::chdir("/") == -1) {
@@ -76,6 +76,17 @@ static void run_cmd(const intervention_action & action, const std::string & argu
             throw libs::errno_exception{ "Can not setuid to uid " + std::to_string(pwd->pw_uid) };
         }
     }
+
+    if (::dup2(stdout_filedes[1], STDOUT_FILENO) == -1) {
+        throw libs::errno_exception{ "Can not redirect stdout" };
+    }
+    if (::dup2(stderr_filedes[1], STDERR_FILENO) == -1) {
+        throw libs::errno_exception{ "Can not redirect stderr" };
+    }
+    ::close(stdout_filedes[1]);
+    ::close(stdout_filedes[0]);
+    ::close(stderr_filedes[1]);
+    ::close(stderr_filedes[0]);
 
     char * const parmlist[] = { const_cast<char *>(action.command.c_str()), const_cast<char *>(argument.c_str()), nullptr };
 
@@ -145,12 +156,21 @@ static void processing_task(libs::blocked_queue<std::pair<libs::intervention_cmd
                 }
             }
 
+            int stdout_filedes[2];
+            int stderr_filedes[2];
+            if (::pipe(stdout_filedes) == -1) {
+                throw libs::errno_exception{ "Can not not create pipes" };
+            }
+            if (::pipe(stderr_filedes) == -1) {
+                throw libs::errno_exception{ "Can not not create pipes" };
+            }
+
             const int pid = ::fork();
             if (pid == -1) {
                 throw libs::errno_exception{ "Can not fork" };
             } else if (pid == 0) {
                 try {
-                    run_cmd(*matching_action, icmd.argument);
+                    run_cmd(stdout_filedes, stderr_filedes, *matching_action, icmd.argument);
                 } catch (const std::exception & e) {
                     FILE_LOG(libs::log_level::ERROR) << "Can not run action '" << icmd.name << "' with argument '" << icmd.argument << "': " << e.what();
                     exit(EXIT_FAILURE);
@@ -158,6 +178,9 @@ static void processing_task(libs::blocked_queue<std::pair<libs::intervention_cmd
                 FILE_LOG(libs::log_level::ERROR) << "Dead fallthrough";
                 exit(EXIT_FAILURE);
             } else {
+                ::close(stdout_filedes[1]);
+                ::close(stderr_filedes[1]);
+
                 timeout_t timeout{ 0 };
                 for (;;) {
                     int status;
@@ -190,6 +213,74 @@ static void processing_task(libs::blocked_queue<std::pair<libs::intervention_cmd
                         }
                         break;
                     }
+                }
+
+                {
+                    std::array<char, 4096> buffer;
+                    while (1) {
+                        const ssize_t count = ::read(stdout_filedes[0], buffer.data(), buffer.size());
+                        if (count < 0) {
+                            if (errno == EINTR) {
+                                continue;
+                            } else {
+                                FILE_LOG(libs::log_level::ERROR) << "Can not read from child stdout pipe: " << ::strerror(errno);
+                                break;
+                            }
+                        } else if (count == 0) {
+                            break;
+                        } else {
+                            const auto s = std::string_view{ buffer.data(), static_cast<size_t>(count) };
+                            std::string_view::size_type start = 0U;
+                            auto end = s.find('\n');
+                            while (end != std::string_view::npos) {
+                                if (end - start > 0) {
+                                    FILE_LOG(libs::log_level::INFO) << "Action '" << icmd.name << "' with argument '" << icmd.argument
+                                                                    << "' printed to stdout: '" << s.substr(start, end - start) << "'";
+                                }
+                                start = end + 1;
+                                end = s.find('\n', start);
+                            }
+                            if (s.length() - start > 0) {
+                                FILE_LOG(libs::log_level::INFO)
+                                  << "Action '" << icmd.name << "' with argument '" << icmd.argument << "' printed to stdout: '" << s.substr(start, end) << "'";
+                            }
+                        }
+                    }
+                    ::close(stdout_filedes[0]);
+                }
+
+                {
+                    std::array<char, 4096> buffer;
+                    while (1) {
+                        const ssize_t count = ::read(stderr_filedes[0], buffer.data(), buffer.size());
+                        if (count < 0) {
+                            if (errno == EINTR) {
+                                continue;
+                            } else {
+                                FILE_LOG(libs::log_level::ERROR) << "Can not read from child stderr pipe: " << ::strerror(errno);
+                                break;
+                            }
+                        } else if (count == 0) {
+                            break;
+                        } else {
+                            const auto s = std::string_view{ buffer.data(), static_cast<size_t>(count) };
+                            std::string_view::size_type start = 0U;
+                            auto end = s.find('\n');
+                            while (end != std::string_view::npos) {
+                                if (end - start > 0) {
+                                    FILE_LOG(libs::log_level::WARNING) << "Action '" << icmd.name << "' with argument '" << icmd.argument
+                                                                       << "' printed to stderr: '" << s.substr(start, end - start) << "'";
+                                }
+                                start = end + 1;
+                                end = s.find('\n', start);
+                            }
+                            if (s.length() - start > 0) {
+                                FILE_LOG(libs::log_level::WARNING)
+                                  << "Action '" << icmd.name << "' with argument '" << icmd.argument << "' printed to stderr: '" << s.substr(start, end) << "'";
+                            }
+                        }
+                    }
+                    ::close(stderr_filedes[0]);
                 }
             }
         }
