@@ -1,0 +1,8 @@
+file (COPY
+    test1
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+    )
+
+add_test (NAME Intervention1 COMMAND test.sh WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test1)
+
+set_tests_properties (Intervention1 PROPERTIES TIMEOUT 30 ENVIRONMENT TZ=UTC)

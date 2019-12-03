@@ -3,18 +3,18 @@ Priority:  4
 Info:      sshd: failed user login [2]
 Log:       Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian)
 Traits:
+                        control : false
                          format : syslog
-                 source_program : ctguard-logscan
                        hostname : unittest
                   source_domain : input.log
-                        control : false
-                   time_scanned : Thu Jan  1 01:00:00 1970 CET
-                      time_send : Thu Jan  1 01:00:01 1970 CET
+                 source_program : ctguard-logscan
+                   time_scanned : Thu Jan  1 00:00:00 1970 UTC
+                      time_send : Thu Jan  1 00:00:01 1970 UTC
 Extracted fields:
-                       username : christian
-                            log : password check failed for user (christian)
                          domain : unix_chkpwd
-                      timestamp : Sep 24 12:10:03
                        hostname : desktopdebian
+                            log : password check failed for user (christian)
+                      timestamp : Sep 24 12:10:03
+                       username : christian
 ALERT END
 

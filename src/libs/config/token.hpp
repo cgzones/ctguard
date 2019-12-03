@@ -10,7 +10,7 @@ namespace ctguard::libs::config {
 class token
 {
   public:
-    enum class type
+    enum class type_t
     {
         eof,
         string,
@@ -19,10 +19,10 @@ class token
         unknown
     };
 
-    token(token::type type, position position, std::string content) : m_type{ type }, m_position{ std::move(position) }, m_content{ std::move(content) } {}
-    token(token::type type, position position, char content) : m_type{ type }, m_position{ std::move(position) }, m_content{ content } {}
+    token(token::type_t type, position position, std::string content) : m_type{ type }, m_position{ std::move(position) }, m_content{ std::move(content) } {}
+    token(token::type_t type, position position, char content) : m_type{ type }, m_position{ std::move(position) }, m_content{ content } {}
 
-    [[nodiscard]] token::type get_type() const noexcept { return m_type; }
+    [[nodiscard]] token::type_t get_type() const noexcept { return m_type; }
     [[nodiscard]] const position & get_position() const noexcept { return m_position; }
     [[nodiscard]] const std::string & get_content() const noexcept { return m_content; }
 
@@ -34,7 +34,7 @@ class token
     bool operator!=(const char * other) const noexcept;
 
   private:
-    type m_type;
+    type_t m_type;
     position m_position;
     std::string m_content;
 };

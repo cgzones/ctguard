@@ -2,17 +2,26 @@
 
 set -eu
 
+BIN=../../../src/logscan/ctguard-logscan
+if ! [ -e ${BIN} ]; then
+    echo "Could not find binary at '${BIN}'!"
+    exit 1
+fi
+
 cleanup () {
-  rm -f test.log test.output test.pid test.state
+    rm -f test.log test.output test.pid test.state
 }
 
 cleanup
 
+chmod 640 test.conf
 touch test.state
 
-../../../ctguard-logscan --cfg-file test.conf --unittest --foreground &
+${BIN} --cfg-file test.conf --unittest --foreground &
 pid=$!
-echo "daemon running with pid ${pid}\n"
+echo "Daemon running with pid ${pid}."
+
+trap "kill -9 ${pid}" 0 2
 
 sleep 2
 
@@ -22,13 +31,13 @@ echo "test2" >> test.log
 
 sleep 2
 
-pid2=`pidof ctguard-logscan` || true
-if [ "X${pid}" != "X${pid2}" ]; then
-  echo "daemon not running anymore!!\n${pid} vs ${pid2}\nFAILURE!!\n\n";
-  exit 1
+if ! ps -p ${pid} > /dev/null; then
+    echo "Daemon with pid ${pid} not running anymore!\nFAILURE!";
+    exit 1
 fi
 
 kill -INT ${pid}
+trap - 0 2
 
 sleep 1
 
@@ -36,4 +45,4 @@ diff -u test.output test.output.expected
 
 cleanup
 
-echo "\n\n\nsuccess!!!\n\n"
+echo "SUCCESS!"

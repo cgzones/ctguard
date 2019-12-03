@@ -3,7 +3,7 @@
 #include <iostream>
 #include <set>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
 
 #include "../libs/source_event.hpp"
@@ -28,10 +28,10 @@ class event
 
     const std::string & logstr() const { return m_logstr; }
 
-    std::unordered_map<std::string, std::string> & fields() { return m_fields; }
-    std::unordered_map<std::string, std::string> & traits() { return m_traits; }
-    const std::unordered_map<std::string, std::string> & fields() const { return m_fields; }
-    const std::unordered_map<std::string, std::string> & traits() const { return m_traits; }
+    std::map<std::string, std::string> & fields() { return m_fields; }
+    std::map<std::string, std::string> & traits() { return m_traits; }
+    const std::map<std::string, std::string> & fields() const { return m_fields; }
+    const std::map<std::string, std::string> & traits() const { return m_traits; }
     const std::set<std::string> groups() const { return m_groups; }
     void add_groups(const std::set<std::string> & input);
     std::string groups_2_str() const;
@@ -53,7 +53,8 @@ class event
     std::string m_logstr, m_description;
     bool m_control_message{ false };
     bool m_always_alert{ false };
-    std::unordered_map<std::string, std::string> m_fields, m_traits;
+    // TODO: maybe revert to unordered_map, but keep output deterministic
+    std::map<std::string, std::string> m_fields, m_traits;
     std::set<std::string> m_groups;
     priority_t m_priority{ 0 };
     rule_id_t m_rule_id{ 0 };

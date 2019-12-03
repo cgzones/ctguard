@@ -126,7 +126,8 @@ static void state_task(const research_config & cfg, std::map<rule_id_t, struct r
     }
 }
 
-static void output_task(libs::blocked_queue<event> & input, libs::blocked_queue<event> & mail_queue, std::ostream & output, errorstack_t & es)
+static void output_task(const research_config & cfg, libs::blocked_queue<event> & input, libs::blocked_queue<event> & mail_queue, std::ostream & output,
+                        errorstack_t & es)
 {
     FILE_LOG(libs::log_level::DEBUG) << "[ow] started.";
     libs::scope_guard sg{ []() { FILE_LOG(libs::log_level::DEBUG) << "[ow] stopped."; } };
@@ -165,7 +166,9 @@ static void output_task(libs::blocked_queue<event> & input, libs::blocked_queue<
             output << "ALERT END\n\n";
             output.flush();
 
-            mail_queue.emplace(std::move(e));
+            if (cfg.mail) {
+                mail_queue.emplace(std::move(e));
+            }
         }
 
     } catch (...) {
@@ -260,7 +263,7 @@ static void send_mail_queue(const research_config & cfg, const std::vector<event
          << "                        ######################\n\n";
 
     std::map<std::string, summary_item> summary_map;
-    unsigned interventions{ 0 };
+    std::size_t interventions{ 0 };
     std::map<std::string, unsigned> interventions_details;
 
     for (const auto & ev : q) {
@@ -515,9 +518,12 @@ void daemon(const research_config & cfg, const rule_cfg & rules, std::ostream & 
     auto processing_thread = std::thread(processing_task, std::ref(input_queue), std::ref(output_queue), std::ref(intervention_queue), std::cref(cfg),
                                          std::cref(rules), std::ref(rules_state), std::ref(errorstack));
     auto state_thread = std::thread(state_task, std::cref(cfg), std::ref(rules_state), std::ref(output_queue), std::ref(errorstack));
-    auto output_thread = std::thread(output_task, std::ref(output_queue), std::ref(mail_queue), std::ref(output), std::ref(errorstack));
-    auto mail_thread = std::thread(mail_task, std::cref(cfg), std::ref(mail_queue), std::ref(errorstack));
+    auto output_thread = std::thread(output_task, std::cref(cfg), std::ref(output_queue), std::ref(mail_queue), std::ref(output), std::ref(errorstack));
     auto intervention_thread = std::thread(intervention_task, std::cref(cfg), std::ref(intervention_queue), std::ref(errorstack));
+    std::thread mail_thread;
+    if (cfg.mail) {
+        mail_thread = std::thread(mail_task, std::cref(cfg), std::ref(mail_queue), std::ref(errorstack));
+    }
 
     FILE_LOG(libs::log_level::DEBUG) << "threads started";
 
@@ -591,20 +597,26 @@ void daemon(const research_config & cfg, const rule_cfg & rules, std::ostream & 
     FILE_LOG(libs::log_level::INFO) << "research shutting down...";
     RUNNING = false;
 
-    try {
-        send_mail(cfg.mail_host, cfg.mail_port, cfg.mail_fromaddr, cfg.mail_toaddr, "ctguard shutting down...", cfg.mail_replyaddr,
-                  "ctguard is shutting down.");
-    } catch (const std::exception & e) {
-        FILE_LOG(libs::log_level::ERROR) << "Can not send shutdown mail: " << e.what();
+    if (cfg.mail) {
+        try {
+            send_mail(cfg.mail_host, cfg.mail_port, cfg.mail_fromaddr, cfg.mail_toaddr, "ctguard shutting down...", cfg.mail_replyaddr,
+                      "ctguard is shutting down.");
+        } catch (const std::exception & e) {
+            FILE_LOG(libs::log_level::ERROR) << "Can not send shutdown mail: " << e.what();
+        }
     }
+
+    // TODO: fix shutdown time in unit tests
 
     FILE_LOG(libs::log_level::DEBUG) << "waiting for threads...";
     input_thread.join();
     processing_thread.join();
     state_thread.join();
     output_thread.join();
-    mail_thread.join();
     intervention_thread.join();
+    if (mail_thread.joinable()) {
+        mail_thread.join();
+    }
     FILE_LOG(libs::log_level::DEBUG) << "threads finished";
 }
 

@@ -37,6 +37,9 @@ Groups are set via a group keyword, a group name and an optional group block enc
 *log_priority*::
     Priority from which notifications are logged to disk. Defaults to _1_.
 
+*mail*::
+    Whether to send mails or not. Defaults to _true_.
+
 *mail_from_addr*::
     Mail address which should be set as the source of notification mails. Defaults to _ctguard@localhost_.
 

@@ -7,7 +7,7 @@
 namespace ctguard::libs::config {
 
 lexer::lexer(std::istream & input)
-  : m_input{ input }, m_position{ 1, 0 }, m_prev_position{ 0, 0 }, m_next_token{ token::type::unknown, m_position, ' ' }, m_last_char{ ' ' }
+  : m_input{ input }, m_position{ 1, 0 }, m_prev_position{ 0, 0 }, m_next_token{ token::type_t::unknown, m_position, ' ' }, m_last_char{ ' ' }
 {
     (void)get();  // get prime token to initialize m_current_token
 }
@@ -60,21 +60,21 @@ token lexer::gettok()
         while ((m_last_char = mygetchar()) != EOF) {
             if (m_last_char == '"') {
                 m_last_char = mygetchar();  // eat "
-                return token{ token::type::string, startPosition, content };
+                return token{ token::type_t::string, startPosition, content };
             }
             content += m_last_char;
         }
-        return token{ token::type::unknown, startPosition, content };
+        return token{ token::type_t::unknown, startPosition, content };
     }
     if (m_last_char == '\'') {
         while ((m_last_char = mygetchar()) != EOF) {
             if (m_last_char == '\'') {
                 m_last_char = mygetchar();  // eat '
-                return token{ token::type::string, startPosition, content };
+                return token{ token::type_t::string, startPosition, content };
             }
             content += m_last_char;
         }
-        return token{ token::type::unknown, startPosition, content };
+        return token{ token::type_t::unknown, startPosition, content };
     }
 
     if (isalpha(m_last_char)) {  // identifier: [a-zA-Z_][a-zA-Z0-9_.]*
@@ -82,7 +82,7 @@ token lexer::gettok()
         while (isalnum((m_last_char = mygetchar())) || m_last_char == '_' || m_last_char == '.')
             content += m_last_char;
 
-        return token{ token::type::identifier, startPosition, content };
+        return token{ token::type_t::identifier, startPosition, content };
     }
 
     if (isdigit(m_last_char)) {  // Integer: [0-9]+
@@ -91,7 +91,7 @@ token lexer::gettok()
             m_last_char = mygetchar();
         } while (isdigit(m_last_char));
 
-        return token{ token::type::integer, startPosition, content };
+        return token{ token::type_t::integer, startPosition, content };
     }
 
     if (m_last_char == '#') {
@@ -105,13 +105,13 @@ token lexer::gettok()
 
     // Check for end of file.  Don't eat the EOF.
     if (m_last_char == EOF) {
-        return token{ token::type::eof, startPosition, content };
+        return token{ token::type_t::eof, startPosition, content };
     }
 
     // Otherwise, just return the character as its ascii value.
     content = m_last_char;
     m_last_char = mygetchar();
-    return token{ token::type::unknown, startPosition, content };
+    return token{ token::type_t::unknown, startPosition, content };
 }
 
 lexer lexer::create(const std::string & input)

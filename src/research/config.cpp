@@ -80,6 +80,13 @@ research_config parse_config(const std::string & cfg_path)
                     throw std::out_of_range{ "Invalid argument '" + a.second.options[0] + "' for configuration " + a.first + " given: " + e.what() };
                 }
 
+            } else if (a.first == "mail") {
+                try {
+                    cfg.mail = libs::parse_bool(a.second.options[0]);
+                } catch (const std::exception & e) {
+                    throw std::out_of_range{ "Invalid argument '" + a.second.options[0] + "' for configuration " + a.first + " given: " + e.what() };
+                }
+
             } else if (a.first == "mail_interval") {
                 try {
                     cfg.mail_interval = libs::parse_second_duration(a.second.options);
@@ -196,21 +203,9 @@ research_config parse_config(const std::string & cfg_path)
             }
         }
 
-        for (const auto & b : top.subgroups()) {
-            /*if (b.second->name() == "logfile") {
-              if (b.second->keyword().empty()) {
-                throw std::out_of_range{ "Empty key for configuration group '" + b.second->name() + "' at " + to_string(b.second->pos()) };
-              }
-              libs::config::config_group & logfile = *b.second;
-              for (const auto & c : logfile) {
-                throw std::out_of_range{ "Invalid configuration option '" + c.second.key + "' in group logfile at " + to_string(c.second.pos) };
-              }
-
-              cfg.log_files.emplace_back(logfile.keyword());
-
-            } else {*/
-            throw std::out_of_range{ "Invalid configuration group '" + b.name() + "' at " + to_string(b.pos()) };
-            //}
+        if (!top.subgroups().empty()) {
+            const auto & b = top.subgroups().cbegin();
+            throw std::out_of_range{ "Invalid configuration group '" + b->name() + "' at " + to_string(b->pos()) };
         }
     }
     if (!found_top) {

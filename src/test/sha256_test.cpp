@@ -1,7 +1,7 @@
-#include "../external/sha2/sha2.h"
 #include "../libs/scopeguard.hpp"
 #include <fcntl.h>
 #include <iostream>
+#include <sha2.h>
 #include <unistd.h>
 
 int main(int argc, const char ** argv)

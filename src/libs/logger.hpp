@@ -99,7 +99,11 @@ std::ostringstream & Log<OutputPolicy>::get(log_level level)
         struct tm time
         {};
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-y2k"
         std::strftime(time_buffer, sizeof(time_buffer), "%c %Z", ::localtime_r(&now, &time));
+#pragma GCC diagnostic pop
+
         m_os << time_buffer;
         m_os << ' ' << std::setw(16) << Log::domain();
 

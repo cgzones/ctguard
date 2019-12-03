@@ -9,7 +9,7 @@ namespace ctguard::libs::sqlite {
 
 sqlite_statement::sqlite_statement(const std::string & statement, sqlite_db & db) : m_statment{ nullptr, &::sqlite3_finalize }, m_db{ db }
 {
-    if (statement.size() >= std::numeric_limits<int>::max()) {
+    if (statement.size() >= static_cast<unsigned long long>(std::numeric_limits<int>::max())) {
         throw sqlite_exception{ "Sql statement too long" };
     }
 
@@ -52,7 +52,7 @@ sqlite_statement::result sqlite_statement::run(bool query)
 
 void sqlite_statement::bind(int i, const std::string & value)
 {
-    if (value.size() >= std::numeric_limits<int>::max()) {
+    if (value.size() >= static_cast<unsigned long long>(std::numeric_limits<int>::max())) {
         throw sqlite_exception{ "Content string to bind too long" };
     }
 
@@ -88,7 +88,7 @@ void sqlite_statement::bind(int i, sqlite3_int64 value)
 
 void sqlite_statement::bind(int i, unsigned value)
 {
-    if (value >= std::numeric_limits<int>::max()) {
+    if (value >= static_cast<unsigned long long>(std::numeric_limits<int>::max())) {
         throw sqlite_exception{ "Content unsigned int to bind too long" };
     }
 
@@ -100,7 +100,7 @@ void sqlite_statement::bind(int i, unsigned value)
 
 void sqlite_statement::bind(int i, unsigned long value)
 {
-    if (value >= std::numeric_limits<sqlite3_int64>::max()) {
+    if (value >= static_cast<unsigned long long>(std::numeric_limits<sqlite3_int64>::max())) {
         throw sqlite_exception{ "Content sqlite3_uint64 to bind too long" };
     }
 
@@ -112,7 +112,7 @@ void sqlite_statement::bind(int i, unsigned long value)
 
 void sqlite_statement::bind(int i, sqlite3_uint64 value)
 {
-    if (value >= std::numeric_limits<sqlite3_int64>::max()) {
+    if (value >= static_cast<unsigned long long>(std::numeric_limits<sqlite3_int64>::max())) {
         throw sqlite_exception{ "Content sqlite3_uint64 to bind too long" };
     }
 
@@ -124,7 +124,7 @@ void sqlite_statement::bind(int i, sqlite3_uint64 value)
 
 void sqlite_statement::bind(int i, const std::string_view & value)
 {
-    if (value.size() >= std::numeric_limits<int>::max()) {
+    if (value.size() >= static_cast<unsigned long long>(std::numeric_limits<int>::max())) {
         throw sqlite_exception{ "Content string_view to bind too long" };
     }
 

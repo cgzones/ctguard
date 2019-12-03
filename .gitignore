@@ -1,35 +1,7 @@
 # eclipse files
-.cproject
-.project
-.settings/
+/.cproject
+/.project
+/.settings/
 
-# object files
-*.o
-*.a
-*.d
-
-# binaries
-ctguard-diskscan
-ctguard-intervention
-ctguard-logscan
-ctguard-research
-logger_test
-sha256_test
-xml_test
-test.db
-
-# man pages
-docs/ctguard-diskscan.8
-docs/ctguard-intervention.8
-docs/ctguard-logscan.8
-docs/ctguard-research.8
-docs/diskscan.conf.5
-docs/intervention.conf.5
-docs/logscan.conf.5
-docs/research.conf.5
-docs/rules.xml.5
-
-# test things
-output.xml
-runner
-src/test/*.cc
+# build directories
+/build_*/

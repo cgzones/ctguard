@@ -2,26 +2,35 @@
 
 set -eu
 
+BIN=../../../src/logscan/ctguard-logscan
+if ! [ -e ${BIN} ]; then
+    echo "Could not find binary at '${BIN}'!"
+    exit 1
+fi
+
 cleanup () {
-  rm -f test.log test_timeout.log test.output test.pid test.state
+    rm -f test.log test_timeout.log test.output test.pid test.state
 }
 
 cleanup
 
+chmod 640 test.conf
 touch test.log test_timeout.log test.state
 
-../../../ctguard-logscan --cfg-file test.conf --unittest -f &
+${BIN} --cfg-file test.conf --unittest -f &
 pid=$!
-echo "daemon running with pid ${pid}\n"
+echo "Daemon running with pid ${pid}."
 
-sleep 1
+trap "kill -9 ${pid}" 0 2
+
+sleep 0.5
 
 #test normale logs
 echo "test" >> test.log
 echo "test2" >> test.log
 echo "test" >> test_timeout.log
 
-sleep 2
+sleep 1
 
 #test truncation1
 echo "" > test.log
@@ -44,13 +53,13 @@ echo "test5" >> test.log
 
 sleep 2
 
-pid2=`pidof ctguard-logscan`
-if [ "X${pid}" != "X${pid2}" ]; then
-  echo "daemon not running anymore!!\n${pid} vs ${pid2}\nFAILURE!!\n\n";
-  exit 1
+if ! ps -p ${pid} > /dev/null; then
+    echo "Daemon with pid ${pid} not running anymore!\nFAILURE!";
+    exit 1
 fi
 
 kill -INT ${pid}
+trap - 0 2
 
 sleep 2
 
@@ -59,4 +68,4 @@ diff -u test.output test.output.expected
 
 cleanup
 
-echo "\n\n\nsuccess!!!\n\n"
+echo "SUCCESS!"

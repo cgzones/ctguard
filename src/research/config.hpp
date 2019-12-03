@@ -23,6 +23,7 @@ struct research_config
     intervention_kind_t intervention_kind{ intervention_kind_t::SOCKET };
     priority_t log_priority{ 1 };
 
+    bool mail{ true };
     unsigned mail_interval{ 30 };
     unsigned mail_sample_time{ 1 };
     unsigned mail_max_sample_count{ 1000 };

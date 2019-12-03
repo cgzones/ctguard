@@ -2,32 +2,32 @@
 
 set -eu
 
+BIN=../../../src/diskscan/ctguard-diskscan
+if ! [ -e ${BIN} ]; then
+    echo "Could not find binary at '${BIN}'!"
+    exit 1
+fi
+
 umask 0022
-
-SCRIPT=$(readlink -f "$0")
-SCRIPTPATH=$(dirname "$SCRIPT")
-cd "$SCRIPTPATH"
-
-echo "TEST #2 START"
 
 cleanup () {
   rm -Rf test_dir/
-  rm -f test.db test.output test_diff.db
+  rm -f test.db test.output test.output.sorted test_diff.db
 }
 
 cleanup
+
+chmod 640 test.conf
 
 mkdir test_dir/
 echo "test" > test_dir/txt1.txt
 echo "test" > test_dir/txt3.txt
 
-if [ ! -x ../../../ctguard-diskscan ]; then
-	echo "TEST #2 Can not find executable!"
-	exit 1
-fi
-../../../ctguard-diskscan -c test.conf -x -f &
+${BIN} -c test.conf -x -f &
 pid=$!
-echo "TEST #2 Daemon running with pid ${pid}"
+echo "TDaemon running with pid ${pid}."
+
+trap "kill -9 ${pid}" 0 2
 
 sleep 2
 
@@ -57,13 +57,21 @@ echo "do4" >> test_dir/txt1.txt
 
 sleep 2
 
-kill -2 ${pid}
+if ! ps -p ${pid} > /dev/null; then
+    echo "diskscan daemon with pid ${pid} not running anymore!\nFAILURE!"
+    exit 1
+fi
+
+kill -INT ${pid}
+trap - 0 2
 
 sleep 2
 
-echo "TEST #2 Comapring expected vs actual output"
-diff -u test.expected test.output
+echo "Comapring expected vs actual output:"
+sed "s/ITEST_USER_REPLACEME/${USER}/g" test.expected.sample > test.expected
+sort test.output -o test.output.sorted
+diff -u test.expected test.output.sorted
 
 cleanup
 
-echo "TEST #2 success"
+echo "SUCCESS!"

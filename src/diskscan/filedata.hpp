@@ -7,7 +7,7 @@
 
 #include "../libs/sqlite/sqlitedb.hpp"
 
-#include "../external/sha2/sha2.h"
+#include <sha2.h>
 
 namespace ctguard::diskscan {
 

@@ -318,11 +318,12 @@ static void update_state(std::map<rule_id_t, struct rule_state> & rules_state, c
     }
 }
 
-static void check_top_rules(event & e, const std::vector<rule> & rules, unsigned short depth, std::map<rule_id_t, struct rule_state> & rules_state,
-                            bool verbose)
+static void check_top_rules(event & e, const std::vector<rule> & rules, unsigned depth, std::map<rule_id_t, struct rule_state> & rules_state, bool verbose)
 {
     std::vector<std::tuple<const rule *, std::vector<std::pair<std::string, std::string>>, std::vector<std::pair<std::string, std::string>>>>
       top_matching_rules;
+
+    // TODO: check for too big depth
 
     if (verbose)
         std::cout << "    Processing rules (#" << rules.size() << ") level " << depth << "\n";

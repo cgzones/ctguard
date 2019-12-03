@@ -33,7 +33,8 @@ using errorstack_t = std::pair<std::mutex, std::stack<std::exception_ptr>>;
 static std::atomic<bool> RUNNING{ true };
 static bool UNIT_TEST{ false };
 
-static void run_cmd(const int stdout_filedes[2], const int stderr_filedes[2], const intervention_action & action, const std::string & argument)
+__attribute__((noreturn)) static void run_cmd(const int stdout_filedes[2], const int stderr_filedes[2], const intervention_action & action,
+                                              const std::string & argument)
 {
     if (!UNIT_TEST) {
         if (::chdir("/") == -1) {

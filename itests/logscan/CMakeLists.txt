@@ -1,0 +1,12 @@
+file (COPY
+    test1
+    test2
+    test3
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+    )
+
+add_test (NAME Logscan1 COMMAND test.sh WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test1)
+add_test (NAME Logscan2 COMMAND test.sh WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test2)
+add_test (NAME Logscan3 COMMAND test.sh WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test3)
+
+set_tests_properties (Logscan1 Logscan2 Logscan3 PROPERTIES TIMEOUT 30 ENVIRONMENT TZ=UTC)

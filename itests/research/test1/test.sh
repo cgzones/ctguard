@@ -2,14 +2,21 @@
 
 set -eu
 
+BIN=../../../src/research/ctguard-research
+if ! [ -e ${BIN} ]; then
+    echo "Could not find binary at '${BIN}'!"
+    exit 1
+fi
+
 cleanup () {
-	rm -f test.output
+    rm -f test.output
 }
 
 cleanup
 
+chmod 640 rules.xml test.conf
 
-OUTPUT=$(../../../ctguard-research --cfg-file test.conf --input -f << EOF
+OUTPUT=$(${BIN} --cfg-file test.conf --input -f << EOF
 test
 test4
 4test
@@ -45,4 +52,4 @@ diff -u test.output.expected test.output
 
 cleanup
 
-echo "\n\n\nsuccess!!!\n\n"
+echo "SUCCESS!"

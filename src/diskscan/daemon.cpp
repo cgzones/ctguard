@@ -53,6 +53,9 @@ static libs::source_event log_2_se(std::string source, bool control, std::string
 {
     libs::source_event se;
     se.control_message = control;
+    if (UNIT_TEST) {
+        std::replace(message.begin(), message.end(), '\n', ' ');
+    }
     se.message = std::move(message);
     se.source_domain = std::move(source);
     se.source_program = "ctguard-diskscan";
@@ -199,7 +202,7 @@ static void watch_task(const diskscan_config & cfg, libs::blocked_queue<std::tup
             for (const auto & i : watches) {
                 if (::inotify_rm_watch(in, i.first) == -1) {
                     FILE_LOG(libs::log_level::WARNING) << "Can not cleanup delete watch " << i.first << " for '" << i.second << "': " << ::strerror(errno);
-                };
+                }
             }
         } };
 
@@ -243,9 +246,12 @@ static void watch_task(const diskscan_config & cfg, libs::blocked_queue<std::tup
 
             FILE_LOG(libs::log_level::DEBUG4) << "wt: Inotify data read: " << length << " [" << EVENT_SIZE << "]";
 
-            for (ssize_t i = 0; i < length;) {
-                const struct inotify_event * event = reinterpret_cast<struct inotify_event *>(&buffer[i]);
-                i += EVENT_SIZE + event->len;
+            for (std::size_t len = 0; len < static_cast<std::size_t>(length);) {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-align"
+                const struct inotify_event * event = reinterpret_cast<struct inotify_event *>(&buffer[len]);
+#pragma GCC diagnostic pop
+                len += EVENT_SIZE + event->len;
 
                 if (event->mask == IN_IGNORED) {
                     FILE_LOG(libs::log_level::DEBUG2) << "wt: Ignore event due to IN_IGNORED flag";

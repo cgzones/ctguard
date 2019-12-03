@@ -103,17 +103,20 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
         throw libs::lib_exception{ "Expected root 'rule_group' node, got '" + root.name() + "'" };
     }
 
-    for (auto const & attr : root.attributes()) {
-        throw libs::lib_exception{ "Invalid attribute for root node: '" + attr.first + "'" };
+    if (!root.attributes().empty()) {
+        const auto & attr = root.attributes().cbegin();
+        throw libs::lib_exception{ "Invalid attribute for root node: '" + attr->first + "'" };
     }
 
     for (auto const & node : root.children()) {
         if (node.name() == "group") {
-            for (auto const & attr : node.attributes()) {
-                throw libs::lib_exception{ "Invalid attribute for group node: '" + attr.first + "'" };
+            if (!node.attributes().empty()) {
+                const auto & attr = node.attributes().cbegin();
+                throw libs::lib_exception{ "Invalid attribute for group node: '" + attr->first + "'" };
             }
-            for (auto const & sub_node : node.children()) {
-                throw libs::lib_exception{ "Invalid child for group node: '" + sub_node.name() + "'" };
+            if (!node.children().empty()) {
+                const auto & sub_node = node.children().cbegin();
+                throw libs::lib_exception{ "Invalid child for group node: '" + sub_node->name() + "'" };
             }
             std::string v{ trim(node.value()) };
             if (v.empty()) {
@@ -125,11 +128,13 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
             rules.groups.insert(std::move(v));
 
         } else if (node.name() == "intervention") {
-            for (auto const & attr : node.attributes()) {
-                throw libs::lib_exception{ "Invalid attribute for intervention node: '" + attr.first + "'" };
+            if (!node.attributes().empty()) {
+                const auto & attr = node.attributes().cbegin();
+                throw libs::lib_exception{ "Invalid attribute for intervention node: '" + attr->first + "'" };
             }
-            for (auto const & sub_node : node.children()) {
-                throw libs::lib_exception{ "Invalid child for intervention node: '" + sub_node.name() + "'" };
+            if (!node.children().empty()) {
+                const auto & sub_node = node.children().cbegin();
+                throw libs::lib_exception{ "Invalid child for intervention node: '" + sub_node->name() + "'" };
             }
             std::string v{ trim(node.value()) };
             if (v.empty()) {
@@ -152,14 +157,16 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
 
             for (auto const & sub_node : node.children()) {
                 if (sub_node.name() == "regex") {
-                    for (auto const & attr : sub_node.attributes()) {
-                        throw libs::lib_exception{ "Invalid attribute for format node: '" + attr.first + "'" };
+                    if (!sub_node.attributes().empty()) {
+                        const auto & attr = sub_node.attributes().cbegin();
+                        throw libs::lib_exception{ "Invalid attribute for format node: '" + attr->first + "'" };
                     }
                     ireg += sub_node.value();
 
                 } else if (sub_node.name() == "fields") {
-                    for (auto const & attr : sub_node.attributes()) {
-                        throw libs::lib_exception{ "Invalid attribute for fields node: '" + attr.first + "'" };
+                    if (!sub_node.attributes().empty()) {
+                        const auto & attr = sub_node.attributes().cbegin();
+                        throw libs::lib_exception{ "Invalid attribute for fields node: '" + attr->first + "'" };
                     }
 
                     const std::string & fields_str = sub_node.value();
@@ -223,15 +230,17 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
 
             for (auto const & sub_node : node.children()) {
                 if (sub_node.name() == "regex") {
-                    for (auto const & attr : sub_node.attributes()) {
-                        throw libs::lib_exception{ "Invalid attribute for regex node: '" + attr.first + "'" };
+                    if (!sub_node.attributes().empty()) {
+                        const auto & attr = sub_node.attributes().cbegin();
+                        throw libs::lib_exception{ "Invalid attribute for regex node: '" + attr->first + "'" };
                     }
                     ireg += sub_node.value();
                 }
 
                 else if (sub_node.name() == "fields") {
-                    for (auto const & attr : sub_node.attributes()) {
-                        throw libs::lib_exception{ "Invalid attribute for fields node: '" + attr.first + "'" };
+                    if (!sub_node.attributes().empty()) {
+                        const auto & attr = sub_node.attributes().cbegin();
+                        throw libs::lib_exception{ "Invalid attribute for fields node: '" + attr->first + "'" };
                     }
 
                     const std::string & fields_str = sub_node.value();
@@ -247,15 +256,17 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
                 }
 
                 else if (sub_node.name() == "description") {
-                    for (auto const & attr : sub_node.attributes()) {
-                        throw libs::lib_exception{ "Invalid attribute for description node: '" + attr.first + "'" };
+                    if (!sub_node.attributes().empty()) {
+                        const auto & attr = sub_node.attributes().cbegin();
+                        throw libs::lib_exception{ "Invalid attribute for description node: '" + attr->first + "'" };
                     }
                     ex.m_description += sub_node.value();
                 }
 
                 else if (sub_node.name() == "if_rule") {
-                    for (auto const & attr : sub_node.attributes()) {
-                        throw libs::lib_exception{ "Invalid attribute for if_rule node: '" + attr.first + "'" };
+                    if (!sub_node.attributes().empty()) {
+                        const auto & attr = sub_node.attributes().cbegin();
+                        throw libs::lib_exception{ "Invalid attribute for if_rule node: '" + attr->first + "'" };
                     }
 
                     try {
@@ -287,8 +298,9 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
                 }
 
                 else if (sub_node.name() == "group") {
-                    for (auto const & attr : sub_node.attributes()) {
-                        throw libs::lib_exception{ "Invalid attribute for group node: '" + attr.first + "'" };
+                    if (!sub_node.attributes().empty()) {
+                        const auto & attr = sub_node.attributes().cbegin();
+                        throw libs::lib_exception{ "Invalid attribute for group node: '" + attr->first + "'" };
                     }
                     const std::string & group_str = sub_node.value();
 
@@ -302,8 +314,9 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
                 }
 
                 else if (sub_node.name() == "if_group") {
-                    for (auto const & attr : sub_node.attributes()) {
-                        throw libs::lib_exception{ "Invalid attribute for if_group node: '" + attr.first + "'" };
+                    if (!sub_node.attributes().empty()) {
+                        const auto & attr = sub_node.attributes().cbegin();
+                        throw libs::lib_exception{ "Invalid attribute for if_group node: '" + attr->first + "'" };
                     }
                     ex.m_trigger_group = sub_node.value();
                 }
@@ -384,8 +397,9 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
                 }
 
                 else if (sub_node.name() == "same_field") {
-                    for (auto const & attr : sub_node.attributes()) {
-                        throw libs::lib_exception{ "Invalid attribute for same_field node: '" + attr.first + "'" };
+                    if (!sub_node.attributes().empty()) {
+                        const auto & attr = sub_node.attributes().cbegin();
+                        throw libs::lib_exception{ "Invalid attribute for same_field node: '" + attr->first + "'" };
                     }
                     ex.m_same_field = sub_node.value();
                 }

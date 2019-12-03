@@ -3,13 +3,13 @@ Priority:  4
 Info:      test rule [1]
 Log:       test
 Traits:
+                        control : false
                          format : unknown
-                 source_program : ctguard-logscan
                        hostname : unittest
                   source_domain : input.log
-                        control : false
-                   time_scanned : Thu Jan  1 01:00:00 1970 CET
-                      time_send : Thu Jan  1 01:00:01 1970 CET
+                 source_program : ctguard-logscan
+                   time_scanned : Thu Jan  1 00:00:00 1970 UTC
+                      time_send : Thu Jan  1 00:00:01 1970 UTC
 ALERT END
 
 ALERT START
@@ -17,13 +17,13 @@ Priority:  4
 Info:      test rule [1]
 Log:       test2
 Traits:
+                        control : false
                          format : unknown
-                 source_program : ctguard-logscan
                        hostname : unittest
                   source_domain : input.log
-                        control : false
-                   time_scanned : Thu Jan  1 01:00:00 1970 CET
-                      time_send : Thu Jan  1 01:00:01 1970 CET
+                 source_program : ctguard-logscan
+                   time_scanned : Thu Jan  1 00:00:00 1970 UTC
+                      time_send : Thu Jan  1 00:00:01 1970 UTC
 ALERT END
 
 ALERT START
@@ -31,13 +31,13 @@ Priority:  4
 Info:      test rule [1]
 Log:       test
 Traits:
+                        control : false
                          format : unknown
-                 source_program : ctguard-logscan
                        hostname : unittest
                   source_domain : input.log
-                        control : false
-                   time_scanned : Thu Jan  1 01:00:00 1970 CET
-                      time_send : Thu Jan  1 01:00:01 1970 CET
+                 source_program : ctguard-logscan
+                   time_scanned : Thu Jan  1 00:00:00 1970 UTC
+                      time_send : Thu Jan  1 00:00:01 1970 UTC
 ALERT END
 
 ALERT START
@@ -45,12 +45,12 @@ Priority:  8
 Info:      No test2 after test [3]
 Log:       test
 Traits:
+                        control : false
                          format : unknown
-                 source_program : ctguard-logscan
                        hostname : unittest
                   source_domain : input.log
-                        control : false
-                   time_scanned : Thu Jan  1 01:00:00 1970 CET
-                      time_send : Thu Jan  1 01:00:01 1970 CET
+                 source_program : ctguard-logscan
+                   time_scanned : Thu Jan  1 00:00:00 1970 UTC
+                      time_send : Thu Jan  1 00:00:01 1970 UTC
 ALERT END
 

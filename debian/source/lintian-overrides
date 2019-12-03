@@ -1,0 +1,2 @@
+# examples from bundled dependency
+ctguard source: package-does-not-install-examples src/external/dtl-master/examples/

@@ -2,23 +2,38 @@
 
 set -eu
 
+BIN_RESEARCH=../../../src/research/ctguard-research
+if ! [ -e ${BIN_RESEARCH} ]; then
+    echo "Could not find binary at '${BIN_RESEARCH}'!"
+    exit 1
+fi
+
+BIN_LOGSCAN=../../../src/logscan/ctguard-logscan
+if ! [ -e ${BIN_LOGSCAN} ]; then
+    echo "Could not find binary at '${BIN_LOGSCAN}'!"
+    exit 1
+fi
+
 cleanup () {
-  rm -f logscan.state input.log alerts.log research.sock intervention.log
+    rm -f logscan.state input.log alerts.log research.sock intervention.log
 }
 
 cleanup
 
+chmod 640 logscan.conf research.conf rules.xml
 touch input.log
 
-../../../ctguard-research --cfg-file research.conf -f -x &
+${BIN_RESEARCH} --cfg-file research.conf -f -x &
 research_pid=$!
-echo "research daemon running with pid ${research_pid}\n"
+echo "research daemon running with pid ${research_pid}."
 
 sleep 1
 
-../../../ctguard-logscan --cfg-file logscan.conf -f -x &
+${BIN_LOGSCAN} --cfg-file logscan.conf -f -x &
 logscan_pid=$!
-echo "logscan daemon running with pid ${logscan_pid}\n"
+echo "logscan daemon running with pid ${logscan_pid}."
+
+trap "kill -9 ${research_pid}; kill -9 ${logscan_pid}" 0 2
 
 sleep 1
 
@@ -26,21 +41,20 @@ echo "Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed fo
 
 sleep 4
 
-logscan_pid2=`pidof ctguard-logscan`
-if [ "X${logscan_pid}" != "X${logscan_pid2}" ]; then
-  echo "logscan daemon not running anymore!!\n'${logscan_pid}' vs '${logscan_pid2}'\nFAILURE!!\n\n";
-  exit 1
+if ! ps -p ${logscan_pid} > /dev/null; then
+    echo "logscan daemon with pid ${logscan_pid} not running anymore!\nFAILURE!\n"
+    exit 1
 fi
 
 kill -INT ${logscan_pid}
 
-research_pid2=`pidof ctguard-research`
-if [ "X${research_pid}" != "X${research_pid2}" ]; then
-  echo "research daemon not running anymore!!\n'${research_pid}' vs '${research_pid2}'\nFAILURE!!\n\n";
-  exit 1
+if ! ps -p ${research_pid} > /dev/null; then
+    echo "research daemon with pid ${research_pid} not running anymore!\nFAILURE!\n"
+    exit 1
 fi
 
 kill -INT ${research_pid}
+trap - 0 2
 
 sleep 2
 
@@ -52,4 +66,4 @@ diff -u test.intervention.expected intervention.log
 
 cleanup
 
-echo "\n\n\nsuccess!!!\n\n"
+echo "SUCCESS!"

@@ -18,7 +18,7 @@ class sink
     virtual void send(const libs::intervention_cmd & cmd) = 0;
 };
 
-class file_sink : public sink
+class file_sink final : public sink
 {
   public:
     explicit file_sink(const std::string & path);
@@ -28,7 +28,7 @@ class file_sink : public sink
     std::ofstream m_out;
 };
 
-class socket_sink : public sink
+class socket_sink final : public sink
 {
   public:
     socket_sink(std::string path);

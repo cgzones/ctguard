@@ -1,0 +1,3 @@
+// the configured options and settings for Tutorial
+#define CTGUARD_VERSION_MAJOR @ctguard_VERSION_MAJOR@
+#define CTGUARD_VERSION_MINOR @ctguard_VERSION_MINOR@

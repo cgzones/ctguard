@@ -7,18 +7,18 @@ ctguard-research
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian)' ...
     Format (#1) ...  syslog matching
       Traits:
+        control -> false
         format -> syslog
-        source_program -> 
         hostname -> 
         source_domain -> 
-        control -> false
-        time_scanned -> Thu Jan  1 01:00:00 1970 CET
-        time_send -> Thu Jan  1 01:00:00 1970 CET
+        source_program -> 
+        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
+        time_send -> Thu Jan  1 00:00:00 1970 UTC
       Extracted fields:
-        log -> ##password check failed for user (christian)##
         domain -> ##unix_chkpwd##
-        timestamp -> ##Sep 24 12:10:03##
         hostname -> ##desktopdebian##
+        log -> ##password check failed for user (christian)##
+        timestamp -> ##Sep 24 12:10:03##
       Groups: 
       Priority: 0
     Processing rules (#1) level 1
@@ -34,19 +34,19 @@ ctguard-research
     Processing rules (#0) level 3
     Matching level 3 rule: 0
       Traits:
+        control -> ##false##
         format -> ##syslog##
-        source_program -> ####
         hostname -> ####
         source_domain -> ####
-        control -> ##false##
-        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
-        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-        username -> ##christian##
-        log -> ##password check failed for user (christian)##
         domain -> ##unix_chkpwd##
-        timestamp -> ##Sep 24 12:10:03##
         hostname -> ##desktopdebian##
+        log -> ##password check failed for user (christian)##
+        timestamp -> ##Sep 24 12:10:03##
+        username -> ##christian##
       Groups: authentication_failure system 
       Priority: 4
     Checking group rules...
@@ -54,19 +54,19 @@ ctguard-research
     Checking level 1 rule 3 ...init rstate|full match: false(true && false)
     Matching level 1 rule: 0
       Traits:
+        control -> ##false##
         format -> ##syslog##
-        source_program -> ####
         hostname -> ####
         source_domain -> ####
-        control -> ##false##
-        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
-        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-        username -> ##christian##
-        log -> ##password check failed for user (christian)##
         domain -> ##unix_chkpwd##
-        timestamp -> ##Sep 24 12:10:03##
         hostname -> ##desktopdebian##
+        log -> ##password check failed for user (christian)##
+        timestamp -> ##Sep 24 12:10:03##
+        username -> ##christian##
       Groups: authentication_failure system 
       Priority: 4
   End extracting.
@@ -81,18 +81,18 @@ Would create alert with priority 4.
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (root)' ...
     Format (#1) ...  syslog matching
       Traits:
+        control -> false
         format -> syslog
-        source_program -> 
         hostname -> 
         source_domain -> 
-        control -> false
-        time_scanned -> Thu Jan  1 01:00:00 1970 CET
-        time_send -> Thu Jan  1 01:00:00 1970 CET
+        source_program -> 
+        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
+        time_send -> Thu Jan  1 00:00:00 1970 UTC
       Extracted fields:
-        log -> ##password check failed for user (root)##
         domain -> ##unix_chkpwd##
-        timestamp -> ##Sep 24 12:10:03##
         hostname -> ##desktopdebian##
+        log -> ##password check failed for user (root)##
+        timestamp -> ##Sep 24 12:10:03##
       Groups: 
       Priority: 0
     Processing rules (#1) level 1
@@ -108,19 +108,19 @@ Would create alert with priority 4.
     Processing rules (#0) level 3
     Matching level 3 rule: 0
       Traits:
+        control -> ##false##
         format -> ##syslog##
-        source_program -> ####
         hostname -> ####
         source_domain -> ####
-        control -> ##false##
-        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
-        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-        username -> ##root##
-        log -> ##password check failed for user (root)##
         domain -> ##unix_chkpwd##
-        timestamp -> ##Sep 24 12:10:03##
         hostname -> ##desktopdebian##
+        log -> ##password check failed for user (root)##
+        timestamp -> ##Sep 24 12:10:03##
+        username -> ##root##
       Groups: authentication_failure system 
       Priority: 4
     Checking group rules...
@@ -128,19 +128,19 @@ Would create alert with priority 4.
     Checking level 1 rule 3 ...inactive_s(1/2)|full match: false(true && false)
     Matching level 1 rule: 0
       Traits:
+        control -> ##false##
         format -> ##syslog##
-        source_program -> ####
         hostname -> ####
         source_domain -> ####
-        control -> ##false##
-        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
-        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-        username -> ##root##
-        log -> ##password check failed for user (root)##
         domain -> ##unix_chkpwd##
-        timestamp -> ##Sep 24 12:10:03##
         hostname -> ##desktopdebian##
+        log -> ##password check failed for user (root)##
+        timestamp -> ##Sep 24 12:10:03##
+        username -> ##root##
       Groups: authentication_failure system 
       Priority: 4
   End extracting.
@@ -155,18 +155,18 @@ Would create alert with priority 4.
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian)' ...
     Format (#1) ...  syslog matching
       Traits:
+        control -> false
         format -> syslog
-        source_program -> 
         hostname -> 
         source_domain -> 
-        control -> false
-        time_scanned -> Thu Jan  1 01:00:00 1970 CET
-        time_send -> Thu Jan  1 01:00:00 1970 CET
+        source_program -> 
+        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
+        time_send -> Thu Jan  1 00:00:00 1970 UTC
       Extracted fields:
-        log -> ##password check failed for user (christian)##
         domain -> ##unix_chkpwd##
-        timestamp -> ##Sep 24 12:10:03##
         hostname -> ##desktopdebian##
+        log -> ##password check failed for user (christian)##
+        timestamp -> ##Sep 24 12:10:03##
       Groups: 
       Priority: 0
     Processing rules (#1) level 1
@@ -182,19 +182,19 @@ Would create alert with priority 4.
     Processing rules (#0) level 3
     Matching level 3 rule: 0
       Traits:
+        control -> ##false##
         format -> ##syslog##
-        source_program -> ####
         hostname -> ####
         source_domain -> ####
-        control -> ##false##
-        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
-        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-        username -> ##christian##
-        log -> ##password check failed for user (christian)##
         domain -> ##unix_chkpwd##
-        timestamp -> ##Sep 24 12:10:03##
         hostname -> ##desktopdebian##
+        log -> ##password check failed for user (christian)##
+        timestamp -> ##Sep 24 12:10:03##
+        username -> ##christian##
       Groups: authentication_failure system 
       Priority: 4
     Checking group rules...
@@ -206,22 +206,22 @@ Would create alert with priority 4.
     Processing rules (#0) level 2
     Matching level 2 rule: 0
       Traits:
+        control -> ##false##
         format -> ##syslog##
-        source_program -> ####
         hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
         trigger_same_logs -> ##Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian)
 Sep 24 12:10:03 desktopdebian unix_chkpwd[12490]: password check failed for user (christian)
 ##
-        source_domain -> ####
-        control -> ##false##
-        time_scanned -> ##Thu Jan  1 01:00:00 1970 CET##
-        time_send -> ##Thu Jan  1 01:00:00 1970 CET##
       Extracted fields:
-        username -> ##christian##
-        log -> ##password check failed for user (christian)##
         domain -> ##unix_chkpwd##
-        timestamp -> ##Sep 24 12:10:03##
         hostname -> ##desktopdebian##
+        log -> ##password check failed for user (christian)##
+        timestamp -> ##Sep 24 12:10:03##
+        username -> ##christian##
       Groups: authentication_failure system 
       Priority: 8
   End extracting.

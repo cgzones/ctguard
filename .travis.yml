@@ -1,37 +1,155 @@
+git:
+  depth: 3
+
+
 language: cpp
 
-dist: xenial
-#sudo: required
+
+dist: bionic
+os: linux
 
 
-compiler:
-  - gcc
-  #- clang
+jobs:
+  include:
+    - name: "GCC 7"
+      compiler: gcc
+      env:
+        - CC=gcc-7
+        - CXX=g++-7
+      addons:
+        apt:
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"
+          packages:
+            - gcc-7
+            - g++-7
+            - asciidoctor
+            - libcereal-dev
+    - name: "GCC 8"
+      compiler: gcc
+      env:
+        - CC=gcc-8
+        - CXX=g++-8
+      addons:
+        apt:
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"
+          packages:
+            - gcc-8
+            - g++-8
+            - asciidoctor
+            - libcereal-dev
+    - name: "GCC 9"
+      compiler: gcc
+      env:
+        - CC=gcc-9
+        - CXX=g++-9
+      addons:
+        apt:
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"
+          packages:
+            - gcc-9
+            - g++-9
+            - asciidoctor
+            - libcereal-dev
+    - name: "Clang 5"
+      compiler: clang
+      env:
+        - CC=clang-5.0
+        - CXX=clang++-5.0
+      addons:
+        apt:
+          sources:
+            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-5-0 main'
+              key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+          packages:
+            - clang-5.0
+            - asciidoctor
+            - libcereal-dev
+    - name: "Clang 6"
+      compiler: clang
+      env:
+        - CC=clang-6.0
+        - CXX=clang++-6.0
+      addons:
+        apt:
+          sources:
+            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-6.0 main'
+              key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+          packages:
+            - clang-6.0
+            - asciidoctor
+            - libcereal-dev
+    - name: "Clang 7"
+      compiler: clang
+      env:
+        - CC=clang-7
+        - CXX=clang++-7
+      addons:
+        apt:
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"
+          packages:
+            - clang-7
+            - asciidoctor
+            - libcereal-dev
+    - name: "Clang 8"
+      compiler: clang
+      env:
+        - CC=clang-8
+        - CXX=clang++-8
+      addons:
+        apt:
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"
+          packages:
+            - clang-8
+            - asciidoctor
+            - libcereal-dev
+    - name: "Clang 9"
+      compiler: clang
+      env:
+        - CC=clang-9
+        - CXX=clang++-9
+      addons:
+        apt:
+          sources:
+            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
+              key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+          packages:
+            - clang-9
+            - asciidoctor
+            - libcereal-dev
 
-addons:
-  apt:
-    sources:
-      - sourceline: 'ppa:ubuntu-toolchain-r/test'
-      #- sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main'
-    packages:
-      - g++-7
-      #- clang-6.0
-      #- asciidoctor
 
-before_install:
-  #- sudo gem install asciidoctor
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-7" CC="gcc-7"; fi
-  #- if [ "$CXX" = "clang++" ]; then export CXX="clang++-5.0" CC="clang-5.0"; fi
+install:
+  # Download and install cmake
+  - curl -L https://github.com/Kitware/CMake/releases/download/v3.13.5/cmake-3.13.5-Linux-x86_64.tar.gz -o cmake-3.13.5-Linux-x86_64.tar.gz
+  - tar xf cmake-3.13.5-Linux-x86_64.tar.gz
+  - export PATH=${PWD}/cmake-3.13.5-Linux-x86_64/bin:${PATH}
+
 
 script:
-  - echo "$CC"
+  - cmake --version
   - $CC --version
-  - echo "$CXX"
   - $CXX --version
+  - asciidoctor --version
 
-  - make USERMODE=1 binaries
+  - mkdir build/ && cd build/
+  - cmake -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ../
+  - make
+  - CTEST_OUTPUT_ON_FAILURE=1 make test
+  - DESTDIR=${TRAVIS_BUILD_DIR}/test_install make install
 
-after_success:
-  - ./ctguard-research --version
 
-  - ./itests/run_all.sh
+#after_success:
+  #- ./ctguard-research --version
+
+  #- ./itests/run_all.sh
+
+
+notifications:
+  email:
+    on_success: always
+    on_failure: always

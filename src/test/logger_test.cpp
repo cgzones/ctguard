@@ -12,7 +12,7 @@ static void produce(int id)
                                                   << "456"
                                                   << "789" << ' ' << id;
 
-        usleep(random() % 100);
+        usleep(static_cast<unsigned>(static_cast<unsigned long>(random()) % 100));
     }
 }
 

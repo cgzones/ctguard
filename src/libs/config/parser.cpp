@@ -21,7 +21,7 @@ config_group parser::parse_group(std::string name, std::string keyword, bool nee
         position start_pos = m_lexer.get_prev_position();
         token t{ m_lexer.get() };
 
-        if (t.get_type() == token::type::string || t.get_type() == token::type::identifier) {
+        if (t.get_type() == token::type_t::string || t.get_type() == token::type_t::identifier) {
             std::string new_name{ t.get_content() };
 
             {
@@ -38,7 +38,7 @@ config_group parser::parse_group(std::string name, std::string keyword, bool nee
                     throw parse_exception{ t.get_position(), "can not insert configgroup '" + new_name + "'" };
                 }
                 continue;
-            } else if (t.get_type() == token::type::string || t.get_type() == token::type::identifier) {
+            } else if (t.get_type() == token::type_t::string || t.get_type() == token::type_t::identifier) {
                 std::string new_keyword{ t.get_content() };
                 const token & tp = m_lexer.peek();
                 if (tp == '{') {
@@ -77,14 +77,14 @@ config_group parser::parse_group(std::string name, std::string keyword, bool nee
 
             t = m_lexer.get();
             const auto t_line = t.get_position().line_number();
-            if (t.get_type() != token::type::string && t.get_type() != token::type::identifier && t.get_type() != token::type::integer) {
+            if (t.get_type() != token::type_t::string && t.get_type() != token::type_t::identifier && t.get_type() != token::type_t::integer) {
                 throw parse_exception{ t.get_position(), "expected a value instead of '" + t.get_content() + '\'' };
             }
             std::vector<std::string> options;
             options.emplace_back(std::move(t.get_content()));
 
             const token & tp = m_lexer.peek();
-            while ((tp.get_type() == token::type::string || tp.get_type() == token::type::identifier || tp.get_type() == token::type::integer) &&
+            while ((tp.get_type() == token::type_t::string || tp.get_type() == token::type_t::identifier || tp.get_type() == token::type_t::integer) &&
                    tp.get_position().line_number() == t_line) {
                 t = m_lexer.get();
                 options.emplace_back(std::move(t.get_content()));
@@ -101,7 +101,7 @@ config_group parser::parse_group(std::string name, std::string keyword, bool nee
         if (need_close && t == '}')
             return cg;
 
-        if (t.get_type() == token::type::eof) {
+        if (t.get_type() == token::type_t::eof) {
             if (need_close) {
                 throw parse_exception{ t.get_position(), "config group '" + cg.name() + "' not closed" };
             }
