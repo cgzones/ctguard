@@ -36,8 +36,8 @@ clean-deb:
 
 
 format:
-	find src/ -path src/external -prune -iname *.h -o -iname *.hpp -o -iname *.cpp -exec clang-format -i {} \;
+	find src/ -path src/external -prune -o \( -iname '*.h' -o -iname '*.hpp' -o -iname '*.cpp' \) -execdir clang-format -i {} \;
 
 
 cppcheck:
-	cppcheck --enable=all --error-exitcode=2 --force --inconclusive -j 4 --library=std.cfg --library=posix.cfg --std=c++17 --quiet --template=cppcheck1 -i src/external/ src/
+	cppcheck --enable=all --error-exitcode=2 --force --inconclusive -j 4 --library=std.cfg --library=posix.cfg --std=c++17 --quiet --inline-suppr --template=cppcheck1 -i src/external/ src/

@@ -142,12 +142,7 @@ research_config parse_config(const std::string & cfg_path)
                     throw std::out_of_range{ "Invalid number of arguments for configuration " + a.first +
                                              " given: " + std::to_string(a.second.options.size()) };
                 }
-
-                try {
-                    cfg.mail_port = libs::parse_integral<unsigned short>(a.second.options[0]);
-                } catch (std::exception & e) {
-                    throw std::out_of_range{ "Invalid argument '" + a.second.options[0] + "' for configuration " + a.first + " given: " + e.what() };
-                }
+                cfg.mail_port = a.second.options[0];
 
             } else if (a.first == "mail_host") {
                 if (a.second.options.size() != 1) {

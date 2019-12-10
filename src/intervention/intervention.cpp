@@ -10,7 +10,6 @@
 #include <chrono>
 #include <cstdlib>
 #include <ctime>
-#include <dirent.h>
 #include <fcntl.h>
 #include <fstream>
 #include <getopt.h>

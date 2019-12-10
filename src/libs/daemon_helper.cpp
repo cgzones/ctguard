@@ -101,6 +101,7 @@ void daemonize(const std::string & pidfile, const std::string & user, const std:
     }
 
     if (!group.empty()) {
+        // cppcheck-suppress getgrnamCalled
         const struct group * grp = ::getgrnam(group.c_str());
         if (!grp) {
             FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not find group '" << group << "': " << ::strerror(errno);
@@ -114,6 +115,7 @@ void daemonize(const std::string & pidfile, const std::string & user, const std:
     }
 
     if (!user.empty()) {
+        // cppcheck-suppress getpwnamCalled
         const struct passwd * pw = ::getpwnam(user.c_str());
         if (!pw) {
             FILE_LOG(ctguard::libs::log_level::ERROR) << "Can not find user '" << user << "': " << ::strerror(errno);

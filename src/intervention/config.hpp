@@ -28,7 +28,7 @@ struct intervention_config
     std::vector<intervention_action> actions;
 };
 
-[[nodiscard]] intervention_config parse_config(const std::string & cfg_file);
+[[nodiscard]] intervention_config parse_config(const std::string & cfg_path);
 
 std::ostream & operator<<(std::ostream & out, const intervention_config & cfg);
 

@@ -74,7 +74,7 @@ void sqlite_statement::bind(int i, long value)
 {
     int ret;
     if ((ret = sqlite3_bind_int64(m_statment.get(), i, value)) != SQLITE_OK) {
-        throw sqlite_exception{ "Can not bind long value to statement: " };
+        throw sqlite_exception{ "Can not bind long value to statement: " + std::to_string(ret) };
     }
 }
 

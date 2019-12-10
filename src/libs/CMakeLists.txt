@@ -16,6 +16,8 @@ add_library (libs STATIC
                          libexception.hpp
                          logger.hpp
                          parsehelper.hpp
+                         safe_utilities.cpp
+                         safe_utilities.hpp
                          scopeguard.hpp
                          source_event.hpp
                          unix_socket_client.cpp

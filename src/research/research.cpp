@@ -3,6 +3,7 @@
 #include "../libs/check_file_perms.hpp"
 #include "../libs/config/parser.hpp"
 #include "../libs/errnoexception.hpp"
+#include "../libs/filesystem/directory.hpp"
 #include "../libs/logger.hpp"
 #include "../libs/scopeguard.hpp"
 #include "../libs/source_event.hpp"
@@ -179,23 +180,20 @@ int main(int argc, char ** argv)
                 std::set<std::string> files;
 
                 check_cfg_file_perms(cfg.rules_directory);
-                DIR * dp = ::opendir(cfg.rules_directory.c_str());
-                if (dp == nullptr) {
-                    throw errno_exception{ "Can not open directory" };
-                }
-                scope_guard close_dir{ [&]() { ::closedir(dp); } };
 
-                struct dirent * entry;
-                while ((entry = readdir(dp))) {
-                    if (entry->d_type != DT_REG) {
-                        continue;
-                    }
-                    if (entry->d_name[0] == '.') {
+                filesystem::directory dir{ cfg.rules_directory };
+
+                for (const filesystem::file_object e : dir) {
+                    if (!e.is_reg()) {
                         continue;
                     }
 
-                    files.insert(cfg.rules_directory[cfg.rules_directory.length() - 1] == '/' ? cfg.rules_directory + entry->d_name
-                                                                                              : cfg.rules_directory + '/' + entry->d_name);
+                    if (e.is_hidden()) {
+                        continue;
+                    }
+
+                    files.insert(cfg.rules_directory[cfg.rules_directory.length() - 1] == '/' ? cfg.rules_directory + e.name()
+                                                                                              : cfg.rules_directory + '/' + e.name());
                 }
 
                 for (const auto & f : files) {

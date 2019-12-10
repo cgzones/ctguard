@@ -488,6 +488,7 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
                 }
             }
             for (const auto & i : ex.m_parent_ids) {
+                // cppcheck-suppress useStlAlgorithm
                 if (i == ex.m_id) {
                     throw libs::lib_exception{ "Invalid if_rule id '" + std::to_string(i) + "' in rule " + std::to_string(ex.m_id) };
                 }

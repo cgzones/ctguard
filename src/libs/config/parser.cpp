@@ -50,6 +50,7 @@ config_group parser::parse_group(std::string name, std::string keyword, bool nee
                     bool found = false;
                     position found_pos{ 0, 0 };
                     for (const auto & sg : cg.subgroups()) {
+                        // cppcheck-suppress useStlAlgorithm
                         if (sg.keyword() == new_keyword) {
                             found = true;
                             found_pos = sg.pos();

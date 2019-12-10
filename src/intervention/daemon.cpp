@@ -115,6 +115,7 @@ static void processing_task(libs::blocked_queue<std::pair<libs::intervention_cmd
 
             const intervention_action * matching_action = nullptr;
             for (const auto & action : cfg.actions) {
+                // cppcheck-suppress useStlAlgorithm
                 if (action.name == icmd.name) {
                     matching_action = &action;
                     break;
@@ -144,6 +145,7 @@ static void processing_task(libs::blocked_queue<std::pair<libs::intervention_cmd
             {
                 bool found = false;
                 for (const auto & wl : matching_action->whitelist) {
+                    // cppcheck-suppress useStlAlgorithm
                     if (icmd.argument == wl) {
                         FILE_LOG(libs::log_level::INFO)
                           << "Not running intervention '" << icmd.name << "', cause argument '" << icmd.argument << "' is whitelisted";

@@ -12,6 +12,7 @@
 
 #include "../libs/errnoexception.hpp"
 #include "../libs/logger.hpp"
+#include "../libs/safe_utilities.hpp"
 #include "../libs/scopeguard.hpp"
 #include <dtl/dtl.hpp>
 
@@ -73,22 +74,22 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
     fd.m_exists = true;
 
     {
-        const struct passwd * user_tmp = ::getpwuid(s.st_uid);
-        if (user_tmp == nullptr) {
-            FILE_LOG(libs::log_level::ERROR) << "Can not get user information for uid '" << s.st_uid << "': " << ::strerror(errno);
-            fd.m_user = "!unknown";
+        auto username = libs::getusername(s.st_uid);
+        if (username) {
+            fd.m_user = std::move(*username);
         } else {
-            fd.m_user = user_tmp->pw_name;
+            FILE_LOG(libs::log_level::ERROR) << "No user with uid '" << s.st_uid << "'";
+            fd.m_user = "!unknown";
         }
     }
 
     {
-        const struct group * group_tmp = ::getgrgid(s.st_gid);
-        if (group_tmp == nullptr) {
-            FILE_LOG(libs::log_level::ERROR) << "Can not get group information for gid '" << s.st_gid << "': " << ::strerror(errno);
-            fd.m_group = "!unknown";
+        auto groupname = libs::getgroupname(s.st_gid);
+        if (groupname) {
+            fd.m_group = std::move(*groupname);
         } else {
-            fd.m_group = group_tmp->gr_name;
+            FILE_LOG(libs::log_level::ERROR) << "No group with gid '" << s.st_gid << "'";
+            fd.m_group = "!unknown";
         }
     }
 

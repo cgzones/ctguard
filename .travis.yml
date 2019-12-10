@@ -142,6 +142,11 @@ script:
   - CTEST_OUTPUT_ON_FAILURE=1 make test
   - DESTDIR=${TRAVIS_BUILD_DIR}/test_install make install
 
+# TODO: git diff --check ^HEAD
+# TODO: make format && git diff --exit-code
+# TODO: cppcheck
+# TODO: scan-build
+# TODO: clang-tidy
 
 #after_success:
   #- ./ctguard-research --version

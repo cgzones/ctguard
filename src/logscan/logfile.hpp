@@ -43,9 +43,11 @@ class logfile
 
     int & fd() noexcept { return m_fd; }
 
+    // cppcheck-suppress passedByValue
     void set_inode(inode_type inode) noexcept { m_inode = inode; }
     [[nodiscard]] inode_type get_inode() const noexcept { return m_inode; }
 
+    // cppcheck-suppress passedByValue
     void set_size(size_type size) noexcept { m_size = size; }
     [[nodiscard]] size_type get_size() const noexcept { return m_size; }
 

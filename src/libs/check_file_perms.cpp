@@ -2,6 +2,8 @@
 
 #include "errnoexception.hpp"
 #include "libexception.hpp"
+#include "safe_utilities.hpp"
+
 #include <grp.h>
 #include <pwd.h>
 #include <sys/stat.h>
@@ -19,12 +21,9 @@ void check_cfg_file_perms(const std::string & path)
 
     unsigned ctguard_gid{ 0 };
     {
-        const struct group * ctguard_grp = ::getgrnam("ctguard");
-        if (ctguard_grp == nullptr && errno != 0) {
-            throw errno_exception{ "Can not get info about group 'ctguard'" };
-        }
-        if (ctguard_grp != nullptr) {
-            ctguard_gid = ctguard_grp->gr_gid;
+        const auto groupid = getgroupid("ctguard");
+        if (groupid) {
+            ctguard_gid = *groupid;
         }
     }
 

@@ -5,31 +5,32 @@
 
 using namespace ctguard::libs::xml;
 
+class xml_testclass : public CxxTest::TestSuite
+{
 
+#define TS_ASSERT_XML_EQUALS(INPUT, OUTPUT)                                                                                                                    \
+    do {                                                                                                                                                       \
+        std::istringstream _is{ INPUT };                                                                                                                       \
+        XMLparser _p{ _is };                                                                                                                                   \
+        XMLNode _root{ _p.parse() };                                                                                                                           \
+        std::ostringstream _os;                                                                                                                                \
+        _os << _root;                                                                                                                                          \
+        TS_ASSERT_EQUALS(_os.str(), OUTPUT);                                                                                                                   \
+    } while (0)
 
-class xml_testclass : public CxxTest::TestSuite {
+#define TS_ASSERT_XML_EQUAL(INPUT)                                                                                                                             \
+    do {                                                                                                                                                       \
+        TS_ASSERT_XML_EQUALS(INPUT, INPUT);                                                                                                                    \
+    } while (0)
 
-#define TS_ASSERT_XML_EQUALS(INPUT, OUTPUT) do { \
-    std::istringstream _is { INPUT }; \
-    XMLparser _p { _is }; \
-    XMLNode _root { _p.parse() }; \
-    std::ostringstream _os; \
-    _os << _root; \
-    TS_ASSERT_EQUALS(_os.str(), OUTPUT); \
-} while (0)
+#define TS_ASSERT_XML_ERROR(INPUT, ERROR_MSG)                                                                                                                  \
+    do {                                                                                                                                                       \
+        std::istringstream _is{ INPUT };                                                                                                                       \
+        XMLparser _p{ _is };                                                                                                                                   \
+        TS_ASSERT_THROWS_EQUALS(_p.parse(), const ctguard::libs::lib_exception & _le, _le.what(), ERROR_MSG);                                                  \
+    } while (0)
 
-#define TS_ASSERT_XML_EQUAL(INPUT) do { \
-        TS_ASSERT_XML_EQUALS(INPUT, INPUT); \
-} while (0)
-
-#define TS_ASSERT_XML_ERROR(INPUT, ERROR_MSG) do { \
-    std::istringstream _is { INPUT }; \
-    XMLparser _p { _is }; \
-    TS_ASSERT_THROWS_EQUALS(_p.parse(), const ctguard::libs::lib_exception & _le, _le.what(), ERROR_MSG); \
-} while (0)
-
-
-public:
+  public:
     void test_start(void)
     {
         TS_ASSERT_XML_EQUAL("<root></root>");
@@ -65,12 +66,12 @@ public:
 
     void test_escape(void)
     {
-    	//TS_ASSERT_XML_EQUALS("<root1>\\</root1\\></root1>", "<root1></root1></root1>");
+        // TS_ASSERT_XML_EQUALS("<root1>\\</root1\\></root1>", "<root1></root1></root1>");
     }
 
     void test_failures(void)
     {
-        //TODO::
+        // TODO::
 
         TS_ASSERT_XML_ERROR("<root>", "1:6: Unexpected stream error/end");
 
@@ -101,6 +102,5 @@ public:
         TS_ASSERT_XML_ERROR("<root attr></root>", "1:12: Unknown character (3) '>', expected '='");
 
         TS_ASSERT_XML_ERROR("<root attr attr2=\"test\"></root>", "1:12: Unknown character (3) ' ', expected '='");
-
     }
 };

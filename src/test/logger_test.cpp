@@ -12,7 +12,8 @@ static void produce(int id)
                                                   << "456"
                                                   << "789" << ' ' << id;
 
-        usleep(static_cast<unsigned>(static_cast<unsigned long>(random()) % 100));
+        const struct ::timespec req = { 0, 1000 * (random() % 100) };
+        nanosleep(&req, nullptr);
     }
 }
 

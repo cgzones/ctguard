@@ -31,7 +31,7 @@ class file_sink final : public sink
 class socket_sink final : public sink
 {
   public:
-    socket_sink(std::string path);
+    explicit socket_sink(std::string path);
     virtual void send(const libs::intervention_cmd & cmd) override;
 
   private:

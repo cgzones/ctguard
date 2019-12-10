@@ -18,6 +18,7 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
 
         bool is_child{ false };
         for (const auto & i : rl.parent_ids()) {
+            // cppcheck-suppress useStlAlgorithm
             if (ev.rule_id() == i) {
                 is_child = true;
                 break;
@@ -45,6 +46,7 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
     if (!rl.activation_group().group_name.empty()) {
         bool found_activation_group{ false };
         for (const std::string & ev_group : ev.groups()) {
+            // cppcheck-suppress useStlAlgorithm
             if (ev_group == rl.activation_group().group_name) {
                 found_activation_group = true;
                 match_something = true;
@@ -132,6 +134,7 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
         } else {
             bool found_group = false;
             for (const auto & iter : ev.groups()) {
+                // cppcheck-suppress useStlAlgorithm
                 if (iter == rl.trigger_group()) {
                     found_group = true;
                     break;
@@ -439,10 +442,9 @@ event process_log(const libs::source_event & se, bool verbose, const rule_cfg & 
 
         std::cout << "      Groups: " << e.groups_2_str() << "\n";
         std::cout << "      Priority: " << e.priority() << "\n";
-    }
 
-    if (verbose)
         std::cout << "    Checking group rules...\n";
+    }
 
     check_top_rules(e, rules.group_rules, 1, rules_state, verbose);
 

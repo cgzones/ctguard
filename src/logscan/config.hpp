@@ -30,7 +30,7 @@ struct logscan_config
     bool systemd_input{ true };
 };
 
-[[nodiscard]] logscan_config parse_config(const std::string & cfg_file);
+[[nodiscard]] logscan_config parse_config(const std::string & cfg_path);
 
 std::ostream & operator<<(std::ostream & os, const logscan_config & cfg);
 std::ostream & operator<<(std::ostream & os, output_kind_t ok);

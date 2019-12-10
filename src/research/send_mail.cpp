@@ -76,31 +76,42 @@ static void send_mail_message(int socket, const std::string & from, const std::s
     }
 }
 
-void send_mail(const std::string & smtpserver, unsigned short smtpport, const std::string & from, const std::string & to, const std::string & subject,
+void send_mail(const std::string & smtpserver, const std::string & smtpport, const std::string & from, const std::string & to, const std::string & subject,
                const std::string & replyto, const std::string & msg)
 {
-    struct hostent * host = ::gethostbyname(smtpserver.c_str());
-    if (host == nullptr) {
-        throw libs::lib_exception{ "Can not resolve hostname '" + smtpserver + "': " + ::hstrerror(h_errno) };
+    struct ::addrinfo hints = {};
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = 0;
+    hints.ai_protocol = 0;
+
+    struct ::addrinfo * result;
+    if (const auto s = ::getaddrinfo(smtpserver.c_str(), smtpport.c_str(), &hints, &result); s != 0) {
+        throw libs::lib_exception{ "Can not get address information for '" + smtpserver + ":" + smtpport + "': " + ::gai_strerror(s) };
     }
 
-    struct in_addr in;
-    ::memcpy(&in, host->h_addr_list[0], static_cast<size_t>(host->h_length));
+    int socket;  // TODO: raii class
+    struct ::addrinfo * rp;
+    for (rp = result; rp != nullptr; rp = rp->ai_next) {
+        socket = ::socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+        if (socket == -1) {
+            continue;
+        }
 
-    const int socket = ::socket(AF_INET, SOCK_STREAM, 0);
-    if (socket == -1) {
-        throw libs::errno_exception{ "Can not create a socket" };
+        if (::connect(socket, rp->ai_addr, rp->ai_addrlen) != 1) {
+            break;  // success
+        }
+
+        ::close(socket);
     }
+
+    if (rp == nullptr) {
+        ::freeaddrinfo(result);
+        throw libs::lib_exception{ "Can not connect to '" + smtpserver + ":" + smtpport + "'" };
+    }
+
+    ::freeaddrinfo(result);
     libs::scope_guard sg{ [socket]() { ::close(socket); } };
-
-    struct sockaddr_in sa;
-    ::memset(&sa, 0, sizeof(sa));
-    sa.sin_addr = in;
-    sa.sin_family = static_cast<sa_family_t>(host->h_addrtype);
-    sa.sin_port = htons(smtpport);
-    if (::connect(socket, reinterpret_cast<struct sockaddr *>(&sa), sizeof(sa)) == -1) {
-        throw libs::errno_exception{ "Can not connect to '" + smtpserver };
-    }
 
     {
         std::array<char, 4096> buffer;

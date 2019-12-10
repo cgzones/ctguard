@@ -2,12 +2,13 @@
 
 #include "../external/sha2/sha2.h"
 
-class sha256_testclass : public CxxTest::TestSuite {
-public:
+class sha256_testclass : public CxxTest::TestSuite
+{
+  public:
     void test_hash(void)
     {
-        const char *input = "testString";
-        const char *hash = "4acf0b39d9c4766709a3689f553ac01ab550545ffa4544dfc0b2cea82fba02a3";
+        const char * input = "testString";
+        const char * hash = "4acf0b39d9c4766709a3689f553ac01ab550545ffa4544dfc0b2cea82fba02a3";
         char result[SHA256_DIGEST_STRING_LENGTH];
 
         SHA256_CTX ctx;

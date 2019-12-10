@@ -167,7 +167,7 @@ static void add_watch(int inotify_handle, std::unordered_map<int, std::string> &
             continue;
         }
 
-        if (::strcmp(e.name(), ".") == 0 || ::strcmp(e.name(), "..") == 0) {
+        if (e.is_dotordotdot()) {
             continue;
         }
 

@@ -7,7 +7,7 @@
 
 namespace ctguard::libs::filesystem {
 
-[[nodiscard]] static struct dirent * custom_readdir(DIR * dir);
+[[nodiscard]] struct dirent * custom_readdir(DIR * dir);
 
 class file_object
 {
@@ -15,7 +15,10 @@ class file_object
     file_object(unsigned char type, const char * name) : m_type{ type }, m_name{ name } {}
 
     [[nodiscard]] bool is_dir() const noexcept { return m_type == DT_DIR; }
+    [[nodiscard]] bool is_reg() const noexcept { return m_type == DT_REG; }
     [[nodiscard]] bool is_lnk() const noexcept { return m_type == DT_LNK; }
+    [[nodiscard]] bool is_dotordotdot() const noexcept { return ::strcmp(m_name, ".") == 0 || ::strcmp(m_name, "..") == 0; }
+    [[nodiscard]] bool is_hidden() const noexcept { return m_name[0] == '.'; }
     [[nodiscard]] const char * name() const noexcept { return m_name; }
 
   private:
@@ -77,11 +80,16 @@ class directory
 
 inline struct dirent * custom_readdir(DIR * dir)
 {
+    int safed_errno = errno;
     errno = 0;
+
+    // cppcheck-suppress readdirCalled  -- see readdir_r(3)
     struct dirent * ret = ::readdir(dir);
     if (ret == nullptr && errno != 0) {
         throw errno_exception{ "Can not readdir()" };
     }
+
+    errno = safed_errno;
     return ret;
 }
 
