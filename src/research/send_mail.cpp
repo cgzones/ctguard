@@ -90,7 +90,7 @@ void send_mail(const std::string & smtpserver, const std::string & smtpport, con
         throw libs::lib_exception{ "Can not get address information for '" + smtpserver + ":" + smtpport + "': " + ::gai_strerror(s) };
     }
 
-    int socket;  // TODO: raii class
+    int socket = -1;  // TODO: raii class
     struct ::addrinfo * rp;
     for (rp = result; rp != nullptr; rp = rp->ai_next) {
         socket = ::socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);

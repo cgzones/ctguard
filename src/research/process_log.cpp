@@ -360,6 +360,10 @@ static void check_top_rules(event & e, const std::vector<rule> & rules, unsigned
             }
         }
 
+        if (fit == nullptr) {
+            throw libs::lib_exception{ "No fitting rule found !!THIS SHOULD NEVER HAPPEN!!" };
+        }
+
         if (verbose)
             std::cout << "    Level " << depth << " rule fit: " << fit->id() << "\n";
 

@@ -30,7 +30,7 @@ std::optional<std::string> getusername(::uid_t uid)
         }
 
         errno = s;
-        throw libs::errno_exception{ "Can not get user details for uid " + uid };
+        throw libs::errno_exception{ "Can not get user details for uid " + std::to_string(uid) };
     }
 
     return pwd.pw_name;
@@ -80,7 +80,7 @@ std::optional<std::string> getgroupname(::gid_t gid)
         }
 
         errno = s;
-        throw libs::errno_exception{ "Can not get group details for gid " + gid };
+        throw libs::errno_exception{ "Can not get group details for gid " + std::to_string(gid) };
     }
 
     return grp.gr_name;

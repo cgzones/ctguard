@@ -22,7 +22,7 @@ class sqlite_transaction
 
         try {
             fire_transaction();
-        } catch (const sqlite_exception & e) {
+        } catch (const sqlite_exception &) {
             // TODO: reconsider
             if (std::uncaught_exceptions() == 0) {
                 // cppcheck-suppress exceptThrowInDestructor

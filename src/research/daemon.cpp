@@ -386,10 +386,8 @@ static void mail_task(const research_config & cfg, libs::blocked_queue<event> & 
 
         if (!local_queue.empty()) {
             try {
-                last_send = std::time(nullptr);
                 send_mail_queue(cfg, local_queue);
                 local_queue = std::vector<event>();
-                max_priority = 0;
             } catch (const std::exception & e) {
                 FILE_LOG(libs::log_level::ERROR) << "Can not send alert mail: " << e.what();
             }
