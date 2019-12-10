@@ -147,6 +147,7 @@ script:
 # TODO: cppcheck
 # TODO: scan-build
 # TODO: clang-tidy
+# TODO: sanitizer -> check for UndefinedBehaviorSanitizer 'runtime error'
 
 #after_success:
   #- ./ctguard-research --version

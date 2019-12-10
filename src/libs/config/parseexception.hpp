@@ -22,4 +22,4 @@ class parse_exception : public std::exception
     std::string m_message;
 };
 
-}  // namespace ctguard::libs::config
+} /* namespace ctguard::libs::config */

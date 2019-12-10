@@ -1,9 +1,10 @@
 #pragma once
 
+#include <unistd.h>
+
 #include <ctime>
 #include <iomanip>
 #include <sstream>
-#include <unistd.h>
 
 namespace ctguard::libs {
 
@@ -94,17 +95,17 @@ template<typename OutputPolicy>
 std::ostringstream & Log<OutputPolicy>::get(log_level level)
 {
     if (Log::printprefix()) {
-        char time_buffer[32];
+        std::array<char, 32> time_buffer;
         const std::time_t now = std::time(nullptr);
         struct tm time
         {};
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-y2k"
-        std::strftime(time_buffer, sizeof(time_buffer), "%c %Z", ::localtime_r(&now, &time));
+        std::strftime(time_buffer.data(), time_buffer.size(), "%c %Z", ::localtime_r(&now, &time));
 #pragma GCC diagnostic pop
 
-        m_os << time_buffer;
+        m_os << time_buffer.data();
         m_os << ' ' << std::setw(16) << Log::domain();
 
         m_os << ' ' << std::setw(5) << ::getpid();

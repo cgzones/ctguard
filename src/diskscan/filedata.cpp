@@ -1,14 +1,14 @@
 #include "filedata.hpp"
 
-#include <sstream>
-
 #include <fcntl.h>
 #include <grp.h>
 #include <pwd.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include <cstring>
+#include <sstream>
 
 #include "../libs/errnoexception.hpp"
 #include "../libs/logger.hpp"
@@ -20,11 +20,11 @@
 
 namespace ctguard::diskscan {
 
-static std::vector<std::string> split(const std::string & str, char delim = '\n')
+static std::vector<std::string> split(const std::string & str, char delim)
 {
     std::vector<std::string> cont;
-    std::size_t current, previous = 0;
-    current = str.find(delim);
+    std::size_t previous = 0;
+    std::size_t current = str.find(delim);
     while (current != std::string::npos) {
         cont.push_back(str.substr(previous, current - previous));
         previous = current + 1;
@@ -36,7 +36,8 @@ static std::vector<std::string> split(const std::string & str, char delim = '\n'
 
 file_data file_data_factory::construct(std::string path, bool check_content, bool check_diff)
 {
-    if (path == "") {
+    if (path.empty()) {
+        FILE_LOG(libs::log_level::ERROR) << "Empty path given to file_data_factory::construct()";
         return {};
     }
 
@@ -44,7 +45,7 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
 
     fd.m_path = std::move(path);
 
-    struct stat s;
+    struct stat s;  // NOLINT(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
     if (lstat(fd.m_path.c_str(), &s) == -1) {
         if (errno == ENOENT) {
             FILE_LOG(libs::log_level::DEBUG) << "Object seems to be deleted: '" << fd.m_path << "'";
@@ -99,7 +100,7 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
     fd.m_mtime = s.st_mtime;
     fd.m_ctime = s.st_ctime;
 
-    switch (s.st_mode & S_IFMT) {
+    switch (s.st_mode & S_IFMT) {  // NOLINT(hicpp-signed-bitwise)
         case S_IFBLK:
             fd.m_type = file_data::type::block_device;
             break;
@@ -133,9 +134,7 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
         std::stringstream ocontent;
         bool found_content = false;
 
-        std::array<unsigned char, 16384> buf;
-
-        const int file = ::open(fd.m_path.c_str(), O_RDONLY);
+        const int file = ::open(fd.m_path.c_str(), O_RDONLY | O_CLOEXEC);  // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
         if (file == -1) {
             if (errno == EACCES) {
                 FILE_LOG(libs::log_level::WARNING) << "Can not open file '" << fd.m_path << "': " << ::strerror(errno);
@@ -162,9 +161,11 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
             }
         }
 
-        ssize_t ret;
+        ssize_t ret;  // NOLINT(cppcoreguidelines-init-variables)
         SHA256_CTX ctx;
         SHA256_Init(&ctx);
+
+        std::array<unsigned char, 16384> buf;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
 
         while ((ret = ::read(file, buf.data(), buf.size())) > 0) {
             SHA256_Update(&ctx, buf.data(), static_cast<size_t>(ret));
@@ -173,6 +174,7 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
                     FILE_LOG(libs::log_level::DEBUG) << "File '" << fd.m_path << "' has binary format";
                     compute_diff = false;
                 } else {
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
                     ocontent << std::string_view{ reinterpret_cast<const char *>(buf.data()), static_cast<size_t>(ret) };
                     // oss.write(&buffer.data()[0], n);
                 }
@@ -203,7 +205,7 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
             if (db_content.empty()) {
                 FILE_LOG(libs::log_level::DEBUG) << "File '" << fd.m_path << "' has no stored content";
             } else {
-                dtl::Diff<std::string> diff{ split(db_content), split(content) };
+                dtl::Diff<std::string> diff{ split(db_content, '\n'), split(content, '\n') };
                 diff.onHuge();
                 diff.compose();
                 diff.composeUnifiedHunks();
@@ -218,7 +220,7 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
     }
 
     else if (check_content && fd.m_type == file_data::type::link) {
-        struct stat tmp;
+        struct stat tmp;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         if (::stat(fd.m_path.c_str(), &tmp) == -1) {
             if (errno == ENOENT) {
                 FILE_LOG(libs::log_level::DEBUG) << "stat(" << fd.m_path << ") failed, cause link destination is dead";
@@ -232,8 +234,8 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
             fd.m_dead_lnk = false;
         }
 
-        std::array<char, 256> buf;
-        ssize_t ret;
+        std::array<char, 256> buf;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+        ssize_t ret;                // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init,cppcoreguidelines-init-variables)
         if ((ret = ::readlink(fd.m_path.c_str(), buf.data(), buf.size())) < 0) {
             FILE_LOG(libs::log_level::ERROR) << "Can not readlink for '" << fd.m_path << "': " << ::strerror(errno);
             return fd;
@@ -243,7 +245,7 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
                                                << " characters; will countinue truncated";
             buf[buf.size() - 1] = '\0';
         } else {
-            buf[static_cast<size_t>(ret)] = '\0';
+            buf[static_cast<size_t>(ret)] = '\0';  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
         }
 
         fd.m_target = buf.data();
@@ -318,28 +320,35 @@ std::ostream & operator<<(std::ostream & out, const file_data::type t)
 
 static char mode_to_type(file_data::mode_type m)
 {
-    if (S_ISREG(m))
+    if (S_ISREG(m)) {
         return '-';
-    else if (S_ISDIR(m))
+    }
+    if (S_ISDIR(m)) {
         return 'd';
-    else if (S_ISBLK(m))
+    }
+    if (S_ISBLK(m)) {
         return 'b';
-    else if (S_ISCHR(m))
+    }
+    if (S_ISCHR(m)) {
         return 'c';
-    else if (S_ISFIFO(m))
+    }
+    if (S_ISFIFO(m)) {
         return 'p';
-    else if (S_ISLNK(m))
+    }
+    if (S_ISLNK(m)) {
         return 'l';
-    else if (S_ISSOCK(m))
+    }
+    if (S_ISSOCK(m)) {
         return 's';
-    else
-        return '?';
+    }
+    return '?';
 }
 
 std::string print_mode(file_data::mode_type m)
 {
     std::ostringstream oss;
 
+    // NOLINTNEXTLINE(hicpp-signed-bitwise)
     oss << mode_to_type(m) << ((m & S_IRUSR) ? 'r' : '-') << ((m & S_IWUSR) ? 'w' : '-')
         << ((m & S_ISUID) ? (m & S_IXUSR) ? 's' : 'S' : ((m & S_IXUSR) ? 'x' : '-')) << ((m & S_IRGRP) ? 'r' : '-') << ((m & S_IWGRP) ? 'w' : '-')
         << ((m & S_ISGID) ? ((m & S_IXGRP) ? 's' : 'l') : ((m & S_IXGRP) ? 'x' : '-')) << ((m & S_IROTH) ? 'r' : '-') << ((m & S_IWOTH) ? 'w' : '-')
@@ -350,7 +359,7 @@ std::string print_mode(file_data::mode_type m)
 
 std::string print_time(time_t t)
 {
-    struct tm ts;
+    struct tm ts;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
     ::localtime_r(&t, &ts);
 
     std::ostringstream oss;
@@ -369,4 +378,4 @@ diff_database::diff_database(const std::string & path) : m_db{ path, true }
     create_stmt.run();
 }
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

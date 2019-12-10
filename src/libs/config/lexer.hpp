@@ -11,8 +11,8 @@ class lexer
 {
   public:
     explicit lexer(std::istream & input);
-    [[nodiscard]] const position & get_position() const { return m_position; }
-    [[nodiscard]] const position & get_prev_position() const { return m_prev_position; }
+    [[nodiscard]] const position & get_position() const noexcept { return m_position; }
+    [[nodiscard]] const position & get_prev_position() const noexcept { return m_prev_position; }
     [[nodiscard]] token get();
     [[nodiscard]] const token & peek() const noexcept;
 
@@ -33,4 +33,4 @@ class lexer
     [[nodiscard]] token gettok();
 };
 
-}  // namespace ctguard::libs::config
+} /* namespace ctguard::libs::config */

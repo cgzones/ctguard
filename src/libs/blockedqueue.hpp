@@ -1,11 +1,10 @@
 #pragma once
 
-#include <queue>
-
 #include <chrono>
 #include <condition_variable>
 #include <mutex>
 #include <optional>
+#include <queue>
 
 namespace ctguard::libs {
 
@@ -133,7 +132,7 @@ std::optional<T> blocked_queue<T>::take(const std::chrono::duration<Rep, Period>
     }
 
     if (m_queue.empty())
-        return {};
+        return std::nullopt;
 
     T tmp{ std::move(m_queue.front()) };
     m_queue.pop();

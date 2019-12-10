@@ -1,8 +1,9 @@
 #pragma once
 
-#include <memory>
 #include <sqlite3.h>
-#include <string>
+#include <sys/stat.h>
+
+#include <memory>
 
 namespace ctguard::libs::sqlite {
 
@@ -19,7 +20,10 @@ class sqlite_db
     friend class sqlite_transaction;
 
   private:
-    std::unique_ptr<sqlite3, decltype(&::sqlite3_close)> m_db;
+    // TODO(cgzones): propagate_const
+    std::unique_ptr<::sqlite3, decltype(&::sqlite3_close)> m_db;
+
+    [[nodiscard]] ::sqlite3 * raw() noexcept { return m_db.get(); }
 };
 
-}  // namespace ctguard::libs::sqlite
+} /* namespace ctguard::libs::sqlite */

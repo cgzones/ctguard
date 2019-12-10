@@ -4,7 +4,7 @@ add_executable (ctguard-diskscan
                                  daemon.cpp
                                  daemon.hpp
                                  database.cpp
-                                 database.h
+                                 database.hpp
                                  diskscan.cpp
                                  eventsink.cpp
                                  eventsink.hpp

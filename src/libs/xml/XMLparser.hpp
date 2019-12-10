@@ -1,4 +1,5 @@
 #pragma once
+
 #include <istream>
 #include <string_view>
 
@@ -30,10 +31,10 @@ class XMLparser
     std::size_t m_line{ 1 }, m_position{ 0 };
     bool m_escaped{ false };
 
-    void parse_error(std::string_view message) const __attribute__((noreturn));
+    [[noreturn]] void parse_error(std::string_view message) const;
     [[nodiscard]] char get_char();
     [[nodiscard]] char get_char_low();
     [[nodiscard]] char get_char_raw();
 };
 
-}  // namespace ctguard::libs::xml
+} /* namespace ctguard::libs::xml */

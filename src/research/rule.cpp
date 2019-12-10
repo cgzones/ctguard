@@ -18,8 +18,7 @@ rule * find_rule(std::vector<rule> & rules, rule_id_t id)
             return &rl;
         }
 
-        rule * child;
-        if ((child = find_rule(rl.m_children, id)) != nullptr) {
+        if (rule * child = find_rule(rl.m_children, id); child != nullptr) {
             return child;
         }
     }
@@ -30,8 +29,8 @@ rule * find_rule(std::vector<rule> & rules, rule_id_t id)
 template<typename T>
 static T parse_integral(const std::string & name, const std::string & content)
 {
-    std::size_t pos;
-    unsigned long result_orig;
+    std::size_t pos;            // NOLINT(cppcoreguidelines-init-variables)
+    unsigned long result_orig;  // NOLINT(cppcoreguidelines-init-variables,google-runtime-int)
     try {
         result_orig = std::stoul(content, &pos);
     } catch (const std::exception & e) {
@@ -63,18 +62,21 @@ static rule_match parse_rule_match(const std::string & value)
 {
     if (value == "exact") {
         return rule_match::exact;
-    } else if (value == "regex") {
-        return rule_match::regex;
-    } else if (value == "empty") {
-        return rule_match::empty;
-    } else {
-        throw std::out_of_range{ "Invalid rule_match value" };
     }
+    if (value == "regex") {
+        return rule_match::regex;
+    }
+    if (value == "empty") {
+        return rule_match::empty;
+    }
+
+    throw std::out_of_range{ "Invalid rule_match value" };
 }
 
 static std::string trim(const std::string & str)
 {
-    std::string::size_type begin = 0, end = str.size() - 1;
+    std::string::size_type begin = 0;
+    std::string::size_type end = str.size() - 1;
     while (begin < end && std::isspace(str[begin]) != 0) {
         ++begin;
     }
@@ -171,8 +173,8 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
 
                     const std::string & fields_str = sub_node.value();
 
-                    std::size_t current, previous = 0;
-                    current = fields_str.find(',');
+                    std::size_t current = fields_str.find(',');
+                    std::size_t previous = 0;
                     while (current != std::string::npos) {
                         f.m_fields.push_back(trim(fields_str.substr(previous, current - previous)));
                         previous = current + 1;
@@ -245,8 +247,8 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
 
                     const std::string & fields_str = sub_node.value();
 
-                    std::size_t current, previous = 0;
-                    current = fields_str.find(',');
+                    std::size_t current = fields_str.find(',');
+                    std::size_t previous = 0;
                     while (current != std::string::npos) {
                         ex.m_regex_fields.push_back(trim(fields_str.substr(previous, current - previous)));
                         previous = current + 1;
@@ -271,8 +273,8 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
 
                     try {
                         const std::string & ifrule_str = sub_node.value();
-                        std::size_t current, previous = 0;
-                        current = ifrule_str.find(',');
+                        std::size_t current = ifrule_str.find(',');
+                        std::size_t previous = 0;
                         while (current != std::string::npos) {
                             ex.m_parent_ids.push_back(libs::parse_integral<rule_id_t>(trim(ifrule_str.substr(previous, current - previous))));
                             previous = current + 1;
@@ -294,7 +296,7 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
                         }
                     }
                     unless_id = ur.id = parse_integral<rule_id_t>(sub_node.name(), sub_node.value());
-                    ex.m_unless_rule = std::move(ur);
+                    ex.m_unless_rule = ur;
                 }
 
                 else if (sub_node.name() == "group") {
@@ -304,7 +306,8 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
                     }
                     const std::string & group_str = sub_node.value();
 
-                    std::size_t current = group_str.find(','), previous = 0;
+                    std::size_t current = group_str.find(',');
+                    std::size_t previous = 0;
                     while (current != std::string::npos) {
                         ex.m_groups.insert(trim(group_str.substr(previous, current - previous)));
                         previous = current + 1;
@@ -496,13 +499,12 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
 
             // insert rule normally
             if (!ex.m_trigger_group.empty() || !ex.m_activation_group.group_name.empty()) {
-                group_rules.emplace_back(std::move(ex));
+                group_rules.emplace_back(ex);
             } else if (ex.m_parent_ids.empty()) {
-                cfg.emplace_back(std::move(ex));
+                cfg.emplace_back(ex);
             } else {
                 for (const auto & parent_id : ex.m_parent_ids) {
-                    rule * parent;
-                    if ((parent = find_rule(cfg, parent_id)) != nullptr) {
+                    if (rule * parent = find_rule(cfg, parent_id); parent != nullptr) {
                         parent->m_children.emplace_back(ex);
                     } else {
                         if ((parent = find_rule(group_rules, parent_id)) != nullptr) {
@@ -517,12 +519,11 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
 
             // insert rule for unless trigger
             if (unless_id != 0) {
-                rule * unless_p;
-                if ((unless_p = find_rule(cfg, unless_id)) != nullptr) {
-                    unless_p->m_children.emplace_back(std::move(ex));
+                if (rule * unless_p = find_rule(cfg, unless_id); unless_p != nullptr) {
+                    unless_p->m_children.emplace_back(ex);
                 } else {
                     if ((unless_p = find_rule(group_rules, unless_id)) != nullptr) {
-                        unless_p->m_children.emplace_back(std::move(ex));
+                        unless_p->m_children.emplace_back(ex);
                     } else {
                         throw libs::lib_exception{ "Invalid unless_rule trigger '" + std::to_string(unless_id) + "' for rule " + std::to_string(ex.m_id) +
                                                    ": no such rule id" };
@@ -536,4 +537,4 @@ void parse_rules(rule_cfg & rules, const std::string & rules_path)
     }
 }
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

@@ -14,7 +14,7 @@ namespace ctguard::research {
 class sink
 {
   public:
-    virtual ~sink();
+    virtual ~sink() noexcept;
     virtual void send(const libs::intervention_cmd & cmd) = 0;
 };
 
@@ -59,4 +59,4 @@ class intervention_sink
     std::unique_ptr<sink> m_sink;
 };
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

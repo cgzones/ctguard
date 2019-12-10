@@ -1,10 +1,11 @@
 #pragma once
 
-#include "rule.hpp"
 #include <atomic>
 #include <chrono>
 #include <map>
 #include <mutex>
+
+#include "rule.hpp"
 
 namespace ctguard::research {
 
@@ -20,4 +21,4 @@ struct rule_state
     event unless_event;
 };
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

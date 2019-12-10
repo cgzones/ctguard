@@ -1,11 +1,11 @@
 #include "config.hpp"
 
+#include <fstream>  // std::ifstream
+#include <iomanip>  // std::setw
+
 #include "../libs/config/parser.hpp"
 #include "../libs/errnoexception.hpp"
 #include "../libs/parsehelper.hpp"
-
-#include <fstream>  // std::ifstream
-#include <iomanip>  // std::setw
 
 namespace ctguard::logscan {
 
@@ -19,15 +19,18 @@ logscan_config parse_config(const std::string & cfg_path)
     }
 
     libs::config::parser p{ cfg_file };
-    const libs::config::config_group global_cfg = p.parse();
+    const libs::config::config_group global_cfg{ p.parse() };
 
-    bool found_top = false;
+    bool found_top{ false };
     for (const libs::config::config_group & top : global_cfg.subgroups()) {
         if (top.name() != "logscan") {
             continue;
-        } else if (found_top) {
+        }
+
+        if (found_top) {
             throw std::out_of_range{ "Duplicate top level configgroup logscan found at " + to_string(top.pos()) };
         }
+
         found_top = true;
 
         for (const auto & a : top) {
@@ -172,4 +175,4 @@ std::ostream & operator<<(std::ostream & os, const logscan_config & cfg)
     return os;
 }
 
-}  // namespace ctguard::logscan
+} /* namespace ctguard::logscan */

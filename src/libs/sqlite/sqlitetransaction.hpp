@@ -10,7 +10,7 @@ class sqlite_transaction
   public:
     explicit sqlite_transaction(sqlite_db & db) : m_db{ db }
     {
-        if (const int ret = sqlite3_exec(m_db.m_db.get(), "BEGIN TRANSACTION", nullptr, nullptr, nullptr); ret != SQLITE_OK) {
+        if (const int ret = sqlite3_exec(m_db.raw(), "BEGIN TRANSACTION", nullptr, nullptr, nullptr); ret != SQLITE_OK) {
             throw sqlite_exception{ "Can not start transaction (" + std::to_string(ret) + "): " + m_db.error_msg() };
         }
     }
@@ -35,7 +35,7 @@ class sqlite_transaction
 
     void fire_transaction()
     {
-        if (const int ret = sqlite3_exec(m_db.m_db.get(), "END TRANSACTION", nullptr, nullptr, nullptr); ret != SQLITE_OK) {
+        if (const int ret = sqlite3_exec(m_db.raw(), "END TRANSACTION", nullptr, nullptr, nullptr); ret != SQLITE_OK) {
             throw sqlite_exception{ "Can not end transaction (" + std::to_string(ret) + "): " + m_db.error_msg() };
         }
         m_done = true;

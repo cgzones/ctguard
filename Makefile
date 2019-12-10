@@ -14,8 +14,8 @@ sanitizers:
 
 
 clang-tidy:
-	cmake -B build_clang_tidy/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DRUN_CLANG_TIDY=ON
-	ninja -C build_clang_tidy/
+	CC=clang cmake -B build_clang_tidy/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DRUN_CLANG_TIDY=ON
+	CC=clang ninja -C build_clang_tidy/
 
 
 clean: clean-deb

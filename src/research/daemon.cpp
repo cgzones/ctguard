@@ -1,28 +1,30 @@
 #include "daemon.hpp"
 
-#include "event.hpp"
-#include "intervention_sink.hpp"
-#include "process_log.hpp"
-#include "research.hpp"
-#include "send_mail.hpp"
-
-#include <mutex>
-#include <sstream>
-#include <stack>
-#include <thread>
-
-#include <csignal>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
 #include <unistd.h>  // ::close
 
+#include <csignal>
+#include <mutex>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <thread>
+
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/memory.hpp>
+
 #include "../libs/blockedqueue.hpp"
 #include "../libs/errnoexception.hpp"
 #include "../libs/logger.hpp"
 #include "../libs/scopeguard.hpp"
-#include <cereal/archives/binary.hpp>
-#include <cereal/types/memory.hpp>
+
+#include "event.hpp"
+#include "intervention_sink.hpp"
+#include "process_log.hpp"
+#include "research.hpp"
+#include "send_mail.hpp"
 
 namespace ctguard::research {
 
@@ -37,9 +39,8 @@ struct intervention_t
 static std::string raw_2_str(const char * str, std::size_t length)
 {
     std::ostringstream oss;
-    std::size_t i;
-    for (i = 0; i < length; i++) {
-        oss << "0x" << static_cast<unsigned int>(static_cast<unsigned char>(str[i]));
+    for (std::size_t i = 0; i < length; i++) {
+        oss << "0x" << static_cast<unsigned int>(static_cast<unsigned char>(str[i]));  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     }
 
     return oss.str();
@@ -146,7 +147,7 @@ static void output_task(const research_config & cfg, libs::blocked_queue<event> 
 
             output << "ALERT START\n";
             if (!UNIT_TEST) {
-                struct tm ts;
+                struct tm ts;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
                 ::localtime_r(&t, &ts);
                 output << "Time:      " << std::put_time(&ts, "%c %Z\n");
             }
@@ -254,12 +255,13 @@ struct summary_item
 
 static void send_mail_queue(const research_config & cfg, const std::vector<event> & q)
 {
-    std::ostringstream mail, content;
+    std::ostringstream mail;
+    std::ostringstream content;
     priority_t max_alert{ 0 };
 
     mail << "                        ######################\n"
          << "                        # ctguard alert mail #\n"
-         << "                        #   " << std::setw(4) << q.size() << (q.size() == 1 ? " alert " : " alerts") << "      #\n"
+         << "                        #   " << std::setw(4) << q.size() << " alert" << (q.size() == 1 ? ' ' : 's') << "      #\n"
          << "                        ######################\n\n";
 
     std::map<std::string, summary_item> summary_map;
@@ -313,11 +315,11 @@ static void send_mail_queue(const research_config & cfg, const std::vector<event
     mail << "#============================= SUMMARY =============================#\n\n";
 
     for (const auto & iter : summary_map) {
-        mail << "  " << std::setw(4) << iter.second.count << (iter.second.count == 1 ? " alert " : " alerts") << ": " << iter.first
+        mail << "  " << std::setw(4) << iter.second.count << " alert" << (iter.second.count == 1 ? ' ' : 's') << ": " << iter.first
              << " (id: " << iter.second.id << ") - Priority " << iter.second.priority << "\n";
     }
     if (interventions > 0) {
-        mail << "  " << std::setw(4) << interventions << (interventions == 1 ? " intervention " : " interventions") << ":";
+        mail << "  " << std::setw(4) << interventions << "intervention" << (interventions == 1 ? ' ' : 's') << ":";
         bool first = true;
         for (const auto & iter : interventions_details) {
             if (first) {
@@ -336,7 +338,7 @@ static void send_mail_queue(const research_config & cfg, const std::vector<event
 
     mail << "                        ######################\n"
          << "                        # ctguard alert mail #\n"
-         << "                        #   " << std::setw(4) << q.size() << (q.size() == 1 ? " alert " : " alerts") << "      #\n"
+         << "                        #   " << std::setw(4) << q.size() << " alert" << (q.size() == 1 ? ' ' : 's') << "      #\n"
          << "                        ######################\n\n";
 
     send_mail(cfg.mail_host, cfg.mail_port, cfg.mail_fromaddr, cfg.mail_toaddr,
@@ -351,7 +353,8 @@ static void mail_task(const research_config & cfg, libs::blocked_queue<event> & 
     try {
         std::vector<event> local_queue;
         priority_t max_priority{ 0 };
-        std::time_t last_send{ 0 }, last_event{ 0 };
+        std::time_t last_send{ 0 };
+        std::time_t last_event{ 0 };
         while (RUNNING) {
             std::optional<event> opt_e{ mail_queue.take(std::chrono::seconds(1)) };
 
@@ -423,15 +426,15 @@ static void input_task(libs::blocked_queue<libs::source_event> & output, const s
         };  // 1s
         ::setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof tv);
 
-        struct sockaddr_un local;
+        struct sockaddr_un local;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         local.sun_family = AF_UNIX;
         constexpr size_t addr_length = sizeof(local.sun_path);
         if (input_path.size() > (addr_length - 1)) {
             throw libs::errno_exception{ "Bind address to long: " + std::to_string(input_path.size()) + "/" + std::to_string(addr_length - 1) };
         }
-        ::strncpy(local.sun_path, input_path.c_str(), addr_length - 1);
-        size_t len = strlen(local.sun_path) + sizeof(local.sun_family);
-        if (::bind(socket, reinterpret_cast<struct sockaddr *>(&local), static_cast<unsigned>(len))) {
+        ::strncpy(local.sun_path, input_path.c_str(), addr_length - 1);  // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
+        size_t len = strlen(local.sun_path) + sizeof(local.sun_family);  // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
+        if (::bind(socket, reinterpret_cast<struct sockaddr *>(&local), static_cast<unsigned>(len))) {  // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
             throw libs::errno_exception{ "Can not bind on '" + input_path + "'" };
         }
 
@@ -444,7 +447,7 @@ static void input_task(libs::blocked_queue<libs::source_event> & output, const s
             FILE_LOG(libs::log_level::DEBUG2) << "[iw] waiting for connection...";
 
             do {
-                std::array<char, 16384> buffer;
+                std::array<char, 16384> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
                 ssize_t n = ::recv(socket, buffer.data(), buffer.size(), 0);
                 if (n <= 0) {
                     if (n < 0) {
@@ -465,14 +468,15 @@ static void input_task(libs::blocked_queue<libs::source_event> & output, const s
                 if (static_cast<std::size_t>(n) >= buffer.size()) {
                     buffer[buffer.size() - 1] = '\0';
                 } else {
-                    buffer[static_cast<std::size_t>(n)] = '\0';
+                    buffer[static_cast<std::size_t>(n)] = '\0';  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
                 }
 
+                // NOLINTNEXTLINE(readability-simplify-subscript-expr)
                 FILE_LOG(libs::log_level::DEBUG) << "[iw] Recvieved (" << n << " bytes): '" << raw_2_str(&buffer.data()[0], static_cast<std::size_t>(n)) << "'";
 
                 libs::source_event se;
                 std::stringstream oss;
-                oss.write(&buffer.data()[0], n);
+                oss.write(&buffer.data()[0], n);  // NOLINT(readability-simplify-subscript-expr)
                 try {
                     cereal::BinaryInputArchive iarchive(oss);
                     iarchive(se);
@@ -503,7 +507,8 @@ static void input_task(libs::blocked_queue<libs::source_event> & output, const s
 void daemon(const research_config & cfg, const rule_cfg & rules, std::ostream & output)
 {
     libs::blocked_queue<libs::source_event> input_queue;
-    libs::blocked_queue<event> output_queue, mail_queue;
+    libs::blocked_queue<event> output_queue;
+    libs::blocked_queue<event> mail_queue;
     libs::blocked_queue<intervention_t> intervention_queue;
     errorstack_t errorstack;
     std::map<rule_id_t, struct rule_state> rules_state;
@@ -542,7 +547,7 @@ void daemon(const research_config & cfg, const rule_cfg & rules, std::ostream & 
     FILE_LOG(libs::log_level::INFO) << "research started";
 
     {
-        std::array<char, 512> buffer;
+        std::array<char, 512> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         ::gethostname(buffer.data(), buffer.size());
         libs::source_event se;
         se.control_message = true;
@@ -562,13 +567,14 @@ void daemon(const research_config & cfg, const rule_cfg & rules, std::ostream & 
                 /* other signal occurred */
                 FILE_LOG(libs::log_level::WARNING) << "Unregistered signal occurred";
                 continue;
-            } else if (errno == EAGAIN) {
+            }
+            if (errno == EAGAIN) {
                 /* Timeout, checking threads */
                 FILE_LOG(libs::log_level::DEBUG2) << "Timeout";
                 bool exc = false;
                 std::lock_guard<std::mutex> lg{ errorstack.first };
                 while (!errorstack.second.empty()) {
-                    exc = true;
+                    exc = true;  // NOLINT(clang-analyzer-deadcode.DeadStores)
                     try {
                         std::exception_ptr exp{ errorstack.second.top() };
                         errorstack.second.pop();
@@ -582,9 +588,9 @@ void daemon(const research_config & cfg, const rule_cfg & rules, std::ostream & 
                     break;
                 }
                 continue;
-            } else {
-                throw libs::errno_exception{ "Error during sigtimedwait()" };
             }
+
+            throw libs::errno_exception{ "Error during sigtimedwait()" };
         }
 
         /* requested signal occurred */
@@ -604,7 +610,7 @@ void daemon(const research_config & cfg, const rule_cfg & rules, std::ostream & 
         }
     }
 
-    // TODO: fix shutdown time in unit tests
+    // TODO(cgzones): fix shutdown time in unit tests
 
     FILE_LOG(libs::log_level::DEBUG) << "waiting for threads...";
     input_thread.join();
@@ -618,4 +624,4 @@ void daemon(const research_config & cfg, const rule_cfg & rules, std::ostream & 
     FILE_LOG(libs::log_level::DEBUG) << "threads finished";
 }
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

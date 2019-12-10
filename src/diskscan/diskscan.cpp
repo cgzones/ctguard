@@ -15,7 +15,7 @@
 #include "../libs/config/parser.hpp"
 #include "config.hpp"
 #include "daemon.hpp"
-#include "database.h"
+#include "database.hpp"
 
 #include "../libs/blockedqueue.hpp"
 #include "../libs/errnoexception.hpp"
@@ -26,8 +26,12 @@
 #include "filedata.hpp"
 #include "watch.hpp"
 
-using namespace ctguard::diskscan;
-using namespace ctguard::libs;
+using ctguard::diskscan::diskscan_config;
+using ctguard::diskscan::read_config;
+using ctguard::libs::check_cfg_file_perms;
+using ctguard::libs::FILELog;
+using ctguard::libs::log_level;
+using ctguard::libs::Output2FILE;
 
 static const char * default_cfg_path = "/etc/ctguard/diskscan.conf";
 static const char * VERSION = "0.1dev";
@@ -56,14 +60,16 @@ int main(int argc, char ** argv)
     bool singlerun = false;
     bool unit_test{ false };
 
-    while (1) {
+    while (true) {
         int option_index = 0;
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)
         const struct option long_options[] = {
             { "verbose", no_argument, nullptr, 'v' },     { "foreground", no_argument, nullptr, 'f' }, { "cfg-file", required_argument, nullptr, 'c' },
             { "dump-config", no_argument, nullptr, 'C' }, { "singlescan", no_argument, nullptr, 'S' }, { "unittest", no_argument, nullptr, 'x' },
             { "version", no_argument, nullptr, 'V' },     { "help", no_argument, nullptr, 'h' },       { nullptr, 0, nullptr, 0 }
         };
 
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
         const int c = ::getopt_long(argc, argv, "vfc:CSxVh", long_options, &option_index);
 
         if (c == -1) {
@@ -72,12 +78,15 @@ int main(int argc, char ** argv)
 
         switch (c) {
             case 0:
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                 if (long_options[option_index].flag != nullptr) {
                     break;
                 }
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                 std::cerr << "option " << long_options[option_index].name;
-                if (optarg)
+                if (optarg) {
                     std::cerr << " with arg " << optarg;
+                }
                 std::cerr << "\n";
                 break;
 
@@ -117,9 +126,6 @@ int main(int argc, char ** argv)
 
             case '?':
                 /* getopt_long already printed an error message. */
-                std::cerr << "ctguard-diskscan not started!\n";
-                return EXIT_FAILURE;
-
             default:
                 std::cerr << "ctguard-diskscan not started!\n";
                 return EXIT_FAILURE;
@@ -129,7 +135,7 @@ int main(int argc, char ** argv)
     if (optind < argc) {
         std::cerr << "non-option arguments:\n";
         for (; optind < argc; ++optind) {
-            std::cerr << "    " << argv[optind] << "\n";
+            std::cerr << "    " << argv[optind] << "\n";  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         }
         std::cerr << "ctguard-diskscan not started!\n";
         return EXIT_FAILURE;

@@ -3,21 +3,22 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <cstring>
+#include <iomanip>
+
 #include "../libs/errnoexception.hpp"
 #include "../libs/libexception.hpp"
 #include "../libs/scopeguard.hpp"
-#include <iomanip>
 
 namespace ctguard::research {
 
 static void send_cmd(int socket, const std::string & cmd, const std::string & return_code)
 {
-    std::array<char, 2048> buffer;
+    std::array<char, 2048> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
 
     if (::send(socket, cmd.c_str(), cmd.length(), 0) == -1) {
         throw libs::errno_exception{ "Can not send command '" + cmd + "'" };
@@ -32,7 +33,7 @@ static void send_cmd(int socket, const std::string & cmd, const std::string & re
         throw libs::lib_exception{ "Receive buffer for command '" + cmd + "' too short: " + std::to_string(ret) + "/" + std::to_string(buffer.size()) };
     }
 
-    buffer[static_cast<std::size_t>(ret)] = '\0';
+    buffer[static_cast<std::size_t>(ret)] = '\0';  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
     if (return_code.compare(0, return_code.length(), buffer.data(), 0, return_code.length()) != 0) {
         throw libs::lib_exception{ "Command '" + cmd + "' does not return '" + return_code + "', instead it returns '" + buffer.data() + "'" };
@@ -59,7 +60,7 @@ static void send_mail_message(int socket, const std::string & from, const std::s
         throw libs::errno_exception{ "Can not send the message terminator" };
     }
 
-    std::array<char, 256> buffer;
+    std::array<char, 256> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
     const ssize_t ret = recv(socket, buffer.data(), buffer.size(), 0);
     if (ret < 0) {
         throw libs::errno_exception{ "Can not receive message id" };
@@ -69,7 +70,7 @@ static void send_mail_message(int socket, const std::string & from, const std::s
         throw libs::lib_exception{ "Receive buffer for mail message data too short: " + std::to_string(ret) + "/" + std::to_string(buffer.size()) };
     }
 
-    buffer[static_cast<std::size_t>(ret)] = '\0';
+    buffer[static_cast<std::size_t>(ret)] = '\0';  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
     if (return_code.compare(0, return_code.length(), buffer.data(), 0, return_code.length()) != 0) {
         throw libs::lib_exception{ "Mail message data does not return '" + return_code + "', instead it returns '" + buffer.data() + "'" };
@@ -85,14 +86,14 @@ void send_mail(const std::string & smtpserver, const std::string & smtpport, con
     hints.ai_flags = 0;
     hints.ai_protocol = 0;
 
-    struct ::addrinfo * result;
+    struct ::addrinfo * result;  // NOLINT(cppcoreguidelines-init-variables)
     if (const auto s = ::getaddrinfo(smtpserver.c_str(), smtpport.c_str(), &hints, &result); s != 0) {
         throw libs::lib_exception{ "Can not get address information for '" + smtpserver + ":" + smtpport + "': " + ::gai_strerror(s) };
     }
 
-    int socket = -1;  // TODO: raii class
-    struct ::addrinfo * rp;
-    for (rp = result; rp != nullptr; rp = rp->ai_next) {
+    int socket = -1;  // TODO(cgzones): raii class
+    const struct ::addrinfo * rp = result;
+    for (; rp != nullptr; rp = rp->ai_next) {
         socket = ::socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
         if (socket == -1) {
             continue;
@@ -114,14 +115,14 @@ void send_mail(const std::string & smtpserver, const std::string & smtpport, con
     libs::scope_guard sg{ [socket]() { ::close(socket); } };
 
     {
-        std::array<char, 4096> buffer;
+        std::array<char, 4096> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         if (::recv(socket, buffer.data(), buffer.size(), 0) == -1) {
             throw libs::errno_exception{ "Can not receive welcome message" };
         }
     }
 
     {
-        std::array<char, 512> buffer_hostname;
+        std::array<char, 512> buffer_hostname;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         ::gethostname(buffer_hostname.data(), buffer_hostname.size());
 
         send_cmd(socket, std::string("EHLO ") + buffer_hostname.data() + "\r\n", "250");
@@ -134,4 +135,4 @@ void send_mail(const std::string & smtpserver, const std::string & smtpport, con
     send_cmd(socket, "QUIT\r\n", "221");
 }
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

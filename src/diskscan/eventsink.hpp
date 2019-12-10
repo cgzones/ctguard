@@ -13,7 +13,7 @@ namespace ctguard::diskscan {
 class sink
 {
   public:
-    virtual ~sink();
+    virtual ~sink() noexcept;
     virtual void send(libs::source_event) = 0;
 };
 
@@ -60,4 +60,4 @@ class eventsink
     std::unique_ptr<sink> m_sink;
 };
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

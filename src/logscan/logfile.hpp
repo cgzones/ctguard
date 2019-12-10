@@ -1,14 +1,15 @@
 #pragma once
 
-#include "config.hpp"
-
 #include <ctime>
+#include <sys/stat.h>
+#include <unistd.h>
+
 #include <exception>
 #include <fstream>
 #include <memory>
 #include <string>
-#include <sys/stat.h>
-#include <unistd.h>
+
+#include "config.hpp"
 
 namespace ctguard::logscan {
 
@@ -75,4 +76,4 @@ class logfile
     bool m_timeout_triggered{ false };
 };
 
-}  // namespace ctguard::logscan
+} /* namespace ctguard::logscan */

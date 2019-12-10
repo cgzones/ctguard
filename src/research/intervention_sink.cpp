@@ -1,15 +1,15 @@
 #include "intervention_sink.hpp"
 
-#include "../libs/errnoexception.hpp"
+#include <unistd.h>
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/memory.hpp>
 
-#include <unistd.h>
+#include "../libs/errnoexception.hpp"
 
 namespace ctguard::research {
 
-sink::~sink() {}
+sink::~sink() noexcept = default;
 
 file_sink::file_sink(const std::string & path) : m_out{ path, std::ios::app }
 {
@@ -37,4 +37,4 @@ void socket_sink::send(const libs::intervention_cmd & cmd)
     m_client.send(ss.str());
 }
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

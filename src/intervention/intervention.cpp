@@ -1,3 +1,23 @@
+#include <fcntl.h>
+#include <getopt.h>
+#include <grp.h>
+#include <pwd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#include <chrono>
+#include <csignal>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <thread>
+#include <vector>
+
 #include "../libs/check_file_perms.hpp"
 #include "../libs/config/parser.hpp"
 #include "../libs/errnoexception.hpp"
@@ -7,27 +27,12 @@
 #include "config.hpp"
 #include "daemon.hpp"
 
-#include <chrono>
-#include <cstdlib>
-#include <ctime>
-#include <fcntl.h>
-#include <fstream>
-#include <getopt.h>
-#include <grp.h>
-#include <iomanip>
-#include <iostream>
-#include <pwd.h>
-#include <signal.h>
-#include <string.h>
-#include <string>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <thread>
-#include <unistd.h>
-#include <vector>
-
-using namespace ctguard::libs;
-using namespace ctguard::intervention;
+using ctguard::intervention::intervention_config;
+using ctguard::intervention::parse_config;
+using ctguard::libs::check_cfg_file_perms;
+using ctguard::libs::FILELog;
+using ctguard::libs::log_level;
+using ctguard::libs::Output2FILE;
 
 static const char * default_cfg_path = "/etc/ctguard/intervention.conf";
 static const char * VERSION = "0.1dev";
@@ -54,13 +59,15 @@ int main(int argc, char ** argv)
     bool configdump = false;
     bool unit_test = false;
 
-    while (1) {
+    while (true) {
         int option_index = 0;
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)
         const struct option long_options[] = { { "verbose", no_argument, nullptr, 'v' },        { "foreground", no_argument, nullptr, 'f' },
                                                { "cfg-file", required_argument, nullptr, 'c' }, { "config-dump", no_argument, nullptr, 'C' },
                                                { "unit-test", no_argument, nullptr, 'x' },      { "version", no_argument, nullptr, 'V' },
                                                { "help", no_argument, nullptr, 'h' },           { nullptr, 0, nullptr, 0 } };
 
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
         const int c = ::getopt_long(argc, argv, "vfc:CxVh", long_options, &option_index);
 
         if (c == -1) {
@@ -69,12 +76,13 @@ int main(int argc, char ** argv)
 
         switch (c) {
             case 0:
-                if (long_options[option_index].flag != nullptr) {
+                if (long_options[option_index].flag != nullptr) {  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
                     break;
                 }
-                std::cerr << "option " << long_options[option_index].name;
-                if (optarg)
+                std::cerr << "option " << long_options[option_index].name;  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+                if (optarg) {
                     std::cerr << " with arg " << optarg;
+                }
                 std::cerr << "\n";
                 break;
 
@@ -108,9 +116,6 @@ int main(int argc, char ** argv)
 
             case '?':
                 /* getopt_long already printed an error message. */
-                std::cerr << "ctguard-intervention not started!\n";
-                return EXIT_FAILURE;
-
             default:
                 std::cerr << "ctguard-intervention not started!\n";
                 return EXIT_FAILURE;
@@ -120,7 +125,7 @@ int main(int argc, char ** argv)
     if (optind < argc) {
         std::cerr << "non-option arguments:\n";
         for (; optind < argc; ++optind) {
-            std::cerr << "    " << argv[optind] << "\n";
+            std::cerr << "    " << argv[optind] << "\n";  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         }
         std::cerr << "ctguard-intervention not started!\n";
         return EXIT_FAILURE;
@@ -154,9 +159,9 @@ int main(int argc, char ** argv)
 
     for (const auto & action : cfg.actions) {
         if (!action.group.empty()) {
-            std::array<char, 4096> buffer;
-            struct group gr;
-            struct group * grp;
+            std::array<char, 4096> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+            struct group gr;                // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+            struct group * grp;             // NOLINT(cppcoreguidelines-init-variables)
             const int ret = ::getgrnam_r(action.group.c_str(), &gr, buffer.data(), buffer.size(), &grp);
             if (ret != 0) {
                 std::cerr << "Can not getgrnam_r for '" << action.group << "': " << ::strerror(errno) << "\n";
@@ -172,9 +177,9 @@ int main(int argc, char ** argv)
         }
 
         if (!action.user.empty()) {
-            std::array<char, 4096> buffer;
-            struct passwd pw;
-            struct passwd * pwd;
+            std::array<char, 4096> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+            struct passwd pw;               // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+            struct passwd * pwd;            // NOLINT(cppcoreguidelines-init-variables)
             const int ret = ::getpwnam_r(action.user.c_str(), &pw, buffer.data(), buffer.size(), &pwd);
             if (ret != 0) {
                 std::cerr << "Can not getpwnam_r for '" << action.user << "': " << ::strerror(errno) << "\n";
@@ -189,7 +194,7 @@ int main(int argc, char ** argv)
             }
         }
 
-        struct stat s;
+        struct stat s;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         if (::stat(action.command.c_str(), &s) == -1) {
             std::cerr << "No such intervention command '" << action.command << "' for intervention '" << action.name << "'\n";
             std::cerr << "ctguard-intervention not started!\n";

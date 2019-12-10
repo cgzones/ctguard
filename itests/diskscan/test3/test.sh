@@ -168,7 +168,8 @@ rm test_dir/test_rm
 ${BIN} -c test.conf -x -f -S
 
 echo "Comapring expected vs actual output:"
-sed "s/ITEST_USER_REPLACEME/${USER}/g" test.expected.sample > test.expected
+USERNAME=$(id -un)
+sed "s/ITEST_USER_REPLACEME/${USERNAME}/g" test.expected.sample > test.expected
 sort test.output -o test.output.sorted
 diff -u test.expected test.output.sorted
 

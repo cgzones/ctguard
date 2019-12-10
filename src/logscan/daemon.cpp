@@ -1,28 +1,30 @@
 #include "daemon.hpp"
 
-#include "../libs/errnoexception.hpp"
-#include "../libs/logger.hpp"
-#include "../libs/source_event.hpp"
-#include "eventsink.hpp"
-#include "logfile.hpp"
-
-#include <atomic>
-#include <chrono>
-#include <csignal>
 #include <fcntl.h>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <stack>
-#include <string.h>
-#include <thread>
 
-#include "../libs/blockedqueue.hpp"
-#include "../libs/scopeguard.hpp"
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
 #include <unistd.h>  // ::close
+
+#include <atomic>
+#include <chrono>
+#include <csignal>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <stack>
+#include <thread>
+
+#include "../libs/blockedqueue.hpp"
+#include "../libs/errnoexception.hpp"
+#include "../libs/logger.hpp"
+#include "../libs/scopeguard.hpp"
+#include "../libs/source_event.hpp"
+
+#include "eventsink.hpp"
+#include "logfile.hpp"
 
 namespace ctguard::logscan {
 
@@ -66,7 +68,7 @@ static bool UNIT_TEST{ false };
 
             FILE_LOG(libs::log_level::DEBUG) << "State file line: '" << line << "'";
             const auto pathpos = line.find('"', 1);
-            if (pathpos == line.npos) {
+            if (pathpos == std::string::npos) {
                 FILE_LOG(libs::log_level::ERROR) << "State file '" << path << "' has invalid line: '" << line << "'";
                 continue;
             }
@@ -74,8 +76,8 @@ static bool UNIT_TEST{ false };
             std::string file{ line.substr(1, pathpos - 1) };
             const std::string rest{ line.substr(pathpos + 2) };
             std::istringstream is{ rest };
-            logfile::inode_type inode;
-            unsigned long long pos;  // fpos<__mbstate_t> does not work in [is >>]
+            logfile::inode_type inode;  // NOLINT(cppcoreguidelines-init-variables)
+            unsigned long long pos;     // fpos<__mbstate_t> does not work in [is >>]  // NOLINT(cppcoreguidelines-init-variables,google-runtime-int)
 
             is >> inode;
             if (is.fail() || is.get() != ',') {
@@ -141,7 +143,7 @@ static void logfile_task(const logscan_config & cfg, libs::blocked_queue<libs::s
             const std::string & lf = lc.path;
             logfile state{ lc };
 
-            state.fd() = ::open(lf.c_str(), O_RDONLY);
+            state.fd() = ::open(lf.c_str(), O_RDONLY | O_CLOEXEC);  // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
             if (state.fd() == -1) {
                 if (errno == ENOENT) {
                     FILE_LOG(libs::log_level::WARNING) << "Can not open monitoring file '" << lf << "': " << ::strerror(errno);
@@ -153,7 +155,7 @@ static void logfile_task(const logscan_config & cfg, libs::blocked_queue<libs::s
                 continue;
             }
 
-            struct stat tmp_stat;
+            struct stat tmp_stat;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
             if (::fstat(state.fd(), &tmp_stat)) {
                 FILE_LOG(libs::log_level::ERROR) << "Can not stat monitoring file '" << lf << "': " << ::strerror(errno);
                 state.down(true);
@@ -216,7 +218,7 @@ static void logfile_task(const logscan_config & cfg, libs::blocked_queue<libs::s
 
                 if (ls.fd() == -1 || ls.down()) {
                     FILE_LOG(libs::log_level::DEBUG2) << "No stream: trying to set stream";
-                    ls.fd() = ::open(ls.path().c_str(), O_RDONLY);
+                    ls.fd() = ::open(ls.path().c_str(), O_RDONLY | O_CLOEXEC);  // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
                     if (ls.fd() == -1) {
                         FILE_LOG(libs::log_level::DEBUG) << "Can still not open file '" << ls.path() << "': " << ::strerror(errno) << ". Skipping this one";
                         continue;
@@ -227,7 +229,7 @@ static void logfile_task(const logscan_config & cfg, libs::blocked_queue<libs::s
                     ls.timeout_triggered(false);
                 }
 
-                struct stat tmp_stat;
+                struct stat tmp_stat;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
                 if (::stat(ls.path().c_str(), &tmp_stat)) {
                     FILE_LOG(libs::log_level::ERROR) << "Can not stat file '" << ls.path() << "': " << ::strerror(errno);
                     queue.emplace(log_2_se(ls.path(), true, "!File went down"));
@@ -244,7 +246,7 @@ static void logfile_task(const logscan_config & cfg, libs::blocked_queue<libs::s
                     ls.set_position(0);
                     FILE_LOG(libs::log_level::DEBUG) << "Try to reset stream";
                     ::close(ls.fd());
-                    ls.fd() = ::open(ls.path().c_str(), O_RDONLY);
+                    ls.fd() = ::open(ls.path().c_str(), O_RDONLY | O_CLOEXEC);  // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
                     if (ls.fd() == -1) {
                         FILE_LOG(libs::log_level::ERROR) << "Can not open file '" << ls.path() << "': " << ::strerror(errno) << ". Skipping this one";
                         queue.emplace(log_2_se(ls.path(), true, "!File went down"));
@@ -412,7 +414,7 @@ static void systemd_task(const logscan_config & cfg, libs::blocked_queue<libs::s
         }
         libs::scope_guard close_socket{ [&socket]() { ::close(socket); } };
 
-        struct sockaddr_un local;
+        struct sockaddr_un local;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         local.sun_family = AF_UNIX;
         constexpr size_t addr_length = sizeof(local.sun_path);
         if (cfg.systemd_socket.size() > (addr_length - 1)) {
@@ -425,9 +427,11 @@ static void systemd_task(const logscan_config & cfg, libs::blocked_queue<libs::s
         if (::setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof tv) == -1) {
             throw libs::errno_exception{ "Can not setsockopt()" };
         }
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
         ::strncpy(local.sun_path, cfg.systemd_socket.c_str(), addr_length - 1);
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
         const size_t len = strlen(local.sun_path) + sizeof(local.sun_family);
-        if (::bind(socket, reinterpret_cast<struct sockaddr *>(&local), static_cast<unsigned>(len))) {
+        if (::bind(socket, reinterpret_cast<struct sockaddr *>(&local), static_cast<unsigned>(len))) {  // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
             throw libs::errno_exception{ "Can not bind on '" + cfg.systemd_socket + "'" };
         }
         libs::scope_guard unlink_socket{ [&cfg]() {
@@ -441,7 +445,7 @@ static void systemd_task(const logscan_config & cfg, libs::blocked_queue<libs::s
             FILE_LOG(libs::log_level::DEBUG2) << "systemd-task waiting for connection...";
 
             do {
-                std::array<char, 512> buffer;
+                std::array<char, 512> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
                 const ssize_t n = ::recv(socket, buffer.data(), buffer.size(), 0);
                 if (n <= 0) {
                     if (n < 0) {
@@ -462,7 +466,7 @@ static void systemd_task(const logscan_config & cfg, libs::blocked_queue<libs::s
                 if (static_cast<std::size_t>(n) >= buffer.size()) {
                     buffer[buffer.size() - 1] = '\0';
                 } else {
-                    buffer[static_cast<std::size_t>(n)] = '\0';
+                    buffer[static_cast<std::size_t>(n)] = '\0';  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
                 }
 
                 FILE_LOG(libs::log_level::DEBUG) << "systemd-task Recvieved (" << n << " bytes): '" << buffer.data() << "'";
@@ -533,13 +537,14 @@ void daemon(const logscan_config & cfg, bool unit_test)
                 /* other signal occurred */
                 FILE_LOG(libs::log_level::WARNING) << "Unregistered signal occurred";
                 continue;
-            } else if (errno == EAGAIN) {
+            }
+            if (errno == EAGAIN) {
                 /* Timeout, checking threads */
                 FILE_LOG(libs::log_level::DEBUG2) << "Timeout";
                 bool exc = false;
                 std::lock_guard<std::mutex> lg{ errorstack.first };
                 while (!errorstack.second.empty()) {
-                    exc = true;
+                    exc = true;  // NOLINT(clang-analyzer-deadcode.DeadStores)
                     try {
                         std::exception_ptr exp{ errorstack.second.top() };
                         errorstack.second.pop();
@@ -553,10 +558,10 @@ void daemon(const logscan_config & cfg, bool unit_test)
                     break;
                 }
                 continue;
-            } else {
-                FILE_LOG(libs::log_level::ERROR) << "Error during sigtimedwait(): " << ::strerror(errno);
-                break;
             }
+
+            FILE_LOG(libs::log_level::ERROR) << "Error during sigtimedwait(): " << ::strerror(errno);
+            break;
         }
 
         /* requested signal occurred */
@@ -581,4 +586,4 @@ void daemon(const logscan_config & cfg, bool unit_test)
     FILE_LOG(libs::log_level::DEBUG) << "threads finished";
 }
 
-}  // namespace ctguard::logscan
+} /* namespace ctguard::logscan */

@@ -13,4 +13,4 @@ std::ostream & operator<<(std::ostream & os, watch::scan_option so)
     return os;
 }
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

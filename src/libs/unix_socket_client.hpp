@@ -25,4 +25,4 @@ class unix_socket_client
     void close() noexcept;
 };
 
-}  // namespace ctguard::libs
+} /* namespace ctguard::libs */

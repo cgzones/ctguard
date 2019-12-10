@@ -1,15 +1,15 @@
 #include "eventsink.hpp"
 
-#include "../libs/errnoexception.hpp"
+#include <unistd.h>
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/memory.hpp>
 
-#include <unistd.h>
+#include "../libs/errnoexception.hpp"
 
 namespace ctguard::logscan {
 
-sink::~sink() {}
+sink::~sink() noexcept = default;
 
 file_sink::file_sink(const std::string & path) : m_out{ path, std::ios::app }
 {
@@ -26,7 +26,7 @@ void file_sink::send(libs::source_event se)
 
 socket_sink::socket_sink(std::string path, bool unit_test) : m_client{ std::move(path) }, m_unit_test{ unit_test }
 {
-    std::array<char, 1024> buffer;
+    std::array<char, 1024> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
     ::gethostname(buffer.data(), buffer.size());
     m_hostname = buffer.data();
 }
@@ -50,4 +50,4 @@ void socket_sink::send(libs::source_event se)
     m_client.send(ss.str());
 }
 
-}  // namespace ctguard::logscan
+} /* namespace ctguard::logscan */

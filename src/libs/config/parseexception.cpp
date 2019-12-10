@@ -4,7 +4,7 @@
 
 namespace ctguard::libs::config {
 
-parse_exception::parse_exception(position pos, std::string_view message) : m_position{ std::move(pos) }
+parse_exception::parse_exception(position pos, std::string_view message) : m_position{ pos }
 {
     std::stringstream ss;
     ss << m_position.line_number() << ':' << m_position.line_indent() << ": " << message;
@@ -21,4 +21,4 @@ bool parse_exception::operator==(const parse_exception & other) const noexcept
     return m_position == other.m_position && m_message == other.m_message;
 }
 
-}  // namespace ctguard::libs::config
+} /* namespace ctguard::libs::config */

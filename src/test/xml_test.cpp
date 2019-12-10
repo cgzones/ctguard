@@ -1,31 +1,32 @@
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <string.h>
 
 #include "../libs/xml/XMLNode.hpp"
 #include "../libs/xml/XMLparser.hpp"
 
-using namespace ctguard::libs::xml;
+using ctguard::libs::xml::XMLNode;
+using ctguard::libs::xml::XMLparser;
 
 int main(int argc, char ** argv)
 {
     if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " xml_file\n";
+        std::cerr << "Usage: " << argv[0] << " xml_file\n";  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return EXIT_FAILURE;
     }
 
-    std::ifstream xml_input{ argv[1] };
+    std::ifstream xml_input{ argv[1] };  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
     if (!xml_input.is_open()) {
-        std::cerr << "Can not open '" << argv[1] << "': " << ::strerror(errno) << "\n";
+        std::cerr << "Can not open '" << argv[1] << "': " << ::strerror(errno) << "\n";  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return EXIT_FAILURE;
     }
 
     try {
         XMLparser parser{ xml_input };
 
-        std::cout << "parsing " << argv[1] << "...";
+        std::cout << "parsing " << argv[1] << "...";  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
         XMLNode root{ parser.parse() };
 

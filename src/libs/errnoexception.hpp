@@ -10,6 +10,7 @@ class errno_exception : public std::exception
 {
   public:
     explicit errno_exception(std::string_view message);
+
     [[nodiscard]] virtual const char * what() const noexcept override;
 
   private:

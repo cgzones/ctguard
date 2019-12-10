@@ -1,27 +1,28 @@
 #include "check_file_perms.hpp"
 
-#include "errnoexception.hpp"
-#include "libexception.hpp"
-#include "safe_utilities.hpp"
-
 #include <grp.h>
 #include <pwd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>  // geteuid/getegid
 
+#include "ctguard_config.hpp.in"
+#include "errnoexception.hpp"
+#include "libexception.hpp"
+#include "safe_utilities.hpp"
+
 namespace ctguard::libs {
 
 void check_cfg_file_perms(const std::string & path)
 {
-    struct stat info;
+    struct ::stat info;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
     if (::stat(path.c_str(), &info) == -1) {
         throw errno_exception{ "Can not stat" };
     }
 
     unsigned ctguard_gid{ 0 };
     {
-        const auto groupid = getgroupid("ctguard");
+        const auto groupid = getgroupid(CTGUARD_SYSTEM_GROUP);
         if (groupid) {
             ctguard_gid = *groupid;
         }
@@ -48,4 +49,4 @@ void check_cfg_file_perms(const std::string & path)
     }
 }
 
-}  // namespace ctguard::libs
+} /* namespace ctguard::libs */

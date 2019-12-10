@@ -1,13 +1,14 @@
 #include "XMLparser.hpp"
 
-#include "../libexception.hpp"
 #include <sstream>
+
+#include "xmlexception.hpp"
 
 namespace ctguard::libs::xml {
 
 char XMLparser::get_char_raw()
 {
-    char c = static_cast<char>(m_input.get());
+    const char c{ static_cast<char>(m_input.get()) };
 
     if (!m_input) {
         parse_error("Unexpected stream error/end");
@@ -18,28 +19,29 @@ char XMLparser::get_char_raw()
         m_position = 0;
 
         return get_char_raw();
-    } else {
-        ++m_position;
-        return c;
     }
+
+    ++m_position;
+    return c;
 }
 
 char XMLparser::get_char_low()
 {
-    char c = get_char_raw();
+    const char c{ get_char_raw() };
 
     if (m_escaped && c == '\\') {
         m_escaped = true;
+
         return get_char_raw();
-    } else {
-        m_escaped = false;
-        return c;
     }
+
+    m_escaped = false;
+    return c;
 }
 
 char XMLparser::get_char()
 {
-    char c = get_char_low();
+    char c{ get_char_low() };
 
     if (c == '<' && m_input.peek() == '!') {
         m_input.get();
@@ -51,8 +53,9 @@ char XMLparser::get_char()
         m_input.get();
         ++m_position;  // consume second '-'
 
-        while ((c = get_char_low()) != '-' || m_input.peek() != '-')
-            ;
+        while (get_char_low() != '-' || m_input.peek() != '-') {
+        }
+
         m_input.get();
         ++m_position;  // consume second '-'
 
@@ -66,9 +69,13 @@ char XMLparser::get_char()
     return c;
 }
 
-XMLNode XMLparser::parse()  // @suppress("No return")
+XMLNode XMLparser::parse()
 {
-    std::string name, value, close_name, attr_key, attr_value;
+    std::string name;
+    std::string value;
+    std::string close_name;
+    std::string attr_key;
+    std::string attr_value;
     std::vector<std::pair<std::string, std::string>> attributes;
     std::vector<XMLNode> children;
     parse_state state{ parse_state::initial };
@@ -112,6 +119,7 @@ XMLNode XMLparser::parse()  // @suppress("No return")
                 }
                 break;
             case parse_state::attr_key:
+                attr_key.clear();
                 while (std::isalnum(c) || c == '_') {
                     attr_key += c;
                     c = get_char();
@@ -130,12 +138,13 @@ XMLNode XMLparser::parse()  // @suppress("No return")
                 }
                 break;
             case parse_state::attr_value:
+                attr_value.clear();
                 while ((m_escaped || c != '"') && std::isprint(c)) {
                     attr_value += c;
                     c = get_char();
                 }
                 if (!m_escaped && c == '"') {
-                    attributes.emplace_back(std::move(attr_key), std::move(attr_value));
+                    attributes.emplace_back(std::move(attr_key), std::move(attr_value));  // NOLINT(bugprone-use-after-move,hicpp-invalid-access-moved)
                     state = parse_state::open_tag_attr;
                 } else {
                     parse_error(std::string("Unknown character (4) '") + c + "'");
@@ -151,7 +160,7 @@ XMLNode XMLparser::parse()  // @suppress("No return")
                 } else if (!m_escaped && c == '/' && m_input.peek() == '>') {
                     m_input.get();
                     ++m_position;  // consume '>'
-                    return XMLNode{ name, attributes };
+                    return XMLNode{ std::move(name), std::move(attributes) };
                 } else if (!m_escaped && c == '>') {
                     state = parse_state::body;
                 } else {
@@ -165,12 +174,13 @@ XMLNode XMLparser::parse()  // @suppress("No return")
                 }
                 if (!m_escaped && c == '>') {
                     if (name != close_name) {
+                        // NOLINTNEXTLINE(performance-inefficient-string-concatenation)
                         parse_error("Tag '" + name + "' not closed while closing tag '" + close_name + "'");
                     }
-                    return XMLNode{ name, attributes, value, children };
-                } else {
-                    parse_error(std::string("Unknown character (6) '") + c + "'");
+                    return XMLNode{ std::move(name), std::move(attributes), std::move(value), std::move(children) };
                 }
+
+                parse_error(std::string("Unknown character (6) '") + c + "'");
         }
     }
 
@@ -181,7 +191,7 @@ void XMLparser::parse_error(std::string_view message) const
 {
     std::ostringstream os;
     os << m_line << ":" << (m_position - 1) << ": " << message;
-    throw lib_exception{ os.str() };
+    throw xml_exception{ os.str() };
 }
 
-}  // namespace ctguard::libs::xml
+} /* namespace ctguard::libs::xml */

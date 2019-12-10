@@ -98,4 +98,4 @@ class file_data_factory
     unsigned m_max_diff_size;
 };
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

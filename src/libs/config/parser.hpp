@@ -10,7 +10,7 @@ class parser
   public:
     explicit parser(std::istream & input);
 
-    config_group parse();
+    [[nodiscard]] config_group parse();
 
     parser(const parser & other) = delete;
     parser & operator=(const parser & other) = delete;
@@ -23,4 +23,4 @@ class parser
     [[nodiscard]] config_group parse_group(std::string name, std::string keyword, bool need_close = false, position pos = { 1, 0 });
 };
 
-}  // namespace ctguard::libs::config
+} /* namespace ctguard::libs::config */

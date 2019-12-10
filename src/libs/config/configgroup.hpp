@@ -1,11 +1,11 @@
 #pragma once
 
-#include "position.hpp"
-
 #include <set>
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+#include "position.hpp"
 
 namespace ctguard::libs::config {
 
@@ -22,17 +22,17 @@ class config_group
     config_group(std::string name, std::string keyword, position pos) : m_name{ std::move(name) }, m_keyword{ std::move(keyword) }, m_position{ std::move(pos) }
     {}
 
-    [[nodiscard]] const std::string & name() const { return m_name; }
-    [[nodiscard]] const std::string & keyword() const { return m_keyword; }
-    [[nodiscard]] const position & pos() const { return m_position; }
+    [[nodiscard]] const std::string & name() const noexcept { return m_name; }
+    [[nodiscard]] const std::string & keyword() const noexcept { return m_keyword; }
+    [[nodiscard]] const position & pos() const noexcept { return m_position; }
 
     [[nodiscard]] std::unordered_map<std::string, config_option>::const_iterator begin() const { return m_options.cbegin(); }
     [[nodiscard]] std::unordered_map<std::string, config_option>::const_iterator end() const { return m_options.cend(); }
 
-    [[nodiscard]] const std::set<config_group> & subgroups() const { return m_subconfigs; }
+    [[nodiscard]] const std::set<config_group> & subgroups() const noexcept { return m_subconfigs; }
 
     // for std::set compatibility
-    [[nodiscard]] bool operator<(const config_group & other) const { return m_position < other.m_position; }
+    [[nodiscard]] bool operator<(const config_group & other) const noexcept { return m_position < other.m_position; }
 
     friend class parser;
 

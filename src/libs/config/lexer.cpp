@@ -52,7 +52,7 @@ token lexer::gettok()
 
     m_prev_position = m_position;
 
-    const position startPosition{ std::move(m_position) };  // really copy
+    const position startPosition{ m_position };  // really copy
     std::string content{};
 
     // quoted string
@@ -79,8 +79,9 @@ token lexer::gettok()
 
     if (isalpha(m_last_char)) {  // identifier: [a-zA-Z_][a-zA-Z0-9_.]*
         content = m_last_char;
-        while (isalnum((m_last_char = mygetchar())) || m_last_char == '_' || m_last_char == '.')
+        while (isalnum((m_last_char = mygetchar())) || m_last_char == '_' || m_last_char == '.') {
             content += m_last_char;
+        }
 
         return token{ token::type_t::identifier, startPosition, content };
     }
@@ -122,4 +123,4 @@ lexer lexer::create(const std::string & input)
     return l;
 }
 
-}  // namespace ctguard::libs::config
+} /* namespace ctguard::libs::config */

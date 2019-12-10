@@ -115,4 +115,4 @@ class format
 
 void parse_rules(rule_cfg & rules, const std::string & rules_path);
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

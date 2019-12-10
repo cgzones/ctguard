@@ -1,8 +1,16 @@
 #include "daemon.hpp"
 
-#include "database.h"
-#include "eventsink.hpp"
-#include "watch.hpp"
+#include <sys/inotify.h>
+#include <sys/select.h>
+#include <unistd.h>
+
+#include <atomic>
+#include <csignal>
+#include <iostream>
+#include <set>
+#include <thread>
+#include <unordered_map>
+#include <vector>
 
 #include "../libs/blockedqueue.hpp"
 #include "../libs/errnoexception.hpp"
@@ -12,19 +20,11 @@
 #include "../libs/scopeguard.hpp"
 #include "../libs/sqlite/sqlitestatement.hpp"
 #include "../libs/sqlite/sqlitetransaction.hpp"
-#include "filedata.hpp"
 
-#include <atomic>
-#include <iostream>
-#include <set>
-#include <signal.h>
-#include <string.h>
-#include <sys/inotify.h>
-#include <sys/select.h>
-#include <thread>
-#include <unistd.h>
-#include <unordered_map>
-#include <vector>
+#include "database.hpp"
+#include "eventsink.hpp"
+#include "filedata.hpp"
+#include "watch.hpp"
 
 namespace ctguard::diskscan {
 
@@ -46,6 +46,7 @@ enum flags
 static std::atomic<bool> RUNNING{ true };
 static bool UNIT_TEST;
 
+// NOLINTNEXTLINE(fuchsia-statically-constructed-objects,google-runtime-int)
 static std::atomic<long long> Talert_entire, Talert_select, Talert_update_full, Talert_update_small, Talert_delete, Talert_insert, Talert_insertq, Toutput,
   Twatch, Tevent, Trtevent, Tscan, Tevent_insert, Talert_updateq, Trtevent_insert;
 
@@ -210,15 +211,13 @@ static void watch_task(const diskscan_config & cfg, libs::blocked_queue<std::tup
         constexpr size_t EVENT_BUF_LEN = 1024 * (EVENT_SIZE + 16);
 
         for (;;) {
-            char buffer[EVENT_BUF_LEN];
-
             fd_set rfds;
             struct timeval tv
             {
                 0, 500000
-            };  // 1/2 second
-            FD_ZERO(&rfds);
-            FD_SET(in, &rfds);
+            };                  // 1/2 second
+            FD_ZERO(&rfds);     // NOLINT(hicpp-no-assembler,readability-isolate-declaration)
+            FD_SET(in, &rfds);  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
 
             const int retval = ::select(in + 1, &rfds, nullptr, nullptr, &tv);
 
@@ -226,7 +225,8 @@ static void watch_task(const diskscan_config & cfg, libs::blocked_queue<std::tup
 
             if (retval == -1) {
                 throw libs::errno_exception{ "Can not select inotify event" };
-            } else if (!retval) {
+            }
+            if (!retval) {
                 // timeout
                 FILE_LOG(libs::log_level::DEBUG2) << "wt: Watch timeout for '" << watch.path() << "'";
                 if (!RUNNING) {
@@ -239,7 +239,8 @@ static void watch_task(const diskscan_config & cfg, libs::blocked_queue<std::tup
             }
             // data is available
 
-            const ssize_t length = ::read(in, buffer, EVENT_BUF_LEN);
+            std::array<char, EVENT_BUF_LEN> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+            const ssize_t length = ::read(in, buffer.data(), EVENT_BUF_LEN);
             if (length < 0) {
                 throw libs::errno_exception{ "Can not read inotify events" };
             }
@@ -249,6 +250,7 @@ static void watch_task(const diskscan_config & cfg, libs::blocked_queue<std::tup
             for (std::size_t len = 0; len < static_cast<std::size_t>(length);) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align"
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-pro-bounds-constant-array-index)
                 const struct inotify_event * event = reinterpret_cast<struct inotify_event *>(&buffer[len]);
 #pragma GCC diagnostic pop
                 len += EVENT_SIZE + event->len;
@@ -263,11 +265,13 @@ static void watch_task(const diskscan_config & cfg, libs::blocked_queue<std::tup
 
                 const auto matching_watch = watches.find(event->wd);
                 if (matching_watch == watches.end()) {
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
                     throw libs::lib_exception{ "No watch with desired id " + std::to_string(event->wd) + " stored, filename '" + event->name + "', mask " +
                                                std::to_string(event->mask) };
                 }
 
-                const std::string full_path = event->len ? matching_watch->second + '/' + event->name : matching_watch->second;
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
+                const std::string full_path = event->len ? (matching_watch->second + '/' + event->name) : matching_watch->second;
 
                 {
                     std::smatch match;
@@ -399,8 +403,8 @@ static void rtevent_task(const diskscan_config & cfg, libs::blocked_queue<std::t
     output_queue.emplace(std::piecewise_construct, std::forward_as_tuple(fdf.construct("", false, false)), std::forward_as_tuple(flags::KILL));
 }
 
-static void event_task(const diskscan_config &, libs::blocked_queue<std::pair<std::string, flags>> & event_queue,
-                       libs::blocked_queue<std::pair<file_data, flags>> & file_data_queue, file_data_factory & fdf, errorstack_t & es)
+static void event_task(libs::blocked_queue<std::pair<std::string, flags>> & event_queue, libs::blocked_queue<std::pair<file_data, flags>> & file_data_queue,
+                       file_data_factory & fdf, errorstack_t & es)
 {
     FILE_LOG(libs::log_level::DEBUG) << "event-task started";
     libs::scope_guard sg{ []() { FILE_LOG(libs::log_level::DEBUG) << "event-task stopped"; } };
@@ -506,7 +510,7 @@ static void do_insert_set(std::set<file_data, file_data_set_compare> & insert_se
     Talert_insertq += std::chrono::duration_cast<std::chrono::milliseconds>(insertq_end - insertq_start).count();
 }
 
-static void do_update_queue(std::queue<file_data> & update_queue, database & db)
+static void do_update_queue(std::queue<std::string> & update_queue, database & db)
 {
     const auto updateq_start = std::chrono::high_resolution_clock::now();
 
@@ -523,9 +527,9 @@ static void do_update_queue(std::queue<file_data> & update_queue, database & db)
                                            db };
 
     while (!update_queue.empty()) {
-        file_data & fd{ update_queue.front() };
+        const std::string & path{ update_queue.front() };
 
-        update.bind(1, fd.path());
+        update.bind(1, path);
         update.run();
 
         update.reset();
@@ -551,7 +555,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
 
         bool in_scan{ false };
         std::set<file_data, file_data_set_compare> insert_set;
-        std::queue<file_data> update_queue;
+        std::queue<std::string> update_queue;
 
         for (;;) {
             const auto & fdf{ queue.take() };
@@ -595,7 +599,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
 
                 for (const auto column : ret) {
                     const char * db_name = column.get<const char *>(0);
-                    // TODO check_diff
+                    // TODO(cgzones): check_diff
                     event_queue.emplace(db_name, static_cast<flags>(flags::CHK_CONTENT | flags::FORCE_UPDATE));
                 }
 
@@ -772,7 +776,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
                             const auto update_small_end = std::chrono::high_resolution_clock::now();
                             Talert_update_small += std::chrono::duration_cast<std::chrono::milliseconds>(update_small_end - update_small_start).count();
                         } else {
-                            update_queue.emplace(std::move(fd));
+                            update_queue.emplace(fd.path());
 
                             if (update_queue.size() >= cfg.block_size) {
                                 do_update_queue(update_queue, db);
@@ -929,7 +933,7 @@ static void scan_task(libs::blocked_queue<std::pair<std::string, flags>> & scan_
                 return;
             }
 
-            if (path == "") {
+            if (path.empty()) {
                 event_queue.emplace("", flags);
             } else {
                 scan(path, flags & flags::RECURSIVE, flags & flags::CHK_DIFF, event_queue);
@@ -971,7 +975,7 @@ void daemon(const diskscan_config & cfg, bool singlerun, bool unit_test)
     std::vector<std::thread> watch_workers;
 
     auto scan_thread = std::thread(scan_task, std::ref(scan_queue), std::ref(event_queue), std::ref(es));
-    auto event_thread = std::thread(event_task, std::cref(cfg), std::ref(event_queue), std::ref(file_data_queue), std::ref(fd_factory), std::ref(es));
+    auto event_thread = std::thread(event_task, std::ref(event_queue), std::ref(file_data_queue), std::ref(fd_factory), std::ref(es));
     auto alert_thread = std::thread(alert_task, std::cref(cfg), std::ref(file_data_queue), std::ref(output_queue), std::ref(event_queue),
                                     std::ref(scan_is_running), std::ref(es));
     auto output_thread = std::thread(output_task, std::ref(output_queue), std::ref(esink), std::ref(es));
@@ -1054,13 +1058,14 @@ void daemon(const diskscan_config & cfg, bool singlerun, bool unit_test)
                 /* other signal occurred */
                 FILE_LOG(libs::log_level::WARNING) << "Unregistered signal occurred";
                 continue;
-            } else if (errno == EAGAIN) {
+            }
+            if (errno == EAGAIN) {
                 /* Timeout, checking threads */
                 FILE_LOG(libs::log_level::DEBUG2) << "Timeout";
                 bool exc = false;
                 std::lock_guard<std::mutex> lg{ es.first };
                 while (!es.second.empty()) {
-                    exc = true;
+                    exc = true;  // NOLINT(clang-analyzer-deadcode.DeadStores)
                     try {
                         std::exception_ptr exp{ es.second.top() };
                         es.second.pop();
@@ -1078,47 +1083,67 @@ void daemon(const diskscan_config & cfg, bool singlerun, bool unit_test)
                 if (scantimer % 60 == 0) {
                     std::ostringstream oss;
 
-                    if (Talert_entire)
+                    if (Talert_entire) {
                         oss << "|alert_entire: " << Talert_entire;
-                    if (Talert_select)
+                    }
+                    if (Talert_select) {
                         oss << "|alert_select: " << Talert_select;
-                    if (Talert_update_full)
+                    }
+                    if (Talert_update_full) {
                         oss << "|alert_update_full: " << Talert_update_full;
-                    if (Talert_update_small)
+                    }
+                    if (Talert_update_small) {
                         oss << "|alert_update_small: " << Talert_update_small;
-                    if (Talert_updateq)
+                    }
+                    if (Talert_updateq) {
                         oss << "|alert_updateq: " << Talert_updateq;
-                    if (Talert_delete)
+                    }
+                    if (Talert_delete) {
                         oss << "|alert_delete: " << Talert_delete;
-                    if (Talert_insert)
+                    }
+                    if (Talert_insert) {
                         oss << "|alert_insert: " << Talert_insert;
-                    if (Talert_insertq)
+                    }
+                    if (Talert_insertq) {
                         oss << "|alert_insertq: " << Talert_insertq;
-                    if (Toutput)
+                    }
+                    if (Toutput) {
                         oss << "|output: " << Toutput;
-                    if (Twatch)
+                    }
+                    if (Twatch) {
                         oss << "|watch: " << Twatch;
-                    if (Tevent)
+                    }
+                    if (Tevent) {
                         oss << "|event: " << Tevent;
-                    if (Tevent_insert)
+                    }
+                    if (Tevent_insert) {
                         oss << "|event_insert: " << Tevent_insert;
-                    if (Trtevent)
+                    }
+                    if (Trtevent) {
                         oss << "|rtevent: " << Trtevent;
-                    if (Trtevent_insert)
+                    }
+                    if (Trtevent_insert) {
                         oss << "|rtevent_insert: " << Trtevent_insert;
-                    if (Tscan)
+                    }
+                    if (Tscan) {
                         oss << "|scan: " << Tscan;
-                    if (rtevent_queue.size())
+                    }
+                    if (!rtevent_queue.empty()) {
                         oss << "|#rteventq: " << rtevent_queue.size();
-                    if (event_queue.size())
+                    }
+                    if (!event_queue.empty()) {
                         oss << "|#eventq: " << event_queue.size();
-                    if (file_data_queue.size())
+                    }
+                    if (!file_data_queue.empty()) {
                         oss << "|#filedataq: " << file_data_queue.size();
-                    if (output_queue.size())
+                    }
+                    if (!output_queue.empty()) {
                         oss << "|#outputq: " << output_queue.size();
-                    if (scan_queue.size())
+                    }
+                    if (!scan_queue.empty()) {
                         oss << "|#scanq: " << scan_queue.size();
-                    if (oss.str() != "") {
+                    }
+                    if (oss.str().empty()) {
                         FILE_LOG(libs::log_level::INFO) << "Perf" << oss.str();
                     }
 
@@ -1142,9 +1167,9 @@ void daemon(const diskscan_config & cfg, bool singlerun, bool unit_test)
                     scantimer = 0;
                 }
                 continue;
-            } else {
-                throw libs::errno_exception{ "Error during sigtimedwait()" };
             }
+
+            throw libs::errno_exception{ "Error during sigtimedwait()" };
         }
 
         /* requested signal occurred */
@@ -1177,4 +1202,4 @@ void daemon(const diskscan_config & cfg, bool singlerun, bool unit_test)
     FILE_LOG(libs::log_level::DEBUG) << "threads finished";
 }
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

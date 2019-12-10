@@ -11,4 +11,4 @@ namespace ctguard ::research {
 
 event process_log(const libs::source_event & se, bool verbose, const rule_cfg & rules, std::map<rule_id_t, struct rule_state> & rules_state);
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

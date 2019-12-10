@@ -7,8 +7,8 @@ add_library (libs STATIC
                          blockedqueue.hpp
                          check_file_perms.cpp
                          check_file_perms.hpp
-                         daemon_helper.cpp
-                         daemon_helper.hpp
+                         #daemon_helper.cpp
+                         #daemon_helper.hpp
                          errnoexception.cpp
                          errnoexception.hpp
                          intervention.hpp

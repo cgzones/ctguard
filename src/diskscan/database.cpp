@@ -1,4 +1,4 @@
-#include "database.h"
+#include "database.hpp"
 
 #include "../libs/sqlite/sqlitestatement.hpp"
 
@@ -6,6 +6,8 @@ namespace ctguard::diskscan {
 
 database::database(const std::string & path) : m_db{ path, true }
 {
+    // TODO(cgzones): SELinux context
+
     ctguard::libs::sqlite::sqlite_statement create_stmt{ "CREATE TABLE IF NOT EXISTS `diskscan-data` ( "
                                                          "`name` VARCHAR(4096) NOT NULL UNIQUE PRIMARY KEY,"
                                                          "`user` VARCHAR(256) NOT NULL ,"
@@ -37,11 +39,7 @@ bool database::empty()
 
     auto it = result.begin();
 
-    if ((*it).get<int>(0) == 0) {
-        return true;
-    } else {
-        return false;
-    }
+    return ((*it).get<int>(0) == 0);
 }
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

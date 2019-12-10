@@ -16,7 +16,7 @@ class token
         string,
         identifier,
         integer,
-        unknown
+        unknown,
     };
 
     token(token::type_t type, position position, std::string content) : m_type{ type }, m_position{ std::move(position) }, m_content{ std::move(content) } {}
@@ -37,6 +37,8 @@ class token
     type_t m_type;
     position m_position;
     std::string m_content;
+
+    friend class parser;
 };
 
-}  // namespace ctguard::libs::config
+} /* namespace ctguard::libs::config */

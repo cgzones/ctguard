@@ -9,6 +9,7 @@
 
 #include <atomic>
 #include <csignal>
+#include <fcntl.h>
 #include <grp.h>
 #include <mutex>
 #include <pwd.h>
@@ -33,7 +34,7 @@ using errorstack_t = std::pair<std::mutex, std::stack<std::exception_ptr>>;
 static std::atomic<bool> RUNNING{ true };
 static bool UNIT_TEST{ false };
 
-__attribute__((noreturn)) static void run_cmd(const int stdout_filedes[2], const int stderr_filedes[2], const intervention_action & action,
+__attribute__((noreturn)) static void run_cmd(std::array<int, 2> stdout_filedes, std::array<int, 2> stderr_filedes, const intervention_action & action,
                                               const std::string & argument)
 {
     if (!UNIT_TEST) {
@@ -43,9 +44,9 @@ __attribute__((noreturn)) static void run_cmd(const int stdout_filedes[2], const
     }
 
     if (!action.group.empty()) {
-        std::array<char, 4096> buffer;
-        struct group gr;
-        struct group * grp;
+        std::array<char, 4096> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+        struct group gr;                // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+        struct group * grp;             // NOLINT(cppcoreguidelines-init-variables)
         const int ret = ::getgrnam_r(action.group.c_str(), &gr, buffer.data(), buffer.size(), &grp);
         if (ret != 0) {
             throw libs::errno_exception{ "Can not getgrnam_r for '" + action.group + "'" };
@@ -61,9 +62,9 @@ __attribute__((noreturn)) static void run_cmd(const int stdout_filedes[2], const
     }
 
     if (!action.user.empty()) {
-        std::array<char, 4096> buffer;
-        struct passwd pw;
-        struct passwd * pwd;
+        std::array<char, 4096> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+        struct passwd pw;               // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+        struct passwd * pwd;            // NOLINT(cppcoreguidelines-init-variables)
         const int ret = ::getpwnam_r(action.user.c_str(), &pw, buffer.data(), buffer.size(), &pwd);
         if (ret != 0) {
             throw libs::errno_exception{ "Can not getpwnam_r for '" + action.user + "'" };
@@ -89,9 +90,10 @@ __attribute__((noreturn)) static void run_cmd(const int stdout_filedes[2], const
     ::close(stderr_filedes[1]);
     ::close(stderr_filedes[0]);
 
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays,cppcoreguidelines-pro-type-const-cast)
     char * const parmlist[] = { const_cast<char *>(action.command.c_str()), const_cast<char *>(argument.c_str()), nullptr };
 
-    ::execv(action.command.c_str(), parmlist);
+    ::execv(action.command.c_str(), parmlist);  // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
     throw libs::errno_exception{ "Can not exec '" + action.command + "'" };
 }
@@ -159,19 +161,20 @@ static void processing_task(libs::blocked_queue<std::pair<libs::intervention_cmd
                 }
             }
 
-            int stdout_filedes[2];
-            int stderr_filedes[2];
-            if (::pipe(stdout_filedes) == -1) {
+            std::array<int, 2> stdout_filedes;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+            std::array<int, 2> stderr_filedes;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+            if (::pipe2(stdout_filedes.data(), O_CLOEXEC) == -1) {
                 throw libs::errno_exception{ "Can not not create pipes" };
             }
-            if (::pipe(stderr_filedes) == -1) {
+            if (::pipe2(stderr_filedes.data(), O_CLOEXEC) == -1) {
                 throw libs::errno_exception{ "Can not not create pipes" };
             }
 
             const int pid = ::fork();
             if (pid == -1) {
                 throw libs::errno_exception{ "Can not fork" };
-            } else if (pid == 0) {
+            }
+            if (pid == 0) {
                 try {
                     run_cmd(stdout_filedes, stderr_filedes, *matching_action, icmd.argument);
                 } catch (const std::exception & e) {
@@ -186,7 +189,7 @@ static void processing_task(libs::blocked_queue<std::pair<libs::intervention_cmd
 
                 timeout_t timeout{ 0 };
                 for (;;) {
-                    int status;
+                    int status;  // NOLINT(cppcoreguidelines-init-variables)
                     const int waitret = ::waitpid(pid, &status, WNOHANG);
                     if (waitret == -1) {
                         FILE_LOG(libs::log_level::ERROR) << "Can not waitpid(): " << ::strerror(errno);
@@ -194,7 +197,8 @@ static void processing_task(libs::blocked_queue<std::pair<libs::intervention_cmd
                             FILE_LOG(libs::log_level::ERROR) << "Can not kill child with pid " << pid << " on waitpid error: " << ::strerror(errno);
                         }
                         break;
-                    } else if (waitret == 0) {
+                    }
+                    if (waitret == 0) {
                         if (timeout >= matching_action->command_timeout) {
                             FILE_LOG(libs::log_level::ERROR)
                               << "Action '" << icmd.name << "' with argument '" << icmd.argument << "' did not exit within timeout";
@@ -219,68 +223,70 @@ static void processing_task(libs::blocked_queue<std::pair<libs::intervention_cmd
                 }
 
                 {
-                    std::array<char, 4096> buffer;
-                    while (1) {
+                    std::array<char, 4096> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+                    while (true) {
                         const ssize_t count = ::read(stdout_filedes[0], buffer.data(), buffer.size());
                         if (count < 0) {
                             if (errno == EINTR) {
                                 continue;
-                            } else {
-                                FILE_LOG(libs::log_level::ERROR) << "Can not read from child stdout pipe: " << ::strerror(errno);
-                                break;
                             }
-                        } else if (count == 0) {
+
+                            FILE_LOG(libs::log_level::ERROR) << "Can not read from child stdout pipe: " << ::strerror(errno);
                             break;
-                        } else {
-                            const auto s = std::string_view{ buffer.data(), static_cast<size_t>(count) };
-                            std::string_view::size_type start = 0U;
-                            auto end = s.find('\n');
-                            while (end != std::string_view::npos) {
-                                if (end - start > 0) {
-                                    FILE_LOG(libs::log_level::INFO) << "Action '" << icmd.name << "' with argument '" << icmd.argument
-                                                                    << "' printed to stdout: '" << s.substr(start, end - start) << "'";
-                                }
-                                start = end + 1;
-                                end = s.find('\n', start);
+                        }
+                        if (count == 0) {
+                            break;
+                        }
+
+                        const auto s = std::string_view{ buffer.data(), static_cast<size_t>(count) };
+                        std::string_view::size_type start = 0U;
+                        auto end = s.find('\n');
+                        while (end != std::string_view::npos) {
+                            if (end - start > 0) {
+                                FILE_LOG(libs::log_level::INFO) << "Action '" << icmd.name << "' with argument '" << icmd.argument << "' printed to stdout: '"
+                                                                << s.substr(start, end - start) << "'";
                             }
-                            if (s.length() - start > 0) {
-                                FILE_LOG(libs::log_level::INFO)
-                                  << "Action '" << icmd.name << "' with argument '" << icmd.argument << "' printed to stdout: '" << s.substr(start, end) << "'";
-                            }
+                            start = end + 1;
+                            end = s.find('\n', start);
+                        }
+                        if (s.length() - start > 0) {
+                            FILE_LOG(libs::log_level::INFO)
+                              << "Action '" << icmd.name << "' with argument '" << icmd.argument << "' printed to stdout: '" << s.substr(start, end) << "'";
                         }
                     }
                     ::close(stdout_filedes[0]);
                 }
 
                 {
-                    std::array<char, 4096> buffer;
-                    while (1) {
+                    std::array<char, 4096> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+                    while (true) {
                         const ssize_t count = ::read(stderr_filedes[0], buffer.data(), buffer.size());
                         if (count < 0) {
                             if (errno == EINTR) {
                                 continue;
-                            } else {
-                                FILE_LOG(libs::log_level::ERROR) << "Can not read from child stderr pipe: " << ::strerror(errno);
-                                break;
                             }
-                        } else if (count == 0) {
+
+                            FILE_LOG(libs::log_level::ERROR) << "Can not read from child stderr pipe: " << ::strerror(errno);
                             break;
-                        } else {
-                            const auto s = std::string_view{ buffer.data(), static_cast<size_t>(count) };
-                            std::string_view::size_type start = 0U;
-                            auto end = s.find('\n');
-                            while (end != std::string_view::npos) {
-                                if (end - start > 0) {
-                                    FILE_LOG(libs::log_level::WARNING) << "Action '" << icmd.name << "' with argument '" << icmd.argument
-                                                                       << "' printed to stderr: '" << s.substr(start, end - start) << "'";
-                                }
-                                start = end + 1;
-                                end = s.find('\n', start);
+                        }
+                        if (count == 0) {
+                            break;
+                        }
+
+                        const auto s = std::string_view{ buffer.data(), static_cast<size_t>(count) };
+                        std::string_view::size_type start = 0U;
+                        auto end = s.find('\n');
+                        while (end != std::string_view::npos) {
+                            if (end - start > 0) {
+                                FILE_LOG(libs::log_level::WARNING) << "Action '" << icmd.name << "' with argument '" << icmd.argument
+                                                                   << "' printed to stderr: '" << s.substr(start, end - start) << "'";
                             }
-                            if (s.length() - start > 0) {
-                                FILE_LOG(libs::log_level::WARNING)
-                                  << "Action '" << icmd.name << "' with argument '" << icmd.argument << "' printed to stderr: '" << s.substr(start, end) << "'";
-                            }
+                            start = end + 1;
+                            end = s.find('\n', start);
+                        }
+                        if (s.length() - start > 0) {
+                            FILE_LOG(libs::log_level::WARNING)
+                              << "Action '" << icmd.name << "' with argument '" << icmd.argument << "' printed to stderr: '" << s.substr(start, end) << "'";
                         }
                     }
                     ::close(stderr_filedes[0]);
@@ -313,21 +319,21 @@ static void input_task(libs::blocked_queue<std::pair<libs::intervention_cmd, boo
         };  // 1s
         ::setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof tv);
 
-        struct sockaddr_un local;
+        struct sockaddr_un local;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         local.sun_family = AF_UNIX;
         constexpr size_t addr_length = sizeof(local.sun_path);
         if (input_path.size() > (addr_length - 1)) {
             throw libs::errno_exception{ "Bind address to long: " + std::to_string(input_path.size()) + "/" + std::to_string(addr_length - 1) };
         }
-        ::strncpy(local.sun_path, input_path.c_str(), addr_length - 1);
-        size_t len = strlen(local.sun_path) + sizeof(local.sun_family);
-        if (::bind(socket, reinterpret_cast<struct sockaddr *>(&local), static_cast<unsigned>(len))) {
+        ::strncpy(local.sun_path, input_path.c_str(), addr_length - 1);  // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
+        size_t len = strlen(local.sun_path) + sizeof(local.sun_family);  // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
+        if (::bind(socket, reinterpret_cast<struct sockaddr *>(&local), static_cast<unsigned>(len))) {  // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
             throw libs::errno_exception{ "Can not bind on '" + input_path + "'" };
         }
 
         libs::scope_guard unlink_socket{ [&input_path]() { ::unlink(input_path.c_str()); } };
 
-        // TODO: fchmod?
+        // TODO(cgzones): fchmod?
         if (::chmod(input_path.c_str(), 0770) == -1) {
             throw libs::errno_exception{ "Can not chmod on '" + input_path + "'" };
         }
@@ -339,7 +345,7 @@ static void input_task(libs::blocked_queue<std::pair<libs::intervention_cmd, boo
             FILE_LOG(libs::log_level::DEBUG2) << "[iw] waiting for connection...";
 
             do {
-                std::array<char, 16384> buffer;
+                std::array<char, 16384> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
                 ssize_t n = ::recv(socket, buffer.data(), buffer.size(), 0);
                 if (n <= 0) {
                     if (n < 0) {
@@ -360,14 +366,14 @@ static void input_task(libs::blocked_queue<std::pair<libs::intervention_cmd, boo
                 if (static_cast<std::size_t>(n) >= buffer.size()) {
                     buffer[buffer.size() - 1] = '\0';
                 } else {
-                    buffer[static_cast<std::size_t>(n)] = '\0';
+                    buffer[static_cast<std::size_t>(n)] = '\0';  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
                 }
 
                 FILE_LOG(libs::log_level::DEBUG) << "[iw] Recvieved (" << n << " bytes)";
 
                 libs::intervention_cmd icmd;
                 std::stringstream oss;
-                oss.write(&buffer.data()[0], n);
+                oss.write(&buffer.data()[0], n);  // NOLINT(readability-simplify-subscript-expr)
                 try {
                     cereal::BinaryInputArchive iarchive(oss);
                     iarchive(icmd);
@@ -424,13 +430,14 @@ void daemon(const intervention_config & cfg, bool unit_test)
                 /* other signal occurred */
                 FILE_LOG(libs::log_level::WARNING) << "Unregistered signal occurred";
                 continue;
-            } else if (errno == EAGAIN) {
+            }
+            if (errno == EAGAIN) {
                 /* Timeout, checking threads */
                 FILE_LOG(libs::log_level::DEBUG2) << "Timeout";
                 bool exc = false;
                 std::lock_guard<std::mutex> lg{ errorstack.first };
                 while (!errorstack.second.empty()) {
-                    exc = true;
+                    exc = true;  // NOLINT(clang-analyzer-deadcode.DeadStores)
                     try {
                         std::exception_ptr exp{ errorstack.second.top() };
                         errorstack.second.pop();
@@ -444,9 +451,9 @@ void daemon(const intervention_config & cfg, bool unit_test)
                     break;
                 }
                 continue;
-            } else {
-                throw libs::errno_exception{ "Error during sigtimedwait()" };
             }
+
+            throw libs::errno_exception{ "Error during sigtimedwait()" };
         }
 
         /* requested signal occurred */
@@ -463,4 +470,4 @@ void daemon(const intervention_config & cfg, bool unit_test)
     FILE_LOG(libs::log_level::DEBUG) << "threads finished";
 }
 
-}  // namespace ctguard::intervention
+} /* namespace ctguard::intervention */

@@ -6,4 +6,4 @@ namespace ctguard::logscan {
 
 void daemon(const logscan_config & cfg, bool unit_test);
 
-}  // namespace ctguard::logscan
+} /* namespace ctguard::logscan */

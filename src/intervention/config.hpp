@@ -32,4 +32,4 @@ struct intervention_config
 
 std::ostream & operator<<(std::ostream & out, const intervention_config & cfg);
 
-}  // namespace ctguard::intervention
+} /* namespace ctguard::intervention */

@@ -11,7 +11,8 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
 {
     bool match_something{ false };
     bool is_active{ false };
-    std::vector<std::pair<std::string, std::string>> modified_fields, modified_traits;
+    std::vector<std::pair<std::string, std::string>> modified_fields;
+    std::vector<std::pair<std::string, std::string>> modified_traits;
 
     if (rl.unless_rule().id != 0) {
         std::lock_guard<std::mutex> lg{ rules_state[rl.id()].mutex };
@@ -56,8 +57,9 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
 
         const auto & iter = rules_state.find(rl.id());
         if (iter == rules_state.end()) {
-            if (verbose)
+            if (verbose) {
                 std::cout << "init rstate|";
+            }
 
             if (found_activation_group) {
                 rules_state[rl.id()].mevents.emplace(std::time(nullptr), ev);
@@ -93,8 +95,9 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
                     }
                     modified_traits.emplace_back("trigger_logs", otriggers.str());
 
-                    if (verbose)
+                    if (verbose) {
                         std::cout << "active(" << saved_events.size() << "/" << rl.activation_group().rate << ")|";
+                    }
                 } else {
                     // count same fields
                     const auto & actual_field = ev.fields().find(rl.same_field());
@@ -111,15 +114,19 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
                         if (same_rate >= rl.activation_group().rate) {
                             is_active = true;
                             modified_traits.emplace_back("trigger_same_logs", otriggers.str());
-                            if (verbose)
+                            if (verbose) {
                                 std::cout << "active_s(" << same_rate << "/" << rl.activation_group().rate << ")|";
-                        } else if (verbose)
+                            }
+                        } else if (verbose) {
                             std::cout << "inactive_s(" << same_rate << "/" << rl.activation_group().rate << ")|";
-                    } else if (verbose)
+                        }
+                    } else if (verbose) {
                         std::cout << "inactive_s(no field)|";
+                    }
                 }
-            } else if (verbose)
+            } else if (verbose) {
                 std::cout << "inactive(" << iter->second.mevents.size() << "/" << rl.activation_group().rate << ")|";
+            }
         }
     } else {
         is_active = true;
@@ -129,8 +136,9 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
         match_something = true;
 
         if (rl.trigger_group() == "!ALWAYS") {
-            if (verbose)
+            if (verbose) {
                 std::cout << "group always match|";
+            }
         } else {
             bool found_group = false;
             for (const auto & iter : ev.groups()) {
@@ -141,20 +149,23 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
                 }
             }
             if (!found_group) {
-                if (verbose)
+                if (verbose) {
                     std::cout << "not matching (group)\n";
+                }
                 return { false, modified_fields, modified_traits };
             }
-            if (verbose)
+            if (verbose) {
                 std::cout << "group match|";
+            }
         }
     }
 
     if (!rl.trigger_fields().empty()) {
         match_something = true;
         for (const auto & iter : rl.trigger_fields()) {
-            if (verbose)
+            if (verbose) {
                 std::cout << "field '" + iter.first + "' matching...|";
+            }
             bool found = false;
             for (const auto & field : ev.fields()) {
                 if (field.first == iter.first) {
@@ -162,15 +173,17 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
                     switch (iter.second.first) {
                         case rule_match::exact:
                             if (field.second != iter.second.second) {
-                                if (verbose)
+                                if (verbose) {
                                     std::cout << "field '" << iter.first << "' exact mismatch\n";
+                                }
                                 return { false, modified_fields, modified_traits };
                             }
                             break;
                         case rule_match::empty:
-                            if (field.second != "") {
-                                if (verbose)
+                            if (!field.second.empty()) {
+                                if (verbose) {
                                     std::cout << "field '" << iter.first << "' not empty\n";
+                                }
                                 return { false, modified_fields, modified_traits };
                             }
                             break;
@@ -178,8 +191,9 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
                             std::smatch match;
                             const std::regex regex{ iter.second.second };
                             if (!std::regex_search(field.second, match, regex)) {
-                                if (verbose)
+                                if (verbose) {
                                     std::cout << "field '" << iter.first << "' regex mismatch\n";
+                                }
                                 return { false, modified_fields, modified_traits };
                             }
                             break;
@@ -187,8 +201,9 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
                 }
             }
             if (!found && iter.second.first != rule_match::empty) {
-                if (verbose)
+                if (verbose) {
                     std::cout << "field '" << iter.first << "' not found\n";
+                }
                 return { false, modified_fields, modified_traits };
             }
         }
@@ -197,8 +212,9 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
     if (!rl.trigger_traits().empty()) {
         match_something = true;
         for (const auto & iter : rl.trigger_traits()) {
-            if (verbose)
+            if (verbose) {
                 std::cout << "trait '" + iter.first + "' matching...|";
+            }
             bool found = false;
             for (const auto & field : ev.traits()) {
                 if (field.first == iter.first) {
@@ -206,15 +222,17 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
                     switch (iter.second.first) {
                         case rule_match::exact:
                             if (field.second != iter.second.second) {
-                                if (verbose)
+                                if (verbose) {
                                     std::cout << "trait '" << iter.first << "' exact mismatch\n";
+                                }
                                 return { false, modified_fields, modified_traits };
                             }
                             break;
                         case rule_match::empty:
-                            if (field.second != "") {
-                                if (verbose)
+                            if (!field.second.empty()) {
+                                if (verbose) {
                                     std::cout << "field '" << iter.first << "' not empty\n";
+                                }
                                 return { false, modified_fields, modified_traits };
                             }
                             break;
@@ -222,8 +240,9 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
                             std::smatch match;
                             const std::regex regex{ iter.second.second };
                             if (!std::regex_search(field.second, match, regex)) {
-                                if (verbose)
+                                if (verbose) {
                                     std::cout << "trait '" << iter.first << "' regex mismatch\n";
+                                }
                                 return { false, modified_fields, modified_traits };
                             }
                             break;
@@ -231,8 +250,9 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
                 }
             }
             if (!found && iter.second.first != rule_match::empty) {
-                if (verbose)
+                if (verbose) {
                     std::cout << "trait '" << iter.first << "' not found\n";
+                }
                 return { false, modified_fields, modified_traits };
             }
         }
@@ -243,13 +263,15 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
         std::smatch match;
         const std::string & to_match = ev.fields().find("log") != ev.fields().end() ? ev.fields().find("log")->second : ev.logstr();
         if (!std::regex_search(to_match, match, *rl.reg())) {
-            if (verbose)
+            if (verbose) {
                 std::cout << "no regex match\n";
+            }
             return { false, modified_fields, modified_traits };
         }
 
-        if (verbose)
+        if (verbose) {
             std::cout << "regex match|";
+        }
 
         for (size_t i = 1; i < match.size(); ++i) {
             if (match[i] != std::string("")) {
@@ -262,8 +284,9 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
         match_something = true;
     }
 
-    if (verbose)
+    if (verbose) {
         std::cout << "full match: " << std::boolalpha << (match_something && is_active) << "(" << match_something << " && " << is_active << ")\n";
+    }
 
     return { match_something && is_active, modified_fields, modified_traits };
 }
@@ -326,14 +349,16 @@ static void check_top_rules(event & e, const std::vector<rule> & rules, unsigned
     std::vector<std::tuple<const rule *, std::vector<std::pair<std::string, std::string>>, std::vector<std::pair<std::string, std::string>>>>
       top_matching_rules;
 
-    // TODO: check for too big depth
+    // TODO(cgzones): check for too big depth
 
-    if (verbose)
+    if (verbose) {
         std::cout << "    Processing rules (#" << rules.size() << ") level " << depth << "\n";
+    }
 
     for (auto const & r : rules) {
-        if (verbose)
+        if (verbose) {
             std::cout << "    Checking level " << depth << " rule " << r.id() << " ...";
+        }
 
         auto result = check_rule(e, r, rules_state, verbose);
         if (std::get<0>(result)) {
@@ -341,13 +366,15 @@ static void check_top_rules(event & e, const std::vector<rule> & rules, unsigned
         }
     }
 
-    if (verbose)
+    if (verbose) {
         std::cout << "    Matching level " << depth << " rule: " << top_matching_rules.size() << "\n";
+    }
 
-    if (top_matching_rules.size() > 0) {
+    if (!top_matching_rules.empty()) {
         priority_t max_priority{ 0 };
         rule_id_t min_id{ static_cast<rule_id_t>(-1) };
-        std::vector<std::pair<std::string, std::string>> modified_fields, modified_traits;
+        std::vector<std::pair<std::string, std::string>> modified_fields;
+        std::vector<std::pair<std::string, std::string>> modified_traits;
         const rule * fit{ nullptr };
         for (auto & ex : top_matching_rules) {
             const rule * rl = std::get<0>(ex);
@@ -364,14 +391,16 @@ static void check_top_rules(event & e, const std::vector<rule> & rules, unsigned
             throw libs::lib_exception{ "No fitting rule found !!THIS SHOULD NEVER HAPPEN!!" };
         }
 
-        if (verbose)
+        if (verbose) {
             std::cout << "    Level " << depth << " rule fit: " << fit->id() << "\n";
+        }
 
         update_event(e, *fit, modified_fields, modified_traits);
         update_state(rules_state, *fit, e);
 
-        if (verbose)
+        if (verbose) {
             std::cout << "    Checking child rules (#" << fit->children().size() << ") ...\n";
+        }
 
         check_top_rules(e, fit->children(), depth + 1, rules_state, verbose);
     }
@@ -382,13 +411,16 @@ static void format_log(event & e, const std::vector<format> & formats, bool verb
     for (const auto & f : formats) {
         std::smatch match;
         if (!std::regex_match(e.logstr(), match, f.reg())) {
-            if (verbose)
+            if (verbose) {
                 std::cout << f.name() << " not matching|";
+            }
             continue;
         }
 
-        if (verbose)
+        if (verbose) {
             std::cout << f.name() << " matching\n";
+        }
+
         for (size_t i = 1; i < match.size(); ++i) {
             e.fields()[f.fields()[i - 1]] = match[i];
         }
@@ -398,8 +430,9 @@ static void format_log(event & e, const std::vector<format> & formats, bool verb
         return;
     }
 
-    if (verbose)
+    if (verbose) {
         std::cout << "no format match\n";
+    }
 
     e.traits()["format"] = "unknown";
 }
@@ -472,4 +505,4 @@ event process_log(const libs::source_event & se, bool verbose, const rule_cfg & 
     return e;
 }
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

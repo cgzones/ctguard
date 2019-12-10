@@ -31,4 +31,4 @@ class watch
 
 std::ostream & operator<<(std::ostream & os, watch::scan_option so);
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

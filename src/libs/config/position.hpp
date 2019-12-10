@@ -30,4 +30,4 @@ std::ostream & operator<<(std::ostream & out, const position & p);
 
 std::string to_string(const position & p);
 
-}  // namespace ctguard::libs::config
+} /* namespace ctguard::libs::config */

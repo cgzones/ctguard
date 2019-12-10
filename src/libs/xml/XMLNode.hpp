@@ -25,4 +25,4 @@ class XMLNode
     std::vector<XMLNode> m_children;
 };
 
-}  // namespace ctguard::libs::xml
+} /* namespace ctguard::libs::xml */

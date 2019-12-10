@@ -22,6 +22,8 @@ namespace ctguard::libs {
 template<typename T>
 [[nodiscard]] extern T parse_integral(const std::string & content)
 {
+    static_assert(std::is_unsigned<T>::value, "integral must be an unsigned type");
+
     std::size_t pos;
     unsigned long result_orig;
     try {
@@ -61,4 +63,4 @@ template<typename T>
     }
 }
 
-}  // namespace ctguard::libs
+} /* namespace ctguard::libs */

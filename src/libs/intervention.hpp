@@ -16,4 +16,4 @@ struct intervention_cmd
     }
 };
 
-}  // namespace ctguard::libs
+} /* namespace ctguard::libs */

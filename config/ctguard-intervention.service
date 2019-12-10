@@ -5,7 +5,25 @@ Documentation=man:ctguard-intervention(8) man:intervention.conf(5)
 [Service]
 ExecStart=/usr/sbin/ctguard-intervention -f
 Restart=on-failure
+RestartSec=2
 Group=ctguard
+ReadWritePaths=/run
+
+# hardening
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateNetwork=yes
+PrivateTmp=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectSystem=strict
+RestrictNamespaces=yes
+RestrictRealtime=yes
 
 [Install]
 WantedBy=multi-user.target

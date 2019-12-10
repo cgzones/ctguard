@@ -1,12 +1,12 @@
 #include "config.hpp"
 
-#include "../libs/config/parser.hpp"
-#include "../libs/parsehelper.hpp"
-
-#include "../libs/errnoexception.hpp"
+#include <cstring>    // strerror
 #include <fstream>    // std::ifstream
 #include <stdexcept>  // std::runtime_error
-#include <string.h>   // strerror
+
+#include "../libs/config/parser.hpp"
+#include "../libs/errnoexception.hpp"
+#include "../libs/parsehelper.hpp"
 
 namespace ctguard::research {
 
@@ -26,7 +26,8 @@ research_config parse_config(const std::string & cfg_path)
     for (const libs::config::config_group & top : global_cfg.subgroups()) {
         if (top.name() != "research") {
             continue;
-        } else if (found_top) {
+        }
+        if (found_top) {
             throw std::out_of_range{ "Duplicate top level configgroup research found at " + to_string(top.pos()) };
         }
         found_top = true;
@@ -250,4 +251,4 @@ std::ostream & operator<<(std::ostream & out, const research_config & cfg)
     return out;
 }
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

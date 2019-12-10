@@ -1,6 +1,7 @@
 #include "eventsink.hpp"
 
 #include "../libs/errnoexception.hpp"
+#include "../libs/logger.hpp"
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/memory.hpp>
@@ -9,7 +10,7 @@
 
 namespace ctguard::diskscan {
 
-sink::~sink() {}
+sink::~sink() noexcept = default;
 
 file_sink::file_sink(const std::string & path) : m_out{ path, std::ios::app }
 {
@@ -26,9 +27,13 @@ void file_sink::send(libs::source_event se)
 
 socket_sink::socket_sink(std::string path, bool unit_test) : m_client{ std::move(path) }, m_unit_test{ unit_test }
 {
-    std::array<char, 1024> buffer;
-    ::gethostname(buffer.data(), buffer.size());
-    m_hostname = buffer.data();
+    std::array<char, 1024> buffer;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+    if (::gethostname(buffer.data(), buffer.size()) == -1) {
+        FILE_LOG(libs::log_level::ERROR) << "Can not get hostname: " << ::strerror(errno);
+        m_hostname = "_fallback_hostname";
+    } else {
+        m_hostname = buffer.data();
+    }
 }
 
 void socket_sink::send(libs::source_event se)
@@ -50,4 +55,4 @@ void socket_sink::send(libs::source_event se)
     m_client.send(ss.str());
 }
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

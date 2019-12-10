@@ -38,9 +38,9 @@ bool position::operator<(const position & other) const noexcept
 {
     if (m_line_number == other.m_line_number) {
         return m_line_indent < other.m_line_indent;
-    } else {
-        return m_line_number < other.m_line_number;
     }
+
+    return m_line_number < other.m_line_number;
 }
 
-}  // namespace ctguard::libs::config
+} /* namespace ctguard::libs::config */

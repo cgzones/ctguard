@@ -20,8 +20,8 @@ enum class output_kind_t
 struct logscan_config
 {
     std::vector<logfile_config> log_files;
-    unsigned int check_interval{ 1 };
-    unsigned int state_file_interval{ 30 };
+    unsigned check_interval{ 1 };
+    unsigned state_file_interval{ 30 };
     output_kind_t output_kind{ output_kind_t::SOCKET };
     std::string state_file{ "/var/lib/ctguard/logscan.state" };
     std::string output_path{ "/run/ctguard/research.sock" };
@@ -35,4 +35,4 @@ struct logscan_config
 std::ostream & operator<<(std::ostream & os, const logscan_config & cfg);
 std::ostream & operator<<(std::ostream & os, output_kind_t ok);
 
-}  // namespace ctguard::logscan
+} /* namespace ctguard::logscan */

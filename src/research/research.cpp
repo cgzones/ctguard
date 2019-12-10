@@ -1,5 +1,24 @@
 #include "research.hpp"
 
+#include <dirent.h>
+#include <fcntl.h>
+#include <getopt.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#include <chrono>
+#include <csignal>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <thread>
+#include <vector>
+
 #include "../libs/check_file_perms.hpp"
 #include "../libs/config/parser.hpp"
 #include "../libs/errnoexception.hpp"
@@ -7,32 +26,29 @@
 #include "../libs/logger.hpp"
 #include "../libs/scopeguard.hpp"
 #include "../libs/source_event.hpp"
+
 #include "config.hpp"
 #include "daemon.hpp"
 #include "event.hpp"
 #include "process_log.hpp"
 #include "rule.hpp"
 
-#include <chrono>
-#include <cstdlib>
-#include <ctime>
-#include <dirent.h>
-#include <fcntl.h>
-#include <fstream>
-#include <getopt.h>
-#include <iomanip>
-#include <iostream>
-#include <signal.h>
-#include <string.h>
-#include <string>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <thread>
-#include <unistd.h>
-#include <vector>
-
-using namespace ctguard::libs;
-using namespace ctguard::research;
+using ctguard::libs::check_cfg_file_perms;
+using ctguard::libs::FILELog;
+using ctguard::libs::log_level;
+using ctguard::libs::Output2FILE;
+using ctguard::libs::scope_guard;  // NOLINT(misc-unused-using-decls)
+using ctguard::libs::source_event;
+using ctguard::libs::filesystem::directory;
+using ctguard::libs::filesystem::file_object;
+using ctguard::research::event;
+using ctguard::research::parse_config;
+using ctguard::research::research_config;
+using ctguard::research::rule_cfg;
+using ctguard::research::rule_id_t;
+using ctguard::research::rule_state;
+using ctguard::research::RUNNING;
+using ctguard::research::UNIT_TEST;
 
 static const char * default_cfg_path = "/etc/ctguard/research.conf";
 static const char * VERSION = "0.1dev";
@@ -60,14 +76,16 @@ int main(int argc, char ** argv)
     bool configdump = false;
     bool stdinput = false;
 
-    while (1) {
+    while (true) {
         int option_index = 0;
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)
         const struct option long_options[] = {
             { "verbose", no_argument, nullptr, 'v' }, { "foreground", no_argument, nullptr, 'f' },  { "cfg-file", required_argument, nullptr, 'c' },
             { "input", no_argument, nullptr, 'I' },   { "config-dump", no_argument, nullptr, 'C' }, { "unittest", no_argument, nullptr, 'x' },
             { "version", no_argument, nullptr, 'V' }, { "help", no_argument, nullptr, 'h' },        { nullptr, 0, nullptr, 0 }
         };
 
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
         const int c = ::getopt_long(argc, argv, "vfc:ICxVh", long_options, &option_index);
 
         if (c == -1) {
@@ -76,12 +94,13 @@ int main(int argc, char ** argv)
 
         switch (c) {
             case 0:
-                if (long_options[option_index].flag != nullptr) {
+                if (long_options[option_index].flag != nullptr) {  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
                     break;
                 }
-                std::cerr << "option " << long_options[option_index].name;
-                if (optarg)
+                std::cerr << "option " << long_options[option_index].name;  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
+                if (optarg) {
                     std::cerr << " with arg " << optarg;
+                }
                 std::cerr << "\n";
                 break;
 
@@ -119,9 +138,6 @@ int main(int argc, char ** argv)
 
             case '?':
                 /* getopt_long already printed an error message. */
-                std::cerr << "ctguard-research not started!\n";
-                return EXIT_FAILURE;
-
             default:
                 std::cerr << "ctguard-research not started!\n";
                 return EXIT_FAILURE;
@@ -131,7 +147,7 @@ int main(int argc, char ** argv)
     if (optind < argc) {
         std::cerr << "non-option arguments:\n";
         for (; optind < argc; ++optind) {
-            std::cerr << "    " << argv[optind] << "\n";
+            std::cerr << "    " << argv[optind] << "\n";  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         }
         std::cerr << "ctguard-research not started!\n";
         return EXIT_FAILURE;
@@ -181,9 +197,9 @@ int main(int argc, char ** argv)
 
                 check_cfg_file_perms(cfg.rules_directory);
 
-                filesystem::directory dir{ cfg.rules_directory };
+                directory dir{ cfg.rules_directory };
 
-                for (const filesystem::file_object e : dir) {
+                for (const file_object e : dir) {
                     if (!e.is_reg()) {
                         continue;
                     }

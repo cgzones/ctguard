@@ -25,7 +25,8 @@ diskscan_config read_config(const std::string & cfg_path)
     for (const libs::config::config_group & top : global_cfg.subgroups()) {
         if (top.name() != "diskscan") {
             continue;
-        } else if (found_top) {
+        }
+        if (found_top) {
             throw std::out_of_range{ "Duplicate top level configgroup diskscan found at " + to_string(top.pos()) };
         }
         found_top = true;
@@ -84,21 +85,21 @@ diskscan_config read_config(const std::string & cfg_path)
 
             } else if (a.first == "settle_time") {
                 try {
-                    cfg.settle_time = libs::parse_integral<unsigned short>(a.second.options[0]);
+                    cfg.settle_time = libs::parse_integral<uint16_t>(a.second.options[0]);
                 } catch (const std::exception & e) {
                     throw std::out_of_range{ "Invalid argument for configuration '" + a.first + "' given: " + e.what() };
                 }
 
             } else if (a.first == "block_size") {
                 try {
-                    cfg.block_size = libs::parse_integral<unsigned short>(a.second.options[0]);
+                    cfg.block_size = libs::parse_integral<uint16_t>(a.second.options[0]);
                 } catch (const std::exception & e) {
                     throw std::out_of_range{ "Invalid argument for configuration '" + a.first + "' given: " + e.what() };
                 }
 
             } else if (a.first == "max_diff_size") {
                 try {
-                    cfg.max_diff_size = libs::parse_integral<unsigned>(a.second.options[0]);
+                    cfg.max_diff_size = libs::parse_integral<uint32_t>(a.second.options[0]);
                 } catch (const std::exception & e) {
                     throw std::out_of_range{ "Invalid argument for configuration '" + a.first + "' given: " + e.what() };
                 }
@@ -199,7 +200,7 @@ diskscan_config read_config(const std::string & cfg_path)
         throw std::out_of_range{ "No toplevel diskscan configuration group found" };
     }
 
-    // TODO: check recurive watch path is parent of other watch path
+    // TODO(cgzones): check recurive watch path is parent of other watch path
 
     return cfg;
 }
@@ -241,4 +242,4 @@ std::ostream & operator<<(std::ostream & os, const diskscan_config & cfg)
     return os;
 }
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

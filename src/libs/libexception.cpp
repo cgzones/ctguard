@@ -9,4 +9,4 @@ const char * lib_exception::what() const noexcept
     return m_message.c_str();
 }
 
-}  // namespace ctguard::libs
+} /* namespace ctguard::libs */

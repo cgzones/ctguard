@@ -2,12 +2,30 @@
 Description=ctguard logscan
 Documentation=man:ctguard-logscan(8) man:logscan.conf(5)
 
-Wants=ctguard-research.service
+Requires=ctguard-research.service
 After=ctguard-research.service
 
 [Service]
 ExecStart=/usr/sbin/ctguard-logscan -f
 Restart=on-failure
+RestartSec=2
+ReadWritePaths=/var/lib/ctguard
+
+# hardening
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateNetwork=yes
+PrivateTmp=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectSystem=strict
+RestrictNamespaces=yes
+RestrictRealtime=yes
 
 [Install]
 WantedBy=multi-user.target

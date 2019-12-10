@@ -33,7 +33,7 @@ struct research_config
     std::string mail_fromaddr{ "ctguard@localhost" };
     std::string mail_toaddr{ "root@localhost" };
     std::string mail_replyaddr{ "root@localhost" };
-    std::string mail_port{ 25 };
+    std::string mail_port{ "25" };
 };
 
 research_config parse_config(const std::string & cfg_path);
@@ -41,4 +41,4 @@ research_config parse_config(const std::string & cfg_path);
 std::ostream & operator<<(std::ostream & out, const research_config & cfg);
 std::ostream & operator<<(std::ostream & out, intervention_kind_t ik);
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

@@ -19,4 +19,4 @@ class database
     ctguard::libs::sqlite::sqlite_db m_db;
 };
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

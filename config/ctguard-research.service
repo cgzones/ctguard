@@ -8,9 +8,27 @@ After=ctguard-intervention.service
 [Service]
 ExecStart=/usr/sbin/ctguard-research -f
 Restart=on-failure
+RestartSec=2
 User=ctguard
+ReadWritePaths=/var/log/ctguard
 RuntimeDirectory=ctguard
 RuntimeDirectoryMode=0750
+
+# hardening
+#  no PrivateNetwork for sending mails
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectSystem=strict
+RestrictNamespaces=yes
+RestrictRealtime=yes
 
 [Install]
 WantedBy=multi-user.target

@@ -28,11 +28,11 @@ struct diskscan_config
 
     uint64_t scaninterval{ 6 * 60 * 60 };  // 6h
 
-    unsigned short settle_time{ 100 };
+    uint16_t settle_time{ 100 };
 
-    unsigned short block_size{ 1000 };  // 1000 messages
+    uint16_t block_size{ 1000 };  // 1000 messages
 
-    unsigned max_diff_size{ 1048576 };  // 1 MB
+    uint32_t max_diff_size{ 1048576 };  // 1 MB
 };
 
 [[nodiscard]] diskscan_config read_config(const std::string & cfg_path);
@@ -40,4 +40,4 @@ struct diskscan_config
 std::ostream & operator<<(std::ostream & os, const diskscan_config & cfg);
 std::ostream & operator<<(std::ostream & os, output_kind_t ok);
 
-}  // namespace ctguard::diskscan
+} /* namespace ctguard::diskscan */

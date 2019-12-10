@@ -63,4 +63,4 @@ class event
     friend event make_unless_event();
 };
 
-}  // namespace ctguard::research
+} /* namespace ctguard::research */

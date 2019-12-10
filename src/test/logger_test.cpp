@@ -17,9 +17,9 @@ static void produce(int id)
     }
 }
 
-int main(int, char **)
+int main(int, char **)  // NOLINT(readability-named-parameter)
 {
-    ctguard::libs::Output2FILE::stream() = fopen("log.txt", "a");
+    ctguard::libs::Output2FILE::stream() = fopen("log.txt", "ae");  // NOLINT(cppcoreguidelines-owning-memory)
 
     std::string username{ "unknown" };
     std::cout << "start 1\n" << std::flush;

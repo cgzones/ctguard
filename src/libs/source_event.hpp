@@ -5,10 +5,10 @@
 
 namespace ctguard::libs {
 
-using sevent_time_t = std::time_t;
-
 class source_event
 {
+    using sevent_time_t = std::time_t;
+
   public:
     source_event() = default;
 
@@ -26,4 +26,4 @@ class source_event
     }
 };
 
-}  // namespace ctguard::libs
+} /* namespace ctguard::libs */

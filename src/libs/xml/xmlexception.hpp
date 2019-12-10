@@ -4,16 +4,16 @@
 #include <string>
 #include <string_view>
 
-namespace ctguard::libs::sqlite {
+namespace ctguard::libs::xml {
 
-class sqlite_exception : public std::exception
+class xml_exception : public std::exception
 {
   public:
-    explicit sqlite_exception(std::string_view msg);
+    explicit xml_exception(std::string_view msg);
     [[nodiscard]] virtual const char * what() const noexcept override;
 
   private:
     std::string m_msg;
 };
 
-} /* namespace ctguard::libs::sqlite */
+} /* namespace ctguard::libs::xml */

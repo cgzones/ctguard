@@ -33,4 +33,4 @@ std::ostream & operator<<(std::ostream & out, const XMLNode & node)
     return out;
 }
 
-}  // namespace ctguard::libs::xml
+} /* namespace ctguard::libs::xml */
