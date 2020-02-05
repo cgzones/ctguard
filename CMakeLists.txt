@@ -121,7 +121,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wcast-align")
     endif ()
     # C flags for sha2
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wmissing-format-attribute -Wmissing-noreturn -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-padded")
@@ -139,7 +139,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ctad-maybe-unsupported") # produces fp's on std::lock_guard with clang-9
     endif ()
     # C flags for sha2
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wmissing-format-attribute -Wmissing-noreturn -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings")
 else ()
     message (WARNING "No warnings set for compiler ${CMAKE_CXX_COMPILER_ID}!")
 endif ()
