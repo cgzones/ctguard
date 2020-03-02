@@ -21,8 +21,12 @@ set (CMAKE_CXX_EXTENSIONS FALSE)
 
 
 if (ENABLE_OPTIMIZATIONS)
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        add_compile_options (-O2 -ftree-vectorize -ftree-slp-vectorize)
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         add_compile_options (-O2)
+    else ()
+        message (FATAL_ERROR "Do not know how to set optimization flags for compiler ${CMAKE_CXX_COMPILER_ID}!")
     endif ()
 endif ()
 
