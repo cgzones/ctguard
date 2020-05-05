@@ -8,13 +8,13 @@ default:
 	ninja -C build_default/
 
 test-default: default
-	CTEST_PARALLEL_LEVEL=20 ninja -C build_default/ test
+	CTEST_OUTPUT_ON_FAILURE=1 CTEST_PARALLEL_LEVEL=20 ninja -C build_default/ test
 
 
 sanitizers:
 	CC=clang CXX=clang++ cmake -B build_sanitizers/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DENABLE_OPTIMIZATIONS=OFF -DENABLE_SANITIZERS=ON
 	CC=clang CXX=clang++ ninja -C build_sanitizers/
-	ASAN_OPTIONS=detect_stack_use_after_return=1 ASAN_OPTIONS=check_initialization_order=1 ASAN_OPTIONS=detect_leaks=1 CTEST_PARALLEL_LEVEL=20 ninja -C build_sanitizers/ test
+	ASAN_OPTIONS=detect_stack_use_after_return=1 ASAN_OPTIONS=check_initialization_order=1 ASAN_OPTIONS=detect_leaks=1 CTEST_OUTPUT_ON_FAILURE=1 CTEST_PARALLEL_LEVEL=20 ninja -C build_sanitizers/ test
 
 
 clang-tidy:
