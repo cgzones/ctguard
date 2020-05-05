@@ -32,7 +32,7 @@ endif ()
 
 if (ENABLE_HARDENING)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        add_compile_definitions (FORTIFY_SOURCE=2)
+        add_compile_definitions (_FORTIFY_SOURCE=2)
         add_compile_options (-fstack-protector-strong)
         add_compile_options (-fPIE)
         add_link_options (-pie)

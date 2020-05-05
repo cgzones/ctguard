@@ -7,7 +7,7 @@ default:
 	cmake -B build_default/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars
 	ninja -C build_default/
 
-test-default:
+test-default: default
 	CTEST_PARALLEL_LEVEL=20 ninja -C build_default/ test
 
 
