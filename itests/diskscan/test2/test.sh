@@ -39,9 +39,10 @@ touch test_dir/dest
 sleep 0.001
 ln -s dest test_dir/lnk
 
-sleep 2
+sleep 4
 
 echo "do2" >> test_dir/txt1.txt
+touch test_dir/txt2.txt
 
 sleep 2
 
@@ -51,11 +52,11 @@ rmdir test_dir/testdir
 sleep 0.001
 rm test_dir/dest
 
-sleep 2
+sleep 3
 
 echo "do4" >> test_dir/txt1.txt
 
-sleep 2
+sleep 6
 
 if ! ps -p ${pid} > /dev/null; then
     echo "diskscan daemon with pid ${pid} not running anymore!\nFAILURE!"
