@@ -7,6 +7,9 @@ default:
 	cmake -B build_default/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars
 	ninja -C build_default/
 
+test-default:
+	CTEST_PARALLEL_LEVEL=20 ninja -C build_default/ test
+
 
 sanitizers:
 	CC=clang cmake -B build_sanitizers/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DENABLE_OPTIMIZATIONS=OFF -DENABLE_SANITIZERS=ON
