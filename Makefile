@@ -12,13 +12,13 @@ test-default:
 
 
 sanitizers:
-	CC=clang cmake -B build_sanitizers/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DENABLE_OPTIMIZATIONS=OFF -DENABLE_SANITIZERS=ON
-	CC=clang ninja -C build_sanitizers/
+	CC=clang CXX=clang++ cmake -B build_sanitizers/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DENABLE_OPTIMIZATIONS=OFF -DENABLE_SANITIZERS=ON
+	CC=clang CXX=clang++ ninja -C build_sanitizers/
 
 
 clang-tidy:
-	CC=clang cmake -B build_clang_tidy/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DRUN_CLANG_TIDY=ON
-	CC=clang ninja -C build_clang_tidy/
+	CC=clang CXX=clang++ cmake -B build_clang_tidy/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DRUN_CLANG_TIDY=ON
+	CC=clang CXX=clang++ ninja -C build_clang_tidy/
 
 
 clean: clean-deb
