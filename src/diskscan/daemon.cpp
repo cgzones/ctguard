@@ -369,7 +369,7 @@ static void rtevent_task(const diskscan_config & cfg, libs::blocked_queue<std::t
             const auto rtevent_start = std::chrono::high_resolution_clock::now();
 
             if ((fe_flags & flags::KILL) || !RUNNING) {
-                output_queue.emplace(std::piecewise_construct, std::forward_as_tuple(fdf.construct("", false, false)), std::forward_as_tuple(flags::KILL));
+                output_queue.emplace(std::piecewise_construct, std::forward_as_tuple(fdf.construct("//SPECIAL//", false, false)), std::forward_as_tuple(flags::KILL));
                 return;
             }
 
@@ -400,7 +400,7 @@ static void rtevent_task(const diskscan_config & cfg, libs::blocked_queue<std::t
         es.second.push(std::current_exception());
     }
 
-    output_queue.emplace(std::piecewise_construct, std::forward_as_tuple(fdf.construct("", false, false)), std::forward_as_tuple(flags::KILL));
+    output_queue.emplace(std::piecewise_construct, std::forward_as_tuple(fdf.construct("//SPECIAL//", false, false)), std::forward_as_tuple(flags::KILL));
 }
 
 static void event_task(libs::blocked_queue<std::pair<std::string, flags>> & event_queue, libs::blocked_queue<std::pair<file_data, flags>> & file_data_queue,
@@ -418,7 +418,7 @@ static void event_task(libs::blocked_queue<std::pair<std::string, flags>> & even
             const auto event_start = std::chrono::high_resolution_clock::now();
 
             if ((flags & flags::KILL) || !RUNNING) {
-                file_data_queue.emplace(std::piecewise_construct, std::forward_as_tuple(fdf.construct("", false, false)), std::forward_as_tuple(flags::KILL));
+                file_data_queue.emplace(std::piecewise_construct, std::forward_as_tuple(fdf.construct("//SPECIAL//", false, false)), std::forward_as_tuple(flags::KILL));
                 return;
             }
 
@@ -437,7 +437,7 @@ static void event_task(libs::blocked_queue<std::pair<std::string, flags>> & even
         es.second.push(std::current_exception());
     }
 
-    file_data_queue.emplace(std::piecewise_construct, std::forward_as_tuple(fdf.construct("", false, false)), std::forward_as_tuple(flags::KILL));
+    file_data_queue.emplace(std::piecewise_construct, std::forward_as_tuple(fdf.construct("//SPECIAL//", false, false)), std::forward_as_tuple(flags::KILL));
 }
 
 struct file_data_set_compare
@@ -603,7 +603,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
                     event_queue.emplace(db_name, static_cast<flags>(flags::CHK_CONTENT | flags::FORCE_UPDATE));
                 }
 
-                event_queue.emplace("", flags::ENDSCAN);
+                event_queue.emplace("//SPECIAL//", flags::ENDSCAN);
 
                 in_scan = false;
                 do_insert_set(insert_set, db, output_queue);
@@ -929,11 +929,12 @@ static void scan_task(libs::blocked_queue<std::pair<std::string, flags>> & scan_
 
             if ((flags & flags::KILL) || !RUNNING) {
                 FILE_LOG(libs::log_level::DEBUG) << "scan-task kill";
-                event_queue.emplace("", flags::KILL);
+                event_queue.emplace("//SPECIAL//", flags::KILL);
                 return;
             }
 
             if (path.empty()) {
+                FILE_LOG(libs::log_level::WARNING) << "Empty scan path";
                 event_queue.emplace("", flags);
             } else {
                 scan(path, flags & flags::RECURSIVE, flags & flags::CHK_DIFF, event_queue);
@@ -948,7 +949,7 @@ static void scan_task(libs::blocked_queue<std::pair<std::string, flags>> & scan_
         es.second.push(std::current_exception());
     }
 
-    event_queue.emplace("", flags::KILL);
+    event_queue.emplace("//SPECIAL//", flags::KILL);
 }
 
 void daemon(const diskscan_config & cfg, bool singlerun, bool unit_test)
@@ -987,11 +988,11 @@ void daemon(const diskscan_config & cfg, bool singlerun, bool unit_test)
         std::lock_guard<std::mutex> lg{ std::get<std::mutex>(scan_is_running) };
         std::get<bool>(scan_is_running) = true;
     }
-    scan_queue.emplace("", flags::STARTSCAN);
+    scan_queue.emplace("//SPECIAL//", flags::STARTSCAN);
     for (const watch & w : cfg.watches) {
         scan_queue.emplace(w.path(), static_cast<flags>((w.recursive() ? flags::RECURSIVE : flags::EMPTY) | (w.check_diff() ? flags::CHK_DIFF : flags::EMPTY)));
     }
-    scan_queue.emplace("", flags::MIDSCAN);
+    scan_queue.emplace("//SPECIAL//", flags::MIDSCAN);
     FILE_LOG(libs::log_level::INFO) << "Initial scan initialized.";
 
     if (singlerun) {
@@ -1006,7 +1007,7 @@ void daemon(const diskscan_config & cfg, bool singlerun, bool unit_test)
         FILE_LOG(libs::log_level::INFO) << "ctguard-diskscan shutting down after singlerun...";
 
         FILE_LOG(libs::log_level::DEBUG) << "Requesting worker(s) to stop...";
-        scan_queue.emplace("", flags::KILL);
+        scan_queue.emplace("//SPECIAL//", flags::KILL);
         // no RUNNING = false;
 
         FILE_LOG(libs::log_level::DEBUG) << "Requested worker(s) to stop; waitng for them...";
@@ -1157,12 +1158,12 @@ void daemon(const diskscan_config & cfg, bool singlerun, bool unit_test)
                         std::lock_guard<std::mutex> lg2{ std::get<std::mutex>(scan_is_running) };
                         std::get<bool>(scan_is_running) = true;
                     }
-                    scan_queue.emplace("", flags::STARTSCAN);
+                    scan_queue.emplace("//SPECIAL//", flags::STARTSCAN);
                     for (const auto & w : cfg.watches) {
                         scan_queue.emplace(
                           w.path(), static_cast<flags>((w.recursive() ? flags::RECURSIVE : flags::EMPTY) | (w.check_diff() ? flags::CHK_DIFF : flags::EMPTY)));
                     }
-                    scan_queue.emplace("", flags::MIDSCAN);
+                    scan_queue.emplace("//SPECIAL//", flags::MIDSCAN);
                     FILE_LOG(libs::log_level::INFO) << "Regular scan initialized.";
                     scantimer = 0;
                 }
@@ -1187,8 +1188,8 @@ void daemon(const diskscan_config & cfg, bool singlerun, bool unit_test)
     }
 
     RUNNING = false;
-    scan_queue.emplace("", flags::KILL);
-    rtevent_queue.emplace(std::chrono::milliseconds(0), "", flags::KILL);
+    scan_queue.emplace("//SPECIAL//", flags::KILL);
+    rtevent_queue.emplace(std::chrono::milliseconds(0), "//SPECIAL//", flags::KILL);
 
     FILE_LOG(libs::log_level::DEBUG) << "waiting for threads...";
     scan_thread.join();

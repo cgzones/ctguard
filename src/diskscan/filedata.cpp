@@ -41,6 +41,10 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
         return {};
     }
 
+    if (path == "//SPECIAL//") {
+        return {};
+    }
+
     file_data fd;
 
     fd.m_path = std::move(path);
