@@ -14,4 +14,5 @@ Coding Style
   - C++ standard library headers (without file extension), e.g. <algorithm>, <cstddef>.
   - A blank line
   - Other libraries' .h files.
+  - A blank line
   - Your project's .h files.
