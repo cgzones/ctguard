@@ -34,130 +34,126 @@ static std::vector<std::string> split(const std::string & str, char delim)
     return cont;
 }
 
-file_data file_data_factory::construct(std::string path, bool check_content, bool check_diff)
+std::unique_ptr<file_data> file_data_factory::construct(std::string path, bool check_content, bool check_diff)
 {
     if (path.empty()) {
         FILE_LOG(libs::log_level::ERROR) << "Empty path given to file_data_factory::construct()";
-        return {};
+        return nullptr;
     }
 
-    if (path == "//SPECIAL//") {
-        return {};
-    }
+    std::unique_ptr<file_data> fdp = std::make_unique<file_data>(file_data::_constructor_tag{});
 
-    file_data fd;
-
-    fd.m_path = std::move(path);
+    fdp->m_path = std::move(path);
 
     struct stat s;  // NOLINT(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
-    if (lstat(fd.m_path.c_str(), &s) == -1) {
+    if (lstat(fdp->m_path.c_str(), &s) == -1) {
         if (errno == ENOENT) {
-            FILE_LOG(libs::log_level::DEBUG) << "Object seems to be deleted: '" << fd.m_path << "'";
+            FILE_LOG(libs::log_level::DEBUG) << "Object seems to be deleted: '" << fdp->m_path << "'";
         } else {
-            FILE_LOG(libs::log_level::ERROR) << "Can not stat object '" << fd.m_path << "': " << ::strerror(errno);
+            FILE_LOG(libs::log_level::ERROR) << "Can not stat object '" << fdp->m_path << "': " << ::strerror(errno);
         }
 
-        fd.m_exists = false;
-        fd.m_content_checked = true;
-        fd.m_user = "null";
-        fd.m_group = "null";
-        fd.m_size = 0;
-        fd.m_mode = 0;
-        fd.m_inode = 0;
-        fd.m_mtime = 0;
-        fd.m_ctime = 0;
-        fd.m_type = file_data::type::unknown;
-        fd.m_sha256[0] = '\0';
-        fd.m_target = "";
-        fd.m_dead_lnk = false;
+        fdp->m_exists = false;
+        fdp->m_content_checked = true;
+        fdp->m_user = "null";
+        fdp->m_group = "null";
+        fdp->m_size = 0;
+        fdp->m_mode = 0;
+        fdp->m_inode = 0;
+        fdp->m_mtime = 0;
+        fdp->m_ctime = 0;
+        fdp->m_type = file_data::type::unknown;
+        fdp->m_sha256[0] = '\0';
+        fdp->m_target = "";
+        fdp->m_dead_lnk = false;
 
-        return fd;
+        return fdp;
     }
 
-    FILE_LOG(libs::log_level::DEBUG) << "Computing file_data for '" << fd.m_path << "': " << std::boolalpha << check_content << " " << check_diff;
+    FILE_LOG(libs::log_level::DEBUG) << "Computing file_data for '" << fdp->m_path << "': " << std::boolalpha << check_content << " " << check_diff;
 
-    fd.m_exists = true;
+    fdp->m_exists = true;
 
     {
         auto username = libs::getusername(s.st_uid);
         if (username) {
-            fd.m_user = std::move(*username);
+            fdp->m_user = std::move(*username);
         } else {
             FILE_LOG(libs::log_level::ERROR) << "No user with uid '" << s.st_uid << "'";
-            fd.m_user = "!unknown";
+            fdp->m_user = "!unknown";
         }
     }
 
     {
         auto groupname = libs::getgroupname(s.st_gid);
         if (groupname) {
-            fd.m_group = std::move(*groupname);
+            fdp->m_group = std::move(*groupname);
         } else {
             FILE_LOG(libs::log_level::ERROR) << "No group with gid '" << s.st_gid << "'";
-            fd.m_group = "!unknown";
+            fdp->m_group = "!unknown";
         }
     }
 
-    fd.m_size = s.st_size;
-    fd.m_mode = s.st_mode;
-    fd.m_inode = s.st_ino;
-    fd.m_mtime = s.st_mtime;
-    fd.m_ctime = s.st_ctime;
+    fdp->m_size = s.st_size;
+    fdp->m_mode = s.st_mode;
+    fdp->m_inode = s.st_ino;
+    fdp->m_mtime = s.st_mtime;
+    fdp->m_ctime = s.st_ctime;
 
     switch (s.st_mode & S_IFMT) {  // NOLINT(hicpp-signed-bitwise)
         case S_IFBLK:
-            fd.m_type = file_data::type::block_device;
+            fdp->m_type = file_data::type::block_device;
             break;
         case S_IFCHR:
-            fd.m_type = file_data::type::character_device;
+            fdp->m_type = file_data::type::character_device;
             break;
         case S_IFDIR:
-            fd.m_type = file_data::type::directory;
+            fdp->m_type = file_data::type::directory;
             break;
         case S_IFIFO:
-            fd.m_type = file_data::type::fifo;
+            fdp->m_type = file_data::type::fifo;
             break;
         case S_IFLNK:
-            fd.m_type = file_data::type::link;
+            fdp->m_type = file_data::type::link;
             break;
         case S_IFREG:
-            fd.m_type = file_data::type::file;
+            fdp->m_type = file_data::type::file;
             break;
         case S_IFSOCK:
-            fd.m_type = file_data::type::socket;
+            fdp->m_type = file_data::type::socket;
             break;
         default:
-            fd.m_type = file_data::type::unknown;
-            FILE_LOG(libs::log_level::ERROR) << "Unknown file type for '" << fd.m_path << "': " << std::hex << s.st_mode;
+            fdp->m_type = file_data::type::unknown;
+            FILE_LOG(libs::log_level::ERROR) << "Unknown file type for '" << fdp->m_path << "': " << std::hex << s.st_mode;
             break;
     }
 
-    if (check_content && fd.m_type == file_data::type::file) {
-        bool compute_diff = check_diff && fd.m_size < m_max_diff_size;
+    if (check_content && fdp->m_type == file_data::type::file) {
+        bool compute_diff = check_diff && fdp->m_size < m_max_diff_size;
         std::string db_content;
         std::stringstream ocontent;
         bool found_content = false;
 
-        const int file = ::open(fd.m_path.c_str(), O_RDONLY | O_CLOEXEC);  // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
+        const int file = ::open(fdp->m_path.c_str(), O_RDONLY | O_CLOEXEC);  // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
         if (file == -1) {
             if (errno == EACCES) {
-                FILE_LOG(libs::log_level::WARNING) << "Can not open file '" << fd.m_path << "': " << ::strerror(errno);
+                FILE_LOG(libs::log_level::WARNING) << "Can not open file '" << fdp->m_path << "': " << ::strerror(errno);
             } else {
-                FILE_LOG(libs::log_level::ERROR) << "Can not open file '" << fd.m_path << "': " << ::strerror(errno);
+                FILE_LOG(libs::log_level::ERROR) << "Can not open file '" << fdp->m_path << "': " << ::strerror(errno);
             }
-            return fd;
+            return fdp;
         }
 
         libs::scope_guard sg{ [file]() { ::close(file); } };
 
         if (compute_diff) {
             libs::sqlite::sqlite_statement select{ "SELECT `content` FROM `diskscan-diffdata` WHERE `name` = $001;", m_db };
-            select.bind(1, fd.m_path);
+            select.bind(1, fdp->m_path);
             const auto & ret = select.run(true);
 
             for (const auto column : ret) {
                 if (found_content) {
-                    FILE_LOG(libs::log_level::ERROR) << "Multiple diffdb entries for '" << fd.path() << '\'';
+                    FILE_LOG(libs::log_level::ERROR) << "Multiple diffdb entries for '" << fdp->m_path << '\'';
                 }
                 found_content = true;
 
@@ -165,49 +161,51 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
             }
         }
 
-        ssize_t ret;  // NOLINT(cppcoreguidelines-init-variables)
-        SHA256_CTX ctx;
-        SHA256_Init(&ctx);
+        {
+            ssize_t ret;  // NOLINT(cppcoreguidelines-init-variables)
+            SHA256_CTX ctx;
+            SHA256_Init(&ctx);
 
-        std::array<unsigned char, 16384> buf;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+            std::array<unsigned char, 16384> buf;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
 
-        while ((ret = ::read(file, buf.data(), buf.size())) > 0) {
-            SHA256_Update(&ctx, buf.data(), static_cast<size_t>(ret));
-            if (compute_diff) {
-                if (memchr(buf.data(), '\0', static_cast<size_t>(ret)) != nullptr) {
-                    FILE_LOG(libs::log_level::DEBUG) << "File '" << fd.m_path << "' has binary format";
-                    compute_diff = false;
-                } else {
-                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-                    ocontent << std::string_view{ reinterpret_cast<const char *>(buf.data()), static_cast<size_t>(ret) };
-                    // oss.write(&buffer.data()[0], n);
+            while ((ret = ::read(file, buf.data(), buf.size())) > 0) {
+                SHA256_Update(&ctx, buf.data(), static_cast<size_t>(ret));
+                if (compute_diff) {
+                    if (memchr(buf.data(), '\0', static_cast<size_t>(ret)) != nullptr) {
+                        FILE_LOG(libs::log_level::DEBUG) << "File '" << fdp->m_path << "' has binary format";
+                        compute_diff = false;
+                    } else {
+                        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+                        ocontent << std::string_view{ reinterpret_cast<const char *>(buf.data()), static_cast<size_t>(ret) };
+                        // oss.write(&buffer.data()[0], n);
+                    }
                 }
             }
-        }
 
-        if (ret == -1) {
-            FILE_LOG(libs::log_level::ERROR) << "Can not read from file '" << fd.m_path << "': " << ::strerror(errno);
-            return fd;
-        }
+            if (ret == -1) {
+                FILE_LOG(libs::log_level::ERROR) << "Can not read from file '" << fdp->m_path << "': " << ::strerror(errno);
+                return fdp;
+            }
 
-        SHA256_End(&ctx, fd.m_sha256.data());
+            SHA256_End(&ctx, fdp->m_sha256.data());
+        }
 
         if (compute_diff) {
             const std::string content{ ocontent.str() };
             if (found_content) {
                 libs::sqlite::sqlite_statement update{ "UPDATE `diskscan-diffdata` SET `content` = $001 WHERE `name` = $002;", m_db };
                 update.bind(1, content);
-                update.bind(2, fd.m_path);
+                update.bind(2, fdp->m_path);
                 update.run();
             } else {
                 libs::sqlite::sqlite_statement insert{ "INSERT INTO `diskscan-diffdata` ( `name`, `content` ) VALUES ( $001, $002 );", m_db };
-                insert.bind(1, fd.m_path);
+                insert.bind(1, fdp->m_path);
                 insert.bind(2, content);
                 insert.run();
             }
 
             if (db_content.empty()) {
-                FILE_LOG(libs::log_level::DEBUG) << "File '" << fd.m_path << "' has no stored content";
+                FILE_LOG(libs::log_level::DEBUG) << "File '" << fdp->m_path << "' has no stored content";
             } else {
                 dtl::Diff<std::string> diff{ split(db_content, '\n'), split(content, '\n') };
                 diff.onHuge();
@@ -216,48 +214,48 @@ file_data file_data_factory::construct(std::string path, bool check_content, boo
 
                 std::ostringstream oss;
                 diff.printUnifiedFormat(oss);
-                fd.m_diff = oss.str();
+                fdp->m_diff = oss.str();
             }
         }
 
-        fd.m_content_checked = true;
+        fdp->m_content_checked = true;
     }
 
-    else if (check_content && fd.m_type == file_data::type::link) {
+    else if (check_content && fdp->m_type == file_data::type::link) {
         struct stat tmp;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
-        if (::stat(fd.m_path.c_str(), &tmp) == -1) {
+        if (::stat(fdp->m_path.c_str(), &tmp) == -1) {
             if (errno == ENOENT) {
-                FILE_LOG(libs::log_level::DEBUG) << "stat(" << fd.m_path << ") failed, cause link destination is dead";
+                FILE_LOG(libs::log_level::DEBUG) << "stat(" << fdp->m_path << ") failed, cause link destination is dead";
             } else {
-                FILE_LOG(libs::log_level::ERROR) << "Can not stat link target of '" << fd.m_path << "': " << ::strerror(errno);
+                FILE_LOG(libs::log_level::ERROR) << "Can not stat link target of '" << fdp->m_path << "': " << ::strerror(errno);
             }
 
-            fd.m_dead_lnk = true;
+            fdp->m_dead_lnk = true;
         } else {
-            FILE_LOG(libs::log_level::DEBUG2) << "stat(" << fd.m_path << ") succeeded";
-            fd.m_dead_lnk = false;
+            FILE_LOG(libs::log_level::DEBUG2) << "stat(" << fdp->m_path << ") succeeded";
+            fdp->m_dead_lnk = false;
         }
 
         std::array<char, 256> buf;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
         ssize_t ret;                // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init,cppcoreguidelines-init-variables)
-        if ((ret = ::readlink(fd.m_path.c_str(), buf.data(), buf.size())) < 0) {
-            FILE_LOG(libs::log_level::ERROR) << "Can not readlink for '" << fd.m_path << "': " << ::strerror(errno);
-            return fd;
+        if ((ret = ::readlink(fdp->m_path.c_str(), buf.data(), buf.size())) < 0) {
+            FILE_LOG(libs::log_level::ERROR) << "Can not readlink for '" << fdp->m_path << "': " << ::strerror(errno);
+            return fdp;
         }
         if (static_cast<size_t>(ret) + 1 >= buf.size()) {
-            FILE_LOG(libs::log_level::WARNING) << "Target of link '" << fd.m_path << "' is longer than " << buf.size()
+            FILE_LOG(libs::log_level::WARNING) << "Target of link '" << fdp->m_path << "' is longer than " << buf.size()
                                                << " characters; will countinue truncated";
             buf[buf.size() - 1] = '\0';
         } else {
             buf[static_cast<size_t>(ret)] = '\0';  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)
         }
 
-        fd.m_target = buf.data();
+        fdp->m_target = buf.data();
 
-        fd.m_content_checked = true;
+        fdp->m_content_checked = true;
     }
 
-    return fd;
+    return fdp;
 }
 
 std::ostream & operator<<(std::ostream & out, const file_data & fd)

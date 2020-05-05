@@ -37,7 +37,6 @@ using ctguard::libs::check_cfg_file_perms;
 using ctguard::libs::FILELog;
 using ctguard::libs::log_level;
 using ctguard::libs::Output2FILE;
-using ctguard::libs::scope_guard;  // NOLINT(misc-unused-using-decls)
 using ctguard::libs::source_event;
 using ctguard::libs::filesystem::directory;
 using ctguard::libs::filesystem::file_object;
@@ -265,7 +264,7 @@ int main(int argc, char ** argv)
         return EXIT_FAILURE;
     }
     FILE_LOG(log_level::DEBUG) << "Logger initialized";
-    scope_guard sg{ []() { FILE_LOG(log_level::DEBUG) << "Logger shutdown"; } };
+    ctguard::libs::scope_guard sg{ []() { FILE_LOG(log_level::DEBUG) << "Logger shutdown"; } };
 
     if (stdinput) {
         std::map<rule_id_t, struct rule_state> rules_state;

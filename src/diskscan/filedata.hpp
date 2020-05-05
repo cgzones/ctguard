@@ -13,6 +13,12 @@ namespace ctguard::diskscan {
 
 class file_data
 {
+  private:
+    struct _constructor_tag
+    {
+        explicit _constructor_tag() = default;
+    };
+
   public:
     using size_type = decltype(std::declval<struct stat>().st_size);
     using inode_type = decltype(std::declval<struct stat>().st_ino);
@@ -31,6 +37,8 @@ class file_data
         fifo,
         unknown
     };
+
+    explicit file_data(_constructor_tag) {}
 
     [[nodiscard]] const std::string & path() const noexcept { return m_path; }
     [[nodiscard]] const std::string & user() const noexcept { return m_user; }
@@ -53,7 +61,6 @@ class file_data
     friend class file_data_factory;
 
   private:
-    file_data() = default;
     bool m_exists = false;
     bool m_content_checked{ false };
     std::string m_path;
@@ -91,7 +98,7 @@ class file_data_factory
 {
   public:
     file_data_factory(const std::string & db_path, unsigned max_diff_size) : m_db{ db_path }, m_max_diff_size{ max_diff_size } {}
-    file_data construct(std::string path, bool check_content, bool check_diff);
+    std::unique_ptr<file_data> construct(std::string path, bool check_content, bool check_diff);
 
   private:
     diff_database m_db;
