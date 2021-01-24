@@ -18,6 +18,16 @@ set (CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set (CMAKE_CXX_EXTENSIONS FALSE)
 
 
+find_program(CCACHE_PROGRAM ccache)
+if (CCACHE_PROGRAM)
+    # Support Unix Makefiles and Ninja
+    set_property (GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+    message (STATUS "Using ccache: ${CCACHE_PROGRAM}")
+else ()
+    message (STATUS "Not found ccache")
+endif ()
+
+
 if (ENABLE_OPTIMIZATIONS)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         add_compile_options (-O2 -ftree-vectorize -ftree-slp-vectorize)
