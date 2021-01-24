@@ -176,8 +176,8 @@ endif ()
 #    set (CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${IWYU_EXE};-Xiwyu;--cxx17ns;-Xiwyu;--transitive_includes_only)
 #endif ()
 
-# Produces libm.so.6 noise
-#set (CMAKE_LINK_WHAT_YOU_USE TRUE)
+
+set (CMAKE_LINK_WHAT_YOU_USE TRUE)
 
 
 if (RUN_CLANG_TIDY)
