@@ -1,6 +1,5 @@
-[![Build Status](https://travis-ci.org/cgzones/ctguard.svg?branch=master)](https://travis-ci.org/cgzones/ctguard)
+![Build Status](https://github.com/cgzones/ctguard/workflows/Default%20Build%20Tests/badge.svg)
 [![Total Alerts](https://img.shields.io/lgtm/alerts/g/cgzones/ctguard.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cgzones/ctguard/alerts/)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5141c7ed9f7249db8d5d4f217ed2b788)](https://www.codacy.com/app/cgzones/ctguard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cgzones/ctguard&amp;utm_campaign=Badge_Grade)
 [![GitHub license](https://img.shields.io/badge/license-MIT-green.svg)](https://raw.githubusercontent.com/cgzones/ctguard/master/LICENSE)
 
 # ctguard
