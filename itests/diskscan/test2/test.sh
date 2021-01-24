@@ -68,7 +68,7 @@ trap - 0 2
 
 sleep 2
 
-echo "Comapring expected vs actual output:"
+echo "Comparing expected vs actual output:"
 USERNAME=$(id -un)
 GROUP=$(id -gn)
 sed -e "s/ITEST_USER_REPLACEME/${USERNAME}/g" test.expected.sample | sed -e "s/ITEST_GROUP_REPLACEME/${GROUP}/g" > test.expected

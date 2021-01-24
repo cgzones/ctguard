@@ -244,7 +244,7 @@ std::unique_ptr<file_data> file_data_factory::construct(std::string path, bool c
         }
         if (static_cast<size_t>(ret) + 1 >= buf.size()) {
             FILE_LOG(libs::log_level::WARNING) << "Target of link '" << fdp->m_path << "' is longer than " << buf.size()
-                                               << " characters; will countinue truncated";
+                                               << " characters; will continue truncated";
             buf[buf.size() - 1] = '\0';
         } else {
             buf[static_cast<size_t>(ret)] = '\0';  // NOLINT(cppcoreguidelines-pro-bounds-constant-array-index)

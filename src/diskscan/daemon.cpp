@@ -149,7 +149,7 @@ static void add_watch(int inotify_handle, std::unordered_map<int, std::string> &
         return;
     }
     const auto r = watches.emplace(watch, path);
-    // might be added alredy be recursive parent directory
+    // might be added already by recursive parent directory
     if (!r.second && r.first->second != path) {
         FILE_LOG(libs::log_level::ERROR) << "Can not add inotify watch " << watch << " for path '" << path << "' to watch set, already exists with path '"
                                          << r.first->second << "'";

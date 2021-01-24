@@ -15,7 +15,7 @@ ctguard-logscan - daemon for scanning logfiles
 [[description]]
 == DESCRIPTION
 The *ctguard-logscan* daemon is the logscanner for ctguard.
-It continuously checks in a configureable interval if any configured logfile has a new entry.
+It continuously checks in a configurable interval if any configured logfile has a new entry.
 The scanned logentries are then forwarded by default to *ctguard-research*(8). +
 The configuration is either taken by default from the configuration file *logscan.conf*(5) or from the configuration supplied as argument.
 

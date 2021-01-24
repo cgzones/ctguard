@@ -63,7 +63,7 @@ trap - 0 2
 
 sleep 2
 
-echo "Comapring expected vs actual output:"
+echo "Comparing expected vs actual output:"
 diff -u test.output.expected alerts.log
 
 cleanup

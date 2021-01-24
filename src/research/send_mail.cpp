@@ -46,9 +46,9 @@ static void send_mail_message(int socket, const std::string & from, const std::s
     std::ostringstream oss;
 
     oss << "From: " << from << "\r\nTo: " << to << "\r\nSubject: " << subject << "\r\nX-Mailer: ctguard-notifier\r\nReply-To: " << replyto << "\r\n\r\n";
-    const std::string envelope{ oss.str() };
-    if (::send(socket, envelope.c_str(), envelope.length(), 0) == -1) {
-        throw libs::errno_exception{ "Can not send evelope '" + envelope + "'" };
+    const std::string envelop{ oss.str() };
+    if (::send(socket, envelop.c_str(), envelop.length(), 0) == -1) {
+        throw libs::errno_exception{ "Can not send evelop '" + envelop + "'" };
     }
 
     if (::send(socket, msg.c_str(), msg.length(), 0) == -1) {

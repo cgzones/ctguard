@@ -25,7 +25,7 @@ trap "kill -9 ${pid}" 0 2
 
 sleep 0.5
 
-#test normale logs
+#test normal logs
 echo "test" >> test.log
 echo "test2" >> test.log
 echo "test" >> test_timeout.log
@@ -63,7 +63,7 @@ trap - 0 2
 
 sleep 2
 
-echo "Comapring expected vs actual output:"
+echo "Comparing expected vs actual output:"
 diff -u test.output test.output.expected
 
 cleanup

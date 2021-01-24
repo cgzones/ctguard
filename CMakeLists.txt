@@ -245,7 +245,7 @@ message (STATUS "    Install prefix            ${CMAKE_INSTALL_PREFIX}")
 get_directory_property (DirCOpts DIRECTORY ${CMAKE_SOURCE_DIR}/src/ COMPILE_OPTIONS)
 string (REGEX REPLACE "(^|[^\\\\]);" "\\1 " DirCOpts "${DirCOpts}")
 message (STATUS "    Compile Options           ${DirCOpts}")
-message (STATUS "    C++ Flags (General)      ${CMAKE_CXX_FLAGS}") # The mis-alignment is intentional
+message (STATUS "    C++ Flags (General)      ${CMAKE_CXX_FLAGS}") # The misalignment is intentional
 message (STATUS "    C++ FLags (Release)       ${CMAKE_CXX_FLAGS_RELEASE}")
 message (STATUS "    C++ FLags (Debug)         ${CMAKE_CXX_FLAGS_DEBUG}")
 get_directory_property (DirDefs DIRECTORY ${CMAKE_SOURCE_DIR}/src/ COMPILE_DEFINITIONS)

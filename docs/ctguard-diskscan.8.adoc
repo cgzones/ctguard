@@ -17,7 +17,7 @@ ctguard-diskscan - daemon for scanning the filesystem
 The *ctguard-diskscan* daemon is the filescanner for ctguard.
 It scan in regular intervals if any content of the filesystem ahs changed and report such changges. +
 Is also has the ability to monitor directories in realtime for changes. +
-The changed entires are then forwarded by default to *ctguard-research*(8). +
+The changed entries are then forwarded by default to *ctguard-research*(8). +
 The configuration is either taken by default from the configuration file *diskscan.conf*(5) or from the configuration supplied as argument.
 
 

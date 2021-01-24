@@ -25,7 +25,7 @@ trap "kill -9 ${pid}" 0 2
 
 sleep 2
 
-#test normale logs
+#test normal logs
 echo "test" >> test.log
 echo "test2" >> test.log
 

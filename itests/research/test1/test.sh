@@ -47,7 +47,7 @@ EOF
 )
 echo "$OUTPUT" > test.output
 
-echo "Comapring expected vs actual output:"
+echo "Comparing expected vs actual output:"
 diff -u test.output.expected test.output
 
 cleanup

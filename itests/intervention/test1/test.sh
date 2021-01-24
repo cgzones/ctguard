@@ -79,7 +79,7 @@ trap - 0 2
 
 sleep 2
 
-echo "Comapring expected vs actual alert output:"
+echo "Comparing expected vs actual alert output:"
 diff -u test.output.expected alerts.log
 
 echo "Comparing expected vs actual intervention action:"

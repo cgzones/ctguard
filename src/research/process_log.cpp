@@ -80,7 +80,7 @@ static std::tuple<bool, std::vector<std::pair<std::string, std::string>>, std::v
                     if (i->first + rl.activation_group().time < current_time) {
                         saved_events.erase(i);
                     } else {
-                        // break, cause elemetns are sorted by time
+                        // break, cause elements are sorted by time
                         break;
                     }
                 }
