@@ -167,7 +167,9 @@ endif ()
 
 
 
+# TODO:
 # Fails to find stddef.h, see https://github.com/include-what-you-use/include-what-you-use/blob/master/README.md#how-to-install
+# Also fails when using gcc or with option -pie
 #find_program (IWYU_EXE NAMES include-what-you-use iwyu)
 #if (NOT IWYU_EXE)
 #    message (NOTICE "Could not find the program include-what-you-use")
