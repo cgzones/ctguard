@@ -223,7 +223,9 @@ add_link_options (LINKER:--as-needed)
 #endif ()
 
 
-set (CMAKE_LINK_WHAT_YOU_USE TRUE)
+if (NOT ENABLE_SANITIZERS)
+    set (CMAKE_LINK_WHAT_YOU_USE TRUE)
+endif ()
 
 
 if (RUN_CLANG_TIDY)
