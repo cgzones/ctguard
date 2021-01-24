@@ -53,8 +53,8 @@ namespace dtl {
         sequence           B;
         size_t             M;
         size_t             N;
-        size_t             delta;
-        size_t             offset;
+        long long          delta;
+        long long          offset;
         long long          *fp;
         long long          editDistance;
         Lcs< elem >        lcs;
@@ -269,16 +269,16 @@ namespace dtl {
         ONP:
             do {
                 ++p;
-                for (long long k=-p;k<=static_cast<long long>(delta)-1;++k) {
+                for (long long k=-p;k<=delta-1;++k) {
                     fp[k+offset] = snake(k, fp[k-1+offset]+1, fp[k+1+offset]);
                 }
-                for (long long k=static_cast<long long>(delta)+p;k>=static_cast<long long>(delta)+1;--k) {
+                for (long long k=delta+p;k>=delta+1;--k) {
                     fp[k+offset] = snake(k, fp[k-1+offset]+1, fp[k+1+offset]);
                 }
-                fp[delta+offset] = snake(static_cast<long long>(delta), fp[delta-1+offset]+1, fp[delta+1+offset]);
+                fp[delta+offset] = snake(delta, fp[delta-1+offset]+1, fp[delta+1+offset]);
             } while (fp[delta+offset] != static_cast<long long>(N) && pathCordinates.size() < MAX_CORDINATES_SIZE);
 
-            editDistance += static_cast<long long>(delta) + 2 * p;
+            editDistance += delta + 2 * p;
             long long r = path[delta+offset];
             P cordinate;
             editPathCordinates epc(0);
@@ -555,14 +555,14 @@ namespace dtl {
          * search shortest path and record the path
          */
         long long snake(const long long& k, const long long& above, const long long& below) {
-            long long r = above > below ? path[(size_t)k-1+offset] : path[(size_t)k+1+offset];
+            long long r = above > below ? path[k-1+offset] : path[k+1+offset];
             long long y = max(above, below);
             long long x = y - k;
             while ((size_t)x < M && (size_t)y < N && (swapped ? cmp.impl(B[(size_t)y], A[(size_t)x]) : cmp.impl(A[(size_t)x], B[(size_t)y]))) {
                 ++x;++y;
             }
 
-            path[(size_t)k+offset] = static_cast<long long>(pathCordinates.size());
+            path[k+offset] = static_cast<long long>(pathCordinates.size());
             if (!editDistanceOnly) {
                 P p;
                 p.x = x;p.y = y;p.k = r;
@@ -579,10 +579,9 @@ namespace dtl {
             sequence_const_iter y(B.begin());
             long long           x_idx,  y_idx;  // line number for Unified Format
             long long           px_idx, py_idx; // cordinates
-            bool                complete = false;
             x_idx  = y_idx  = 1;
             px_idx = py_idx = 0;
-            for (size_t i=v.size()-1;!complete;--i) {
+            for (size_t i=v.size()-1;;--i) {
                 while(px_idx < v[i].x || py_idx < v[i].y) {
                     if (v[i].y - v[i].x > py_idx - px_idx) {
                         if (!wasSwapped()) {
@@ -618,7 +617,7 @@ namespace dtl {
                         ++py_idx;
                     }
                 }
-                if (i == 0) complete = true;
+                if (i == 0) break;
             }
 
             if (x_idx > static_cast<long long>(M) && y_idx > static_cast<long long>(N)) {
