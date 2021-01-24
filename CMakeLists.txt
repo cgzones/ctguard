@@ -181,13 +181,13 @@ endif ()
 
 
 if (RUN_CLANG_TIDY)
-    find_program (CLANG_TIDY_EXE NAMES clang-tidy clang-tidy-10 clang-tidy-9)
+    find_program (CLANG_TIDY_EXE NAMES clang-tidy clang-tidy-12 clang-tidy-11 clang-tidy-10 clang-tidy-9)
     if (NOT CLANG_TIDY_EXE)
         message (FATAL_ERROR "Could not find the program clang-tidy!")
     endif()
 
     message (STATUS "Found clang-tidy: ${CLANG_TIDY_EXE}")
-    set (CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE};-checks=*,-modernize-use-trailing-return-type,-fuchsia-overloaded-operator,-readability-implicit-bool-conversion,-fuchsia-default-arguments-calls,-google-runtime-references,-hicpp-signed-bitwise,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers)
+    set (CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE};-checks=*,-modernize-use-trailing-return-type,-fuchsia-overloaded-operator,-readability-implicit-bool-conversion,-fuchsia-default-arguments-calls,-google-runtime-references,-hicpp-signed-bitwise,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-llvmlibc-implementation-in-namespace,-llvmlibc-callee-namespace,-llvmlibc-restrict-system-libc-headers)
 endif ()
 
 
