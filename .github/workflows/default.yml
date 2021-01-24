@@ -1,0 +1,159 @@
+name: Default Build Tests
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        compiler: [ gcc, clang ]
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update -q
+        sudo apt-get install -qy \
+            asciidoctor \
+            cmake
+
+        # Install libcereal-dev from Debian testing, cause it contains a cmake module
+        wget -O - https://ftp-master.debian.org/keys/archive-key-10.asc 2>/dev/null | sudo apt-key add -
+        sudo add-apt-repository 'deb http://deb.debian.org/debian/ testing main' -y
+        sudo apt-get install -qy libcereal-dev
+
+    - name: Display Versions
+      run: |
+        cmake --version
+        asciidoctor --version
+
+    - name: Configure
+      run: cmake -B build_dir/ -Wdeprecated --warn-uninitialized
+
+    - name: Build
+      run: cmake --build build_dir/ --verbose --clean-first
+
+    - name: Install
+      run:  sudo cmake --build build_dir/ --verbose -- install
+
+    - name: Test
+      env:
+        CTEST_OUTPUT_ON_FAILURE: 1
+      run: cmake --build build_dir/ --verbose -- test
+
+
+  sanitizer-build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: |
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key 2>/dev/null | sudo apt-key add -
+        sudo add-apt-repository 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-11 main' -y
+
+        sudo apt-get update -q
+        sudo apt-get install -qy \
+            asciidoctor \
+            clang-11 \
+            cmake
+
+        # Install libcereal-dev from Debian testing, cause it contains a cmake module
+        wget -O - https://ftp-master.debian.org/keys/archive-key-10.asc 2>/dev/null | sudo apt-key add -
+        sudo add-apt-repository 'deb http://deb.debian.org/debian/ testing main' -y
+        sudo apt-get install -qy libcereal-dev
+
+    - name: Display Versions
+      run: |
+        clang++-11 --version
+        cmake --version
+        asciidoctor --version
+
+    - name: Configure
+      env:
+        CC: clang-11
+        CXX: clang++-11
+      run: cmake -B build_dir/ -Wdeprecated --warn-uninitialized -DENABLE_SANITIZERS=ON -DENABLE_OPTIMIZATIONS=OFF -DENABLE_DOC=OFF
+
+    - name: Build
+      run: cmake --build build_dir/ --verbose --clean-first
+
+    - name: Test
+      env:
+        ASAN_OPTIONS: strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1
+        UBSAN_OPTIONS: print_stacktrace=1:print_summary=1:halt_on_error=1
+        CTEST_OUTPUT_ON_FAILURE: 1
+      run: cmake --build build_dir/ --verbose -- test
+
+
+  whitespace_check:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check Whitespaces
+        run: git diff-tree --check $(git hash-object -t tree /dev/null) HEAD
+
+
+  format_check:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install Clang Repository
+      run: |
+          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key 2>/dev/null | sudo apt-key add -
+          sudo add-apt-repository 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-11 main' -y
+
+    - name: Install Dependencies
+      run: |
+          sudo apt-get update -q
+          sudo apt-get install -qy \
+              clang-format-11
+
+    - name: Check Code Format
+      run: |
+          find src/ -path src/external -prune -o \( -iname '*.h' -o -iname '*.hpp' -o -iname '*.cpp' \) -execdir clang-format -i --Werror {} \;
+          git diff --exit-code
+
+
+  spelling_check:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: |
+          sudo apt-get update -q
+          sudo apt-get install -qy \
+              codespell
+
+    - name: Codespell
+      run: codespell --skip .git,external
+
+
+# TODO:
+# - cppcheck
+# - scan-build / clang-tidy
