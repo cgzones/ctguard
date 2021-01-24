@@ -83,7 +83,8 @@ sleep 2
 
 echo "Comapring expected vs actual output:"
 USERNAME=$(id -un)
-sed "s/ITEST_USER_REPLACEME/${USERNAME}/g" test.expected.sample > test.expected
+GROUP=$(id -gn)
+sed -e "s/ITEST_USER_REPLACEME/${USERNAME}/g" test.expected.sample | sed -e "s/ITEST_GROUP_REPLACEME/${GROUP}/g" > test.expected
 sort test.output -o test.output.sorted
 diff -u test.expected test.output.sorted
 
