@@ -28,6 +28,7 @@ if (ENABLE_OPTIMIZATIONS)
     endif ()
 endif ()
 
+
 if (ENABLE_HARDENING)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         add_compile_definitions (_FORTIFY_SOURCE=2)
@@ -40,6 +41,7 @@ if (ENABLE_HARDENING)
         message (FATAL_ERROR "Do not know how to set hardening build flags for compiler ${CMAKE_CXX_COMPILER_ID}!")
     endif ()
 endif ()
+
 
 if (ENABLE_SANITIZERS)
     if (ENABLE_OPTIMIZATIONS)
@@ -68,12 +70,14 @@ if (ENABLE_SANITIZERS)
     endif ()
 endif ()
 
+
 if (ENABLE_LTO)
     include (CheckIPOSupported)
     check_ipo_supported ()
     set (CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
     message (STATUS "Enabled IPO/LTO")
 endif ()
+
 
 # hack to align status output
 if (NOT CMAKE_CXX_FLAGS STREQUAL "")
@@ -88,6 +92,7 @@ if (FAIL_ON_WARNINGS)
         message (FATAL_ERROR "Do not know how to treat warnings as errors for compiler ${CMAKE_CXX_COMPILER_ID}!")
     endif ()
 endif ()
+
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
