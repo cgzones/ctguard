@@ -40,7 +40,7 @@ clean-deb:
 
 
 format:
-	find src/ -path src/external -prune -o \( -iname '*.h' -o -iname '*.hpp' -o -iname '*.cpp' \) -execdir clang-format -i {} \;
+	find src/ -path src/external -prune -o \( -iname '*.h' -o -iname '*.hpp' -o -iname '*.cpp' \) -execdir clang-format-11 -i --Werror {} \;
 
 
 cppcheck:
