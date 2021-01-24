@@ -166,6 +166,8 @@ if (FORCE_COLORED_OUTPUT)
 endif ()
 
 
+add_link_options (LINKER:--as-needed)
+
 
 # TODO:
 # Fails to find stddef.h, see https://github.com/include-what-you-use/include-what-you-use/blob/master/README.md#how-to-install
