@@ -4,7 +4,7 @@
 
 
 default:
-	cmake -B build_default/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars
+	cmake -B build_default/ -G Ninja -Wdeprecated --warn-uninitialized
 	ninja -C build_default/
 
 test-default: default
@@ -12,13 +12,13 @@ test-default: default
 
 
 sanitizers:
-	CC=clang CXX=clang++ cmake -B build_sanitizers/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DENABLE_OPTIMIZATIONS=OFF -DENABLE_SANITIZERS=ON
+	CC=clang CXX=clang++ cmake -B build_sanitizers/ -G Ninja -Wdeprecated --warn-uninitialized -DENABLE_OPTIMIZATIONS=OFF -DENABLE_SANITIZERS=ON
 	CC=clang CXX=clang++ ninja -C build_sanitizers/
 	ASAN_OPTIONS=detect_stack_use_after_return=1 ASAN_OPTIONS=check_initialization_order=1 ASAN_OPTIONS=detect_leaks=1 CTEST_OUTPUT_ON_FAILURE=1 CTEST_PARALLEL_LEVEL=20 ninja -C build_sanitizers/ test
 
 
 clang-tidy:
-	CC=clang CXX=clang++ cmake -B build_clang_tidy/ -G Ninja -Wno-dev -Wdeprecated --warn-uninitialized --warn-unused-vars -DRUN_CLANG_TIDY=ON
+	CC=clang CXX=clang++ cmake -B build_clang_tidy/ -G Ninja -Wdeprecated --warn-uninitialized -DRUN_CLANG_TIDY=ON
 	CC=clang CXX=clang++ ninja -C build_clang_tidy/
 
 
