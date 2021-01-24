@@ -162,6 +162,8 @@ if (FORCE_COLORED_OUTPUT)
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         add_compile_options (-fcolor-diagnostics)
         add_link_options (-fcolor-diagnostics)
+    else ()
+        message (FATAL_ERROR "Do not know how to force colored output compiler ${CMAKE_CXX_COMPILER_ID}!")
     endif ()
 endif ()
 
