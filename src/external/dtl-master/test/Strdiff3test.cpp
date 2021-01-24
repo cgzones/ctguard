@@ -11,11 +11,11 @@ protected :
         sequence merged_seq;
     } case_t;
     typedef vector< case_t > caseVec;
-    
+
     caseVec merge_cases;
     caseVec detect_cases;
     caseVec custom_cases;
-    
+
     template < typename comparator >
     case_t createCase (sequence a, sequence b, sequence c, sequence s) {
         Diff3< elem, sequence, comparator > diff3(a, b, c);
@@ -28,7 +28,7 @@ protected :
         ct.merged_seq       = diff3.getMergedSequence();
         return ct;
     }
-    
+
     void SetUp() {
         // merge test
         merge_cases.push_back(createCase< Compare < elem > >("ab",            "b",             "bc",           "abc"));              // 0
@@ -55,17 +55,17 @@ protected :
         merge_cases.push_back(createCase< Compare < elem > >("acdef",         "abcdef",        "abcdf",        "acdf"));             // 21
         merge_cases.push_back(createCase< Compare < elem > >("acdef",         "abcdef",        "abcdfaa",      "acdfaa"));           // 22
         merge_cases.push_back(createCase< Compare < elem > >("abcdfaa",       "abcdef",        "acdef",        "acdfaa"));           // 23
-        
+
         // detect confliction test
         detect_cases.push_back(createCase< Compare < elem > >("adc",           "abc",          "aec",          ""));                 // 0
         detect_cases.push_back(createCase< Compare < elem > >("abqdcf",        "abcdef",       "abqqef",       ""));                 // 1
-        
+
         // use custom comparator
         custom_cases.push_back(createCase< CaseInsensitive >("abc", "abc", "abC", "abc"));
     }
-    
+
     void TearDown () {}
-    
+
 };
 
 /**

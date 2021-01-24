@@ -26,7 +26,7 @@ size_t cal_diff_uni (const string& path_l, const string& path_r) {
     while (getline(lifs, buf)) {
         llines.push_back(buf);
     }
-    
+
     while (getline(rifs, buf)) {
         rlines.push_back(buf);
     }

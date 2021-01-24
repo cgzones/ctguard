@@ -9,12 +9,12 @@ using namespace std;
 using dtl::Diff3;
 
 int main(int, char**) {
-    
+
     int a[10]      = {1, 2, 3, 4, 5, 6, 7, 3, 9, 10};
     int b[10]      = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int c[10]      = {1, 2, 3, 9, 5, 6, 7, 8, 9, 10};
     int answer[10] = {1, 2, 3, 9, 5, 6, 7, 3, 9, 10};
-    
+
     cout << "a:";
     for (int i=0;i<10;++i) {
         cout << a[i] << " ";
@@ -30,7 +30,7 @@ int main(int, char**) {
         cout << c[i] << " ";
     }
     cout << endl;
-    
+
     typedef int elem;
     typedef vector< int > sequence;
     sequence A(&a[0], &a[10]);
@@ -49,9 +49,9 @@ int main(int, char**) {
         cout << *it << " ";
     }
     cout << endl;
-    
+
     assert(s == Answer);
     cout << "intdiff3 OK" << endl;
-    
+
     return 0;
 }

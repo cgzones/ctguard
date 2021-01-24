@@ -17,4 +17,3 @@ bool isFewArgs (int argc, int limit) {
     }
     return ret;
 }
-

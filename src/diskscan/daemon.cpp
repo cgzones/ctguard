@@ -510,7 +510,7 @@ static void do_insert_set(std::set<file_data, file_data_set_compare> & insert_se
             alert << "Valid:           " << std::boolalpha << (!fd.dead_lnk()) << '\n';
         }
         alert << "Type:            " << fd.get_type() << '\n';
-        alert << "ALERT END\n\n";
+        alert << "ALERT END";
 
         output_queue.emplace(log_2_se(fd.path(), false, alert.str()));
     }
@@ -748,7 +748,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
                         alert << "Start Diff\n" << fd.diff() << "End Diff\n";
                     }
 
-                    alert << "ALERT END\n\n";
+                    alert << "ALERT END";
 
                     if (changed) {
                         const auto update_full_start = std::chrono::high_resolution_clock::now();
@@ -821,7 +821,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
                     alert << "ALERT: object deleted\n";
                     alert << "Path:            " << fd.path() << '\n';
                     alert << "Type:            " << static_cast<file_data::type>(db_type) << '\n';
-                    alert << "ALERT END\n\n";
+                    alert << "ALERT END";
 
                     output_queue.emplace(log_2_se(fd.path(), false, alert.str()));
                 }
@@ -873,7 +873,7 @@ static void alert_task(const diskscan_config & cfg, libs::blocked_queue<std::pai
                         alert << "Valid:           " << std::boolalpha << (!fd.dead_lnk()) << '\n';
                     }
                     alert << "Type:            " << fd.get_type() << '\n';
-                    alert << "ALERT END\n\n";
+                    alert << "ALERT END";
 
                     output_queue.emplace(log_2_se(fd.path(), false, alert.str()));
 

@@ -431,10 +431,10 @@ $
 $ cd dtl/examples
 $ scons intdiff
 $ ./intdiff # There are data in intdiff.cpp
-1 2 3 4 5 6 7 8 9 10 
-3 5 1 4 5 1 7 9 6 10 
+1 2 3 4 5 6 7 8 9 10
+3 5 1 4 5 1 7 9 6 10
 editDistance:8
-LCS: 3 4 5 7 9 10 
+LCS: 3 4 5 7 9 10
 SES
 - 1
 - 2

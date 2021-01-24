@@ -44,8 +44,16 @@ void event::add_groups(const std::set<std::string> & input)
 std::string event::groups_2_str() const
 {
     std::ostringstream sso;
-    for (const std::string & s : m_groups) {
-        sso << s << ' ';
+    auto begin = std::begin(m_groups);
+    const auto end = std::end(m_groups);
+
+    if (begin != end) {
+        sso << *begin++;
+    }
+
+    while (begin != end) {
+        sso << ' ';
+        sso << *begin++;
     }
 
     return sso.str();

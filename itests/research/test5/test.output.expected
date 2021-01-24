@@ -3,19 +3,19 @@ ctguard-research
   Enter loginput to see its handling.
    - use 'quit' to exit
 
-> 
+>
   Processing 'Aug 23 04:59:58 server02 sshd[8268]: Bad protocol version identification '8' from 118.193.31.181 port 41185' ...
     Format (#0) ...  no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#1) level 1
     Checking level 1 rule 2 ...regex match|full match: true(true && true)
@@ -34,7 +34,7 @@ ctguard-research
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         srcip -> ##118.193.31.181##
-      Groups: 
+      Groups: ####
       Priority: 5
     Checking group rules...
     Processing rules (#1) level 1
@@ -54,7 +54,7 @@ ctguard-research
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         srcip -> ##118.193.31.181##
-      Groups: 
+      Groups: ####
       Priority: 7
   End extracting.
 
@@ -64,5 +64,5 @@ Rule matched:
 	message  : Possible exploit attempt.
 Would create alert with priority 7.
 
-> 
+>
 Ending

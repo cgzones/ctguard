@@ -3,19 +3,19 @@ ctguard-research
   Enter loginput to see its handling.
    - use 'quit' to exit
 
-> 
+>
   Processing 'test' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...regex match|full match: true(true && true)
@@ -41,7 +41,7 @@ ctguard-research
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: test 
+      Groups: ##test##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -59,7 +59,7 @@ ctguard-research
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: test 
+      Groups: ##test##
       Priority: 4
   End extracting.
 
@@ -69,19 +69,19 @@ Rule matched:
 	message  : test rule
 Would create alert with priority 4.
 
-> 
+>
   Processing 'test4' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -103,7 +103,7 @@ Would create alert with priority 4.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Checking group rules...
     Processing rules (#4) level 1
@@ -121,29 +121,29 @@ Would create alert with priority 4.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
   End extracting.
 
 Rule matched:
 	rule id  : 0
 	priority : 0
-	message  : 
+	message  : ((none))
 Would not create any alert.
 
-> 
+>
   Processing '4test' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -165,7 +165,7 @@ Would not create any alert.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Checking group rules...
     Processing rules (#4) level 1
@@ -183,33 +183,33 @@ Would not create any alert.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
   End extracting.
 
 Rule matched:
 	rule id  : 0
 	priority : 0
-	message  : 
+	message  : ((none))
 Would not create any alert.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[001]: password check failed for user (christian)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -245,7 +245,7 @@ Would not create any alert.
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##christian##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -268,7 +268,7 @@ Would not create any alert.
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##christian##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
   End extracting.
 
@@ -278,23 +278,23 @@ Rule matched:
 	message  : sshd: failed user login
 Would create alert with priority 4.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[002]: password check failed for user (root)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (root)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -330,7 +330,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (root)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##root##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -357,7 +357,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (root)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##root##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 7
   End extracting.
 
@@ -367,23 +367,23 @@ Rule matched:
 	message  : Failed login into root
 Would create alert with priority 7.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[003]: password check failed for user (chris)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -419,7 +419,7 @@ Would create alert with priority 7.
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##chris##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -442,7 +442,7 @@ Would create alert with priority 7.
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##chris##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
   End extracting.
 
@@ -452,23 +452,23 @@ Rule matched:
 	message  : sshd: failed user login
 Would create alert with priority 4.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[004]: password check failed for user (chris)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -504,7 +504,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##chris##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -527,7 +527,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##chris##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
   End extracting.
 
@@ -537,23 +537,23 @@ Rule matched:
 	message  : sshd: failed user login
 Would create alert with priority 4.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[005]: password check failed for user (chris)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -589,7 +589,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##chris##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -622,7 +622,7 @@ Sep 24 12:10:03 desktopdebian unix_chkpwd[005]: password check failed for user (
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##chris##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 7
   End extracting.
 
@@ -632,23 +632,23 @@ Rule matched:
 	message  : Multiple failed authentications.
 Would create alert with priority 7.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[006]: password check failed for user (thomas)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (thomas)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -684,7 +684,7 @@ Would create alert with priority 7.
         log -> ##password check failed for user (thomas)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##thomas##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -707,7 +707,7 @@ Would create alert with priority 7.
         log -> ##password check failed for user (thomas)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##thomas##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
   End extracting.
 
@@ -717,23 +717,23 @@ Rule matched:
 	message  : sshd: failed user login
 Would create alert with priority 4.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[007]: password check failed for user (thomas)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (thomas)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -769,7 +769,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (thomas)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##thomas##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -792,7 +792,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (thomas)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##thomas##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
   End extracting.
 
@@ -802,23 +802,23 @@ Rule matched:
 	message  : sshd: failed user login
 Would create alert with priority 4.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[008]: password check failed for user (christian)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -854,7 +854,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##christian##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -877,7 +877,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##christian##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
   End extracting.
 
@@ -887,23 +887,23 @@ Rule matched:
 	message  : sshd: failed user login
 Would create alert with priority 4.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[009]: password check failed for user (christian)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -939,7 +939,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##christian##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -962,7 +962,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##christian##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
   End extracting.
 
@@ -972,23 +972,23 @@ Rule matched:
 	message  : sshd: failed user login
 Would create alert with priority 4.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[010]: password check failed for user (christian)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1024,7 +1024,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##christian##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -1057,7 +1057,7 @@ Sep 24 12:10:03 desktopdebian unix_chkpwd[010]: password check failed for user (
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##christian##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 7
   End extracting.
 
@@ -1067,23 +1067,23 @@ Rule matched:
 	message  : Multiple failed authentications.
 Would create alert with priority 7.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[011]: password check failed for user (christian)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1119,7 +1119,7 @@ Would create alert with priority 7.
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##christian##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -1152,7 +1152,7 @@ Sep 24 12:10:03 desktopdebian unix_chkpwd[011]: password check failed for user (
         log -> ##password check failed for user (christian)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##christian##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 8
   End extracting.
 
@@ -1162,23 +1162,23 @@ Rule matched:
 	message  : Multiple authentication failures for the same user.
 Would create alert with priority 8.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[012]: password check failed for user (chris)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1214,7 +1214,7 @@ Would create alert with priority 8.
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##chris##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -1237,7 +1237,7 @@ Would create alert with priority 8.
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##chris##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
   End extracting.
 
@@ -1247,23 +1247,23 @@ Rule matched:
 	message  : sshd: failed user login
 Would create alert with priority 4.
 
-> 
+>
   Processing 'Sep 24 12:10:03 desktopdebian unix_chkpwd[013]: password check failed for user (chris)' ...
     Format (#1) ...  syslog matching
       Traits:
-        control -> false
-        format -> syslog
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##syslog##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         domain -> ##unix_chkpwd##
         hostname -> ##desktopdebian##
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1299,7 +1299,7 @@ Would create alert with priority 4.
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##chris##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -1332,7 +1332,7 @@ Sep 24 12:10:03 desktopdebian unix_chkpwd[013]: password check failed for user (
         log -> ##password check failed for user (chris)##
         timestamp -> ##Sep 24 12:10:03##
         username -> ##chris##
-      Groups: authentication_failure system 
+      Groups: ##authentication_failure system##
       Priority: 8
   End extracting.
 
@@ -1342,19 +1342,19 @@ Rule matched:
 	message  : Multiple authentication failures for the same user.
 Would create alert with priority 8.
 
-> 
+>
   Processing 'test' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...regex match|full match: true(true && true)
@@ -1380,7 +1380,7 @@ Would create alert with priority 8.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: test 
+      Groups: ##test##
       Priority: 4
     Checking group rules...
     Processing rules (#4) level 1
@@ -1416,7 +1416,7 @@ Sep 24 12:10:03 desktopdebian unix_chkpwd[012]: password check failed for user (
 Sep 24 12:10:03 desktopdebian unix_chkpwd[013]: password check failed for user (chris)
 ##
       Extracted fields:
-      Groups: test 
+      Groups: ##test##
       Priority: 10
   End extracting.
 
@@ -1426,19 +1426,19 @@ Rule matched:
 	message  : Multiple authentication failures followed up by test
 Would create alert with priority 10.
 
-> 
+>
   Processing 'abc' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1464,7 +1464,7 @@ Would create alert with priority 10.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 6
     Checking group rules...
     Processing rules (#4) level 1
@@ -1482,7 +1482,7 @@ Would create alert with priority 10.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 6
   End extracting.
 
@@ -1492,19 +1492,19 @@ Rule matched:
 	message  : test multiline regex
 Would create alert with priority 6.
 
-> 
+>
   Processing 'def' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1530,7 +1530,7 @@ Would create alert with priority 6.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 6
     Checking group rules...
     Processing rules (#4) level 1
@@ -1548,7 +1548,7 @@ Would create alert with priority 6.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 6
   End extracting.
 
@@ -1558,19 +1558,19 @@ Rule matched:
 	message  : test multiline regex
 Would create alert with priority 6.
 
-> 
+>
   Processing 'xtest1' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1601,7 +1601,7 @@ Would create alert with priority 6.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 7
     Checking group rules...
     Processing rules (#4) level 1
@@ -1619,7 +1619,7 @@ Would create alert with priority 6.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 7
   End extracting.
 
@@ -1629,19 +1629,19 @@ Rule matched:
 	message  : multi if_rule
 Would create alert with priority 7.
 
-> 
+>
   Processing 'xtest2' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1672,7 +1672,7 @@ Would create alert with priority 7.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 7
     Checking group rules...
     Processing rules (#4) level 1
@@ -1690,7 +1690,7 @@ Would create alert with priority 7.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 7
   End extracting.
 
@@ -1700,19 +1700,19 @@ Rule matched:
 	message  : multi if_rule
 Would create alert with priority 7.
 
-> 
+>
   Processing 'ytestABCy' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1740,7 +1740,7 @@ Would create alert with priority 7.
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         testy -> ##ABC##
-      Groups: 
+      Groups: ####
       Priority: 5
     Checking group rules...
     Processing rules (#4) level 1
@@ -1759,7 +1759,7 @@ Would create alert with priority 7.
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         testy -> ##ABC##
-      Groups: 
+      Groups: ####
       Priority: 5
   End extracting.
 
@@ -1769,19 +1769,19 @@ Rule matched:
 	message  : base rule for empty field test
 Would create alert with priority 5.
 
-> 
+>
   Processing 'ytesty' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1812,7 +1812,7 @@ Would create alert with priority 5.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 8
     Checking group rules...
     Processing rules (#4) level 1
@@ -1830,7 +1830,7 @@ Would create alert with priority 5.
         time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 8
   End extracting.
 
@@ -1840,19 +1840,19 @@ Rule matched:
 	message  : rule for empty field test
 Would create alert with priority 8.
 
-> 
+>
   Processing 'testyy teststring1' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1879,7 +1879,7 @@ Would create alert with priority 8.
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         test -> ##teststring1##
-      Groups: 
+      Groups: ####
       Priority: 5
     Checking group rules...
     Processing rules (#4) level 1
@@ -1898,7 +1898,7 @@ Would create alert with priority 8.
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         test -> ##teststring1##
-      Groups: 
+      Groups: ####
       Priority: 5
   End extracting.
 
@@ -1908,19 +1908,19 @@ Rule matched:
 	message  : test multiline and multifield regex
 Would create alert with priority 5.
 
-> 
+>
   Processing 'testxx teststring2' ...
     Format (#1) ...  syslog not matching|no format match
       Traits:
-        control -> false
-        format -> unknown
-        hostname -> 
-        source_domain -> 
-        source_program -> 
-        time_scanned -> Thu Jan  1 00:00:00 1970 UTC
-        time_send -> Thu Jan  1 00:00:00 1970 UTC
+        control -> ##false##
+        format -> ##unknown##
+        hostname -> ####
+        source_domain -> ####
+        source_program -> ####
+        time_scanned -> ##Thu Jan  1 00:00:00 1970 UTC##
+        time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
-      Groups: 
+      Groups: ####
       Priority: 0
     Processing rules (#9) level 1
     Checking level 1 rule 1 ...no regex match
@@ -1947,7 +1947,7 @@ Would create alert with priority 5.
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         test -> ##teststring2##
-      Groups: 
+      Groups: ####
       Priority: 5
     Checking group rules...
     Processing rules (#4) level 1
@@ -1966,7 +1966,7 @@ Would create alert with priority 5.
         time_send -> ##Thu Jan  1 00:00:00 1970 UTC##
       Extracted fields:
         test -> ##teststring2##
-      Groups: 
+      Groups: ####
       Priority: 5
   End extracting.
 
@@ -1976,5 +1976,5 @@ Rule matched:
 	message  : test multiline and multifield regex
 Would create alert with priority 5.
 
-> 
+>
 Ending

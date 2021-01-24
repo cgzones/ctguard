@@ -46,20 +46,20 @@ static int create_byte_seq(const char *fs, sequence& seq)
 
 int main(int argc, char *argv[])
 {
-    
+
     if (isFewArgs(argc)) {
         cerr << "Too few arguments." << endl;
         return -1;
     }
-    
+
     string   fs1(argv[1]);
     string   fs2(argv[2]);
     sequence seq1;
     sequence seq2;
-    
+
     create_byte_seq(fs1.c_str(), seq1);
     create_byte_seq(fs2.c_str(), seq2);
-    
+
     Diff< elem, sequence > d(seq1, seq2);
     d.compose();
 
@@ -68,6 +68,6 @@ int main(int argc, char *argv[])
     } else {
         cout << fs1 << " is different from " << fs2 << endl;
     }
-    
+
     return 0;
 }

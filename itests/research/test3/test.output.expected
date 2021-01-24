@@ -1,3 +1,4 @@
+
 ALERT START
 Priority:  4
 Info:      test rule [1]
@@ -53,4 +54,3 @@ Traits:
                    time_scanned : Thu Jan  1 00:00:00 1970 UTC
                       time_send : Thu Jan  1 00:00:01 1970 UTC
 ALERT END
-

@@ -194,4 +194,3 @@ char *SHA512_Data();
 #endif /* __cplusplus */
 
 #endif /* __SHA2_H__ */
-

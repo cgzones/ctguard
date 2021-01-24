@@ -10,9 +10,9 @@ protected :
         Diff< elem, sequence > diff;
     } case_t;
     typedef vector< case_t > caseVec;
-    
+
     caseVec cases;
-    
+
     case_t createCase (sequence a, sequence b) {
         case_t c;
         c.A = a;
@@ -22,7 +22,7 @@ protected :
         c.diff.composeUnifiedHunks();
         return c;
     }
-    
+
     void SetUp() {
         cases.push_back(createCase("abc",           "abd"));           // 0
         cases.push_back(createCase("acbdeacbed",    "acebdabbabed"));  // 1
@@ -36,9 +36,9 @@ protected :
                                    "3abcdef4976fd86ouofita67t85r876e5e746578tgliuhopoqqabcdef")); // 8
         cases.push_back(createCase("abcqqqeqqqccc", "abdqqqeqqqddd")); // 9
     }
-    
+
     void TearDown () {}
-    
+
 };
 
 /**

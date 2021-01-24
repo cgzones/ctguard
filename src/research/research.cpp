@@ -273,7 +273,7 @@ int main(int argc, char ** argv)
                   << "   - use 'quit' to exit\n";
         while (RUNNING) {
             std::string line;
-            std::cout << "\n> ";
+            std::cout << "\n>";
             std::getline(std::cin, line);
             if (!RUNNING || line == "quit") {
                 std::cout << "\nEnding\n";
@@ -286,7 +286,7 @@ int main(int argc, char ** argv)
             std::cout << "\nRule matched:\n"
                       << "\trule id  : " << e.rule_id() << "\n"
                       << "\tpriority : " << e.priority() << "\n"
-                      << "\tmessage  : " << e.description() << "\n";
+                      << "\tmessage  : " << (e.description().empty() ? "((none))" : e.description()) << "\n";
             if (e.priority() >= cfg.log_priority) {
                 std::cout << "Would create alert with priority " << e.priority() << ".\n";
                 for (const auto & intervention : e.interventions()) {

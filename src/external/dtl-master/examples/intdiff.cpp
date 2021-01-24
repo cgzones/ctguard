@@ -8,7 +8,7 @@ using namespace std;
 using dtl::Diff;
 
 int main(int, char**){
-    
+
     int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int b[] = {3, 5, 1, 4, 5, 1, 7, 9, 6, 10};
     int asiz = sizeof(a) / sizeof(int);
@@ -21,7 +21,7 @@ int main(int, char**){
         cout << b[i] << " ";
     }
     cout << endl;
-    
+
     typedef  int elem;
     typedef  vector< int > sequence;
 
@@ -40,10 +40,10 @@ int main(int, char**){
         cout << *vit << " ";
     }
     cout << endl;
-    
+
     // Shortest Edit Script
     cout << "SES" << endl;
     d.printSES();
-    
+
     return 0;
 }

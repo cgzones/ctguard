@@ -1,12 +1,12 @@
 <rule_group>
-      
+
 	<rule id="9001" priority="10">
 		<if_group>authentication_success</if_group>
 		<if_field name="username" match="regex">^apache$|^mysql$|^www$|^nobody$|^nogroup$|^portmap$|^named$|^rpc$|^mail$|^ftp$|^shutdown$|^halt$|^daemon$|^bin$|^postfix$|^shell$|^info$|^guest$|^psql$|^user$|^users$|^console$|^uucp$|^lp$|^sync$|^sshd$|^cdrom$|^ctguard$</if_field>
 		<description>System user successfully logged to the system.</description>
-  	</rule>
+	</rule>
 
-  	<rule id="9002" priority="10">
+	<rule id="9002" priority="10">
 		<regex>\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?\?</regex>
 		<intervention name="block_ip" field="srcip" ignore_empty_field="true" />
 		<description>Possible buffer overflow attempt.</description>
@@ -32,7 +32,7 @@
 	<rule id="9051" priority="10">
 		<if_group>authentication_success</if_group>
 		<activation_group time="360" rate="10">authentication_failure</activation_group>
-    		<description>Multiple authentication failures followed by a success.</description>
+		<description>Multiple authentication failures followed by a success.</description>
 	</rule>
 
 	<rule id="9052" priority="6">
@@ -73,7 +73,7 @@
 	</rule>
 
 	<rule id="9091" priority="5">
-	     	<if_group>authentication_success</if_group>
+		<if_group>authentication_success</if_group>
 		<if_field name="username" match="empty" />
 		<description>Login without username extracted.</description>
 	</rule>

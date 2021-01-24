@@ -1,3 +1,4 @@
+
 ALERT START
 Priority:  4
 Info:      sshd: failed user login [2]
@@ -57,4 +58,3 @@ Extracted fields:
                       timestamp : Sep 24 12:10:03
                        username : christian
 ALERT END
-

@@ -145,7 +145,7 @@ static void output_task(const research_config & cfg, libs::blocked_queue<event> 
 
             const std::time_t t = std::time(nullptr);
 
-            output << "ALERT START\n";
+            output << "\nALERT START\n";
             if (!UNIT_TEST) {
                 struct tm ts;  // NOLINT(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
                 ::localtime_r(&t, &ts);
@@ -164,7 +164,7 @@ static void output_task(const research_config & cfg, libs::blocked_queue<event> 
                     output << "           " << std::setw(20) << iter.first << " : " << iter.second << "\n";
                 }
             }
-            output << "ALERT END\n\n";
+            output << "ALERT END\n";
             output.flush();
 
             if (cfg.mail) {

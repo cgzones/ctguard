@@ -1,25 +1,25 @@
 /**
    dtl -- Diff Template Library
-   
+
    In short, Diff Template Library is distributed under so called "BSD license",
-   
+
    Copyright (c) 2015 Tatsuhiko Kubo <cubicdaiya@gmail.com>
    All rights reserved.
-   
+
    Redistribution and use in source and binary forms, with or without modification,
    are permitted provided that the following conditions are met:
-   
+
    * Redistributions of source code must retain the above copyright notice,
    this list of conditions and the following disclaimer.
-   
+
    * Redistributions in binary form must reproduce the above copyright notice,
    this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
-   
+
    * Neither the name of the authors nor the names of its contributors
-   may be used to endorse or promote products derived from this software 
+   may be used to endorse or promote products derived from this software
    without specific prior written permission.
-   
+
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -39,7 +39,7 @@
 #define DTL_FUNCTORS_H
 
 namespace dtl {
-    
+
     /**
      * printer class template
      */
@@ -54,7 +54,7 @@ namespace dtl {
     protected :
         stream& out_;
     };
-    
+
     /**
      * common element printer class template
      */
@@ -66,10 +66,10 @@ namespace dtl {
         CommonPrinter  (stream& out) : Printer < sesElem, stream > (out) {}
         ~CommonPrinter () {}
         void operator() (const sesElem& se) const {
-            this->out_ << SES_MARK_COMMON << se.first << endl;    
+            this->out_ << SES_MARK_COMMON << se.first << endl;
         }
     };
-    
+
     /**
      * ses element printer class template
      */
@@ -94,7 +94,7 @@ namespace dtl {
             }
         }
     };
-    
+
     /**
      * unified format element printer class template
      */
@@ -110,7 +110,7 @@ namespace dtl {
                  << " -"  << hunk.a << "," << hunk.b
                  << " +"  << hunk.c << "," << hunk.d
                  << " @@" << endl;
-            
+
             for_each(hunk.common[0].begin(), hunk.common[0].end(), CommonPrinter< sesElem, stream >(out_));
             for_each(hunk.change.begin(),    hunk.change.end(),    ChangePrinter< sesElem, stream >(out_));
             for_each(hunk.common[1].begin(), hunk.common[1].end(), CommonPrinter< sesElem, stream >(out_));
@@ -118,7 +118,7 @@ namespace dtl {
     private :
         stream& out_;
     };
-    
+
     /**
      * compare class template
      */

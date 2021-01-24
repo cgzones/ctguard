@@ -19,14 +19,14 @@ protected :
     } case_t;
     typedef vector< case_t > caseVec;
     caseVec cases;
-    
+
     case_t createCase (const sequence a, const sequence b, string test_name) {
         case_t c;
         string diff_name("intdiff");
         Diff< elem > diff(a, b);
         diff.compose();
         diff.composeUnifiedHunks();
-        
+
         if (test_name != "") {
             string path_lses   = create_path(test_name, diff_name, TYPE_DIFF_SES);
             string path_rses   = create_path(test_name, diff_name, TYPE_DIFF_SES, true);
@@ -49,7 +49,7 @@ protected :
         c.ses_seq = diff.getSes().getSequence();
         return c;
     }
-    
+
     void SetUp() {
         cases.push_back(createCase(sequence(0), sequence(0), "diff_test0"));
         sequence B1;
@@ -73,11 +73,11 @@ protected :
         sequence B5(&b5[0], &b5[b5siz]);
         cases.push_back(createCase(A5, B5, "diff_test4"));
     }
-    
+
     void TearDown () {
         for_each(cases.begin(), cases.end(), Remover< case_t >());
     }
-    
+
 };
 
 /**
@@ -89,9 +89,9 @@ protected :
  */
 TEST_F (Intdifftest, diff_test0) {
     EXPECT_EQ(0, cases[0].editdis);
-    
+
     EXPECT_TRUE(cases[0].lcs_v.empty());
-    
+
     ASSERT_EQ(0, cases[0].editdis_ses);
 
     ASSERT_EQ(0, cases[0].editdis_uni);
@@ -99,9 +99,9 @@ TEST_F (Intdifftest, diff_test0) {
 
 TEST_F (Intdifftest, diff_test1) {
     EXPECT_EQ(1, cases[1].editdis);
-    
+
     EXPECT_TRUE(cases[1].lcs_v.empty());
-    
+
     ASSERT_EQ(0, cases[1].editdis_ses);
 
     ASSERT_EQ(0, cases[1].editdis_uni);
@@ -109,9 +109,9 @@ TEST_F (Intdifftest, diff_test1) {
 
 TEST_F (Intdifftest, diff_test2) {
     EXPECT_EQ(1, cases[2].editdis);
-    
+
     EXPECT_TRUE(cases[2].lcs_v.empty());
-    
+
     ASSERT_EQ(0, cases[2].editdis_ses);
 
     ASSERT_EQ(0, cases[2].editdis_uni);
@@ -119,13 +119,13 @@ TEST_F (Intdifftest, diff_test2) {
 
 TEST_F (Intdifftest, diff_test3) {
     EXPECT_EQ(8, cases[3].editdis);
-    
+
     EXPECT_EQ(3, cases[3].lcs_v[0]);
     EXPECT_EQ(4, cases[3].lcs_v[1]);
     EXPECT_EQ(5, cases[3].lcs_v[2]);
     EXPECT_EQ(7, cases[3].lcs_v[3]);
     EXPECT_EQ(9, cases[3].lcs_v[4]);
-    
+
     ASSERT_EQ(0, cases[3].editdis_ses);
 
     ASSERT_EQ(0, cases[3].editdis_uni);
@@ -133,11 +133,11 @@ TEST_F (Intdifftest, diff_test3) {
 
 TEST_F (Intdifftest, diff_test4) {
     EXPECT_EQ(4, cases[4].editdis);
-    
+
     EXPECT_EQ(3, cases[4].lcs_v[0]);
     EXPECT_EQ(4, cases[4].lcs_v[1]);
     EXPECT_EQ(5, cases[4].lcs_v[2]);
-    
+
     ASSERT_EQ(0, cases[4].editdis_ses);
 
     ASSERT_EQ(0, cases[4].editdis_uni);

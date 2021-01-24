@@ -453,14 +453,14 @@ event process_log(const libs::source_event & se, bool verbose, const rule_cfg & 
         std::cout << "      Traits:\n";
 
         for (const auto & elem : e.traits()) {
-            std::cout << "        " << elem.first << " -> " << elem.second << "\n";
+            std::cout << "        " << elem.first << " -> ##" << elem.second << "##\n";
         }
         std::cout << "      Extracted fields:\n";
         for (const auto & elem : e.fields()) {
             std::cout << "        " << elem.first << " -> ##" << elem.second << "##\n";
         }
 
-        std::cout << "      Groups: " << e.groups_2_str() << "\n";
+        std::cout << "      Groups: ##" << e.groups_2_str() << "##\n";
         std::cout << "      Priority: " << e.priority() << "\n";
     }
 
@@ -477,7 +477,7 @@ event process_log(const libs::source_event & se, bool verbose, const rule_cfg & 
             std::cout << "        " << elem.first << " -> ##" << elem.second << "##\n";
         }
 
-        std::cout << "      Groups: " << e.groups_2_str() << "\n";
+        std::cout << "      Groups: ##" << e.groups_2_str() << "##\n";
         std::cout << "      Priority: " << e.priority() << "\n";
 
         std::cout << "    Checking group rules...\n";
@@ -496,7 +496,7 @@ event process_log(const libs::source_event & se, bool verbose, const rule_cfg & 
             std::cout << "        " << elem.first << " -> ##" << elem.second << "##\n";
         }
 
-        std::cout << "      Groups: " << e.groups_2_str() << "\n";
+        std::cout << "      Groups: ##" << e.groups_2_str() << "##\n";
         std::cout << "      Priority: " << e.priority() << "\n";
 
         std::cout << "  End extracting.\n";
