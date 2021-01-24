@@ -21,12 +21,8 @@ jobs:
         sudo apt-get update -q
         sudo apt-get install -qy \
             asciidoctor \
-            cmake
-
-        # Install libcereal-dev from Debian testing, cause it contains a cmake module
-        wget -O - https://ftp-master.debian.org/keys/archive-key-10.asc 2>/dev/null | sudo apt-key add -
-        sudo add-apt-repository 'deb http://deb.debian.org/debian/ testing main' -y
-        sudo apt-get install -qy libcereal-dev
+            cmake \
+            libcereal-dev
 
     - name: Display Versions
       run: |
@@ -68,7 +64,8 @@ jobs:
             clang-11 \
             cmake
 
-        # Install libcereal-dev from Debian testing, cause it contains a cmake module
+        # Install libcereal-dev from Debian testing, tp pass UBSAN
+        # /usr/include/cereal/details/static_object.hpp:76:23: runtime error: reference binding to null pointer of type 'const cereal::detail::PolymorphicCasters'
         wget -O - https://ftp-master.debian.org/keys/archive-key-10.asc 2>/dev/null | sudo apt-key add -
         sudo add-apt-repository 'deb http://deb.debian.org/debian/ testing main' -y
         sudo apt-get install -qy libcereal-dev

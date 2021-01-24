@@ -3,6 +3,10 @@ cmake_minimum_required (VERSION 3.13) # req by add_link_options()
 project (ctguard VERSION 0.1)
 
 
+set (Cereal_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+
+
 option (ENABLE_DOC "Enable building documentation. [default: ON]"                       ON)
 option (ENABLE_OPTIMIZATIONS "Enable optimizations. [default: ON]"                      ON)
 option (ENABLE_HARDENING "Enable hardening build flags. [default: ON]"                  ON)
